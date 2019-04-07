@@ -1,0 +1,497 @@
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: Do not use the development server in a production environment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: Do not use the development server in a production environment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+[2019-03-03 17:54:55,599] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 2292, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1816, in full_dispatch_request
+    return self.finalize_request(rv)
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1831, in finalize_request
+    response = self.make_response(rv)
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1957, in make_response
+    'The view function did not return a valid response. The'
+TypeError: The view function did not return a valid response. The function either returned None or ended without a return statement.
+127.0.0.1 - - [03/Mar/2019 17:54:55] "GET / HTTP/1.1" 500 -
+[2019-03-03 17:54:56,010] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 2292, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1815, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1718, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1813, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1799, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 11, in hello
+    return cursor.execute("SELECT * FROM songtest")
+  File "/usr/lib/python2.7/site-packages/mysql/connector/cursor.py", line 529, in execute
+    self._connection.handle_unread_result()
+  File "/usr/lib/python2.7/site-packages/mysql/connector/connection.py", line 1063, in handle_unread_result
+    raise errors.InternalError("Unread result found")
+InternalError: Unread result found
+127.0.0.1 - - [03/Mar/2019 17:54:56] "GET / HTTP/1.1" 500 -
+[2019-03-03 17:55:06,482] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 2292, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1815, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1718, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1813, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1799, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 11, in hello
+    return cursor.execute("SELECT * FROM songtest")
+  File "/usr/lib/python2.7/site-packages/mysql/connector/cursor.py", line 529, in execute
+    self._connection.handle_unread_result()
+  File "/usr/lib/python2.7/site-packages/mysql/connector/connection.py", line 1063, in handle_unread_result
+    raise errors.InternalError("Unread result found")
+InternalError: Unread result found
+127.0.0.1 - - [03/Mar/2019 17:55:06] "GET / HTTP/1.1" 500 -
+[2019-03-03 17:55:36,566] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 2292, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1815, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1718, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1813, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1799, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 11, in hello
+    return cursor.execute("SELECT * FROM songtest")
+  File "/usr/lib/python2.7/site-packages/mysql/connector/cursor.py", line 529, in execute
+    self._connection.handle_unread_result()
+  File "/usr/lib/python2.7/site-packages/mysql/connector/connection.py", line 1063, in handle_unread_result
+    raise errors.InternalError("Unread result found")
+InternalError: Unread result found
+127.0.0.1 - - [03/Mar/2019 17:55:36] "GET / HTTP/1.1" 500 -
+[2019-03-03 17:55:43,765] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 2292, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1815, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1718, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1813, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1799, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 11, in hello
+    return cursor.execute("SELECT * FROM songtest")
+  File "/usr/lib/python2.7/site-packages/mysql/connector/cursor.py", line 529, in execute
+    self._connection.handle_unread_result()
+  File "/usr/lib/python2.7/site-packages/mysql/connector/connection.py", line 1063, in handle_unread_result
+    raise errors.InternalError("Unread result found")
+InternalError: Unread result found
+127.0.0.1 - - [03/Mar/2019 17:55:43] "GET / HTTP/1.1" 500 -
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: Do not use the development server in a production environment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: Do not use the development server in a production environment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+127.0.0.1 - - [03/Mar/2019 18:14:28] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [03/Mar/2019 18:15:29] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [03/Mar/2019 18:16:44] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [03/Mar/2019 18:16:50] "GET / HTTP/1.1" 200 -
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: Do not use the development server in a production environment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+127.0.0.1 - - [03/Mar/2019 18:17:07] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [03/Mar/2019 18:18:31] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [03/Mar/2019 18:52:19] "GET / HTTP/1.1" 200 -
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: Do not use the development server in a production environment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: Do not use the development server in a production environment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+127.0.0.1 - - [03/Mar/2019 19:05:27] "GET / HTTP/1.1" 200 -
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: Do not use the development server in a production environment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+192.17.150.171 - - [03/Mar/2019 19:18:31] "GET / HTTP/1.1" 200 -
+192.17.150.171 - - [03/Mar/2019 19:19:31] "GET / HTTP/1.1" 200 -
+192.17.150.171 - - [03/Mar/2019 19:21:18] "GET / HTTP/1.1" 200 -
+192.17.150.171 - - [03/Mar/2019 19:48:20] "GET / HTTP/1.1" 200 -
+192.17.150.171 - - [03/Mar/2019 19:48:34] "GET / HTTP/1.1" 200 -
+192.17.150.171 - - [03/Mar/2019 19:49:22] "GET / HTTP/1.1" 200 -
+192.17.148.254 - - [03/Mar/2019 20:26:24] "GET / HTTP/1.1" 200 -
+192.17.148.254 - - [03/Mar/2019 20:28:50] "GET / HTTP/1.1" 200 -
+192.17.148.254 - - [03/Mar/2019 20:32:43] "GET / HTTP/1.1" 200 -
+192.17.148.254 - - [03/Mar/2019 20:35:02] "GET / HTTP/1.1" 200 -
+192.17.148.254 - - [03/Mar/2019 20:35:06] "GET / HTTP/1.1" 200 -
+192.17.148.254 - - [03/Mar/2019 20:36:15] "GET / HTTP/1.1" 200 -
+192.17.148.254 - - [03/Mar/2019 20:37:42] "GET / HTTP/1.1" 200 -
+192.17.148.254 - - [03/Mar/2019 20:39:24] "GET / HTTP/1.1" 200 -
+10.195.96.13 - - [03/Mar/2019 20:39:31] "GET / HTTP/1.1" 200 -
+192.17.148.254 - - [03/Mar/2019 20:41:27] "GET / HTTP/1.1" 200 -
+192.17.148.254 - - [03/Mar/2019 20:42:34] "GET / HTTP/1.1" 200 -
+192.17.148.254 - - [03/Mar/2019 20:44:41] "GET / HTTP/1.1" 200 -
+192.17.148.254 - - [03/Mar/2019 20:46:13] "GET / HTTP/1.1" 200 -
+192.17.148.254 - - [03/Mar/2019 20:47:16] "GET / HTTP/1.1" 200 -
+192.17.148.254 - - [03/Mar/2019 20:49:13] "GET / HTTP/1.1" 200 -
+192.17.148.254 - - [03/Mar/2019 20:50:16] "GET / HTTP/1.1" 200 -
+192.17.148.254 - - [03/Mar/2019 20:50:20] "GET / HTTP/1.1" 200 -
+192.17.148.254 - - [03/Mar/2019 20:54:04] "GET / HTTP/1.1" 200 -
+192.17.148.254 - - [03/Mar/2019 20:57:08] "GET / HTTP/1.1" 200 -
+192.17.148.254 - - [03/Mar/2019 20:58:29] "GET / HTTP/1.1" 200 -
+192.17.148.254 - - [03/Mar/2019 20:58:34] "GET / HTTP/1.1" 200 -
+192.17.148.254 - - [03/Mar/2019 21:01:23] "GET / HTTP/1.1" 200 -
+192.17.148.254 - - [03/Mar/2019 21:03:25] "GET / HTTP/1.1" 200 -
+192.17.151.82 - - [04/Mar/2019 00:40:51] "GET / HTTP/1.1" 200 -
+[2019-03-05 14:17:11,508] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 2292, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1815, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib64/python2.7/site-packages/flask_cors/extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1718, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1813, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1799, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 14, in hello
+    cursor.execute("SELECT * FROM songtest")
+  File "/usr/lib/python2.7/site-packages/mysql/connector/cursor.py", line 559, in execute
+    self._handle_result(self._connection.cmd_query(stmt))
+  File "/usr/lib/python2.7/site-packages/mysql/connector/connection.py", line 494, in cmd_query
+    result = self._handle_result(self._send_cmd(ServerCmd.QUERY, query))
+  File "/usr/lib/python2.7/site-packages/mysql/connector/connection.py", line 268, in _send_cmd
+    return self._socket.recv()
+  File "/usr/lib/python2.7/site-packages/mysql/connector/network.py", line 243, in recv_plain
+    raise errors.InterfaceError(errno=2013)
+InterfaceError: 2013: Lost connection to MySQL server during query
+10.193.219.7 - - [05/Mar/2019 14:17:11] "GET / HTTP/1.1" 500 -
+[2019-03-05 19:01:15,272] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 2292, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1815, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib64/python2.7/site-packages/flask_cors/extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1718, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1813, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1799, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 14, in hello
+    cursor.execute("SELECT * FROM songtest")
+  File "/usr/lib/python2.7/site-packages/mysql/connector/cursor.py", line 559, in execute
+    self._handle_result(self._connection.cmd_query(stmt))
+  File "/usr/lib/python2.7/site-packages/mysql/connector/connection.py", line 494, in cmd_query
+    result = self._handle_result(self._send_cmd(ServerCmd.QUERY, query))
+  File "/usr/lib/python2.7/site-packages/mysql/connector/connection.py", line 262, in _send_cmd
+    packet_number, compressed_packet_number)
+  File "/usr/lib/python2.7/site-packages/mysql/connector/network.py", line 143, in send_plain
+    errno=2055, values=(self.get_address(), _strioerror(err)))
+OperationalError: 2055: Lost connection to MySQL server at '127.0.0.1:3306', system error: 32 Broken pipe
+10.193.64.182 - - [05/Mar/2019 19:01:15] "GET / HTTP/1.1" 500 -
+[2019-03-06 00:38:17,193] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 2292, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1815, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib64/python2.7/site-packages/flask_cors/extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1718, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1813, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1799, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 14, in hello
+    cursor.execute("SELECT * FROM songtest")
+  File "/usr/lib/python2.7/site-packages/mysql/connector/cursor.py", line 559, in execute
+    self._handle_result(self._connection.cmd_query(stmt))
+  File "/usr/lib/python2.7/site-packages/mysql/connector/connection.py", line 494, in cmd_query
+    result = self._handle_result(self._send_cmd(ServerCmd.QUERY, query))
+  File "/usr/lib/python2.7/site-packages/mysql/connector/connection.py", line 262, in _send_cmd
+    packet_number, compressed_packet_number)
+  File "/usr/lib/python2.7/site-packages/mysql/connector/network.py", line 143, in send_plain
+    errno=2055, values=(self.get_address(), _strioerror(err)))
+OperationalError: 2055: Lost connection to MySQL server at '127.0.0.1:3306', system error: 32 Broken pipe
+192.17.150.169 - - [06/Mar/2019 00:38:17] "GET / HTTP/1.1" 500 -
+[2019-03-08 15:07:18,736] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 2292, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1815, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib64/python2.7/site-packages/flask_cors/extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1718, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1813, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1799, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 14, in hello
+    cursor.execute("SELECT * FROM songtest")
+  File "/usr/lib/python2.7/site-packages/mysql/connector/cursor.py", line 559, in execute
+    self._handle_result(self._connection.cmd_query(stmt))
+  File "/usr/lib/python2.7/site-packages/mysql/connector/connection.py", line 494, in cmd_query
+    result = self._handle_result(self._send_cmd(ServerCmd.QUERY, query))
+  File "/usr/lib/python2.7/site-packages/mysql/connector/connection.py", line 262, in _send_cmd
+    packet_number, compressed_packet_number)
+  File "/usr/lib/python2.7/site-packages/mysql/connector/network.py", line 143, in send_plain
+    errno=2055, values=(self.get_address(), _strioerror(err)))
+OperationalError: 2055: Lost connection to MySQL server at '127.0.0.1:3306', system error: 32 Broken pipe
+10.195.172.130 - - [08/Mar/2019 15:07:18] "GET / HTTP/1.1" 500 -
+[2019-03-08 15:20:39,394] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 2292, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1815, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib64/python2.7/site-packages/flask_cors/extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1718, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1813, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1799, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 14, in hello
+    cursor.execute("SELECT * FROM songtest")
+  File "/usr/lib/python2.7/site-packages/mysql/connector/cursor.py", line 559, in execute
+    self._handle_result(self._connection.cmd_query(stmt))
+  File "/usr/lib/python2.7/site-packages/mysql/connector/connection.py", line 494, in cmd_query
+    result = self._handle_result(self._send_cmd(ServerCmd.QUERY, query))
+  File "/usr/lib/python2.7/site-packages/mysql/connector/connection.py", line 262, in _send_cmd
+    packet_number, compressed_packet_number)
+  File "/usr/lib/python2.7/site-packages/mysql/connector/network.py", line 143, in send_plain
+    errno=2055, values=(self.get_address(), _strioerror(err)))
+OperationalError: 2055: Lost connection to MySQL server at '127.0.0.1:3306', system error: 32 Broken pipe
+192.17.148.10 - - [08/Mar/2019 15:20:39] "GET / HTTP/1.1" 500 -
+[2019-03-08 16:21:04,989] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 2292, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1815, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib64/python2.7/site-packages/flask_cors/extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1718, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1813, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1799, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 14, in hello
+    cursor.execute("SELECT * FROM songtest")
+  File "/usr/lib/python2.7/site-packages/mysql/connector/cursor.py", line 559, in execute
+    self._handle_result(self._connection.cmd_query(stmt))
+  File "/usr/lib/python2.7/site-packages/mysql/connector/connection.py", line 494, in cmd_query
+    result = self._handle_result(self._send_cmd(ServerCmd.QUERY, query))
+  File "/usr/lib/python2.7/site-packages/mysql/connector/connection.py", line 262, in _send_cmd
+    packet_number, compressed_packet_number)
+  File "/usr/lib/python2.7/site-packages/mysql/connector/network.py", line 143, in send_plain
+    errno=2055, values=(self.get_address(), _strioerror(err)))
+OperationalError: 2055: Lost connection to MySQL server at '127.0.0.1:3306', system error: 32 Broken pipe
+10.195.116.140 - - [08/Mar/2019 16:21:04] "GET / HTTP/1.1" 500 -
+192.17.95.144 - - [20/Mar/2019 04:10:01] code 400, message Bad request version ('\x10us_english\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x01\x00c\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')
+192.17.95.144 - - [20/Mar/2019 04:10:01] "      qualys_scanner                id                                                                                                  SC_ASEJ_Mgmt                                                                                                                                                                                                                                                                                                                   jConnect     us_english               c          " 400 -
+192.17.95.144 - - [20/Mar/2019 04:10:46] code 400, message Bad request syntax ('\x00\x128CJ\xa5\x84\xcam\x03\xc2\x00\x00\x00\x00\x00\x00\x00\x00\x00')
+192.17.95.144 - - [20/Mar/2019 04:10:46] " 8CJ¥„ÊmÂ         " 400 -
+192.17.95.144 - - [20/Mar/2019 04:10:46] code 400, message Bad request syntax ('\x02\x04\x05\xb4\x04\x02\x08')
+192.17.95.144 - - [20/Mar/2019 04:10:46] "´" 400 -
+[2019-03-20 04:10:46,677] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 2292, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1815, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib64/python2.7/site-packages/flask_cors/extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1718, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1813, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1799, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 14, in hello
+    cursor.execute("SELECT * FROM songtest")
+  File "/usr/lib/python2.7/site-packages/mysql/connector/cursor.py", line 559, in execute
+    self._handle_result(self._connection.cmd_query(stmt))
+  File "/usr/lib/python2.7/site-packages/mysql/connector/connection.py", line 494, in cmd_query
+    result = self._handle_result(self._send_cmd(ServerCmd.QUERY, query))
+  File "/usr/lib/python2.7/site-packages/mysql/connector/connection.py", line 262, in _send_cmd
+    packet_number, compressed_packet_number)
+  File "/usr/lib/python2.7/site-packages/mysql/connector/network.py", line 143, in send_plain
+    errno=2055, values=(self.get_address(), _strioerror(err)))
+OperationalError: 2055: Lost connection to MySQL server at '127.0.0.1:3306', system error: 32 Broken pipe
+192.17.95.144 - - [20/Mar/2019 04:10:46] "GET / HTTP/1.1" 500 -
+192.17.95.144 - - [20/Mar/2019 04:10:46] "M-SEARCH * HTTP/1.1" 404 -
+[2019-03-25 10:42:42,047] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 2292, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1815, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib64/python2.7/site-packages/flask_cors/extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1718, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1813, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1799, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 14, in hello
+    cursor.execute("SELECT * FROM songtest")
+  File "/usr/lib/python2.7/site-packages/mysql/connector/cursor.py", line 559, in execute
+    self._handle_result(self._connection.cmd_query(stmt))
+  File "/usr/lib/python2.7/site-packages/mysql/connector/connection.py", line 494, in cmd_query
+    result = self._handle_result(self._send_cmd(ServerCmd.QUERY, query))
+  File "/usr/lib/python2.7/site-packages/mysql/connector/connection.py", line 262, in _send_cmd
+    packet_number, compressed_packet_number)
+  File "/usr/lib/python2.7/site-packages/mysql/connector/network.py", line 143, in send_plain
+    errno=2055, values=(self.get_address(), _strioerror(err)))
+OperationalError: 2055: Lost connection to MySQL server at '127.0.0.1:3306', system error: 32 Broken pipe
+10.193.219.7 - - [25/Mar/2019 10:42:42] "GET / HTTP/1.1" 500 -
+[2019-04-02 21:42:32,672] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 2292, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1815, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib64/python2.7/site-packages/flask_cors/extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1718, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1813, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1799, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 14, in hello
+    cursor.execute("SELECT * FROM songtest")
+  File "/usr/lib/python2.7/site-packages/mysql/connector/cursor.py", line 559, in execute
+    self._handle_result(self._connection.cmd_query(stmt))
+  File "/usr/lib/python2.7/site-packages/mysql/connector/connection.py", line 494, in cmd_query
+    result = self._handle_result(self._send_cmd(ServerCmd.QUERY, query))
+  File "/usr/lib/python2.7/site-packages/mysql/connector/connection.py", line 262, in _send_cmd
+    packet_number, compressed_packet_number)
+  File "/usr/lib/python2.7/site-packages/mysql/connector/network.py", line 143, in send_plain
+    errno=2055, values=(self.get_address(), _strioerror(err)))
+OperationalError: 2055: Lost connection to MySQL server at '127.0.0.1:3306', system error: 32 Broken pipe
+130.126.152.218 - - [02/Apr/2019 21:42:32] "GET / HTTP/1.1" 500 -
+[2019-04-05 18:22:04,928] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 2292, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1815, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib64/python2.7/site-packages/flask_cors/extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1718, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1813, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1799, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 14, in hello
+    cursor.execute("SELECT * FROM songtest")
+  File "/usr/lib/python2.7/site-packages/mysql/connector/cursor.py", line 559, in execute
+    self._handle_result(self._connection.cmd_query(stmt))
+  File "/usr/lib/python2.7/site-packages/mysql/connector/connection.py", line 494, in cmd_query
+    result = self._handle_result(self._send_cmd(ServerCmd.QUERY, query))
+  File "/usr/lib/python2.7/site-packages/mysql/connector/connection.py", line 262, in _send_cmd
+    packet_number, compressed_packet_number)
+  File "/usr/lib/python2.7/site-packages/mysql/connector/network.py", line 143, in send_plain
+    errno=2055, values=(self.get_address(), _strioerror(err)))
+OperationalError: 2055: Lost connection to MySQL server at '127.0.0.1:3306', system error: 32 Broken pipe
+10.193.90.171 - - [05/Apr/2019 18:22:04] "GET / HTTP/1.1" 500 -
+[2019-04-07 12:38:15,782] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 2292, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1815, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib64/python2.7/site-packages/flask_cors/extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1718, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1813, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1799, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 14, in hello
+    cursor.execute("SELECT * FROM songtest")
+  File "/usr/lib/python2.7/site-packages/mysql/connector/cursor.py", line 559, in execute
+    self._handle_result(self._connection.cmd_query(stmt))
+  File "/usr/lib/python2.7/site-packages/mysql/connector/connection.py", line 494, in cmd_query
+    result = self._handle_result(self._send_cmd(ServerCmd.QUERY, query))
+  File "/usr/lib/python2.7/site-packages/mysql/connector/connection.py", line 262, in _send_cmd
+    packet_number, compressed_packet_number)
+  File "/usr/lib/python2.7/site-packages/mysql/connector/network.py", line 143, in send_plain
+    errno=2055, values=(self.get_address(), _strioerror(err)))
+OperationalError: 2055: Lost connection to MySQL server at '127.0.0.1:3306', system error: 32 Broken pipe
+10.193.255.111 - - [07/Apr/2019 12:38:15] "GET / HTTP/1.1" 500 -
+[2019-04-07 12:38:31,463] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 2292, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1815, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib64/python2.7/site-packages/flask_cors/extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1718, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1813, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1799, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 14, in hello
+    cursor.execute("SELECT * FROM songtest")
+  File "/usr/lib/python2.7/site-packages/mysql/connector/cursor.py", line 559, in execute
+    self._handle_result(self._connection.cmd_query(stmt))
+  File "/usr/lib/python2.7/site-packages/mysql/connector/connection.py", line 494, in cmd_query
+    result = self._handle_result(self._send_cmd(ServerCmd.QUERY, query))
+  File "/usr/lib/python2.7/site-packages/mysql/connector/connection.py", line 262, in _send_cmd
+    packet_number, compressed_packet_number)
+  File "/usr/lib/python2.7/site-packages/mysql/connector/network.py", line 143, in send_plain
+    errno=2055, values=(self.get_address(), _strioerror(err)))
+OperationalError: 2055: Lost connection to MySQL server at '127.0.0.1:3306', system error: 32 Broken pipe
+10.195.172.144 - - [07/Apr/2019 12:38:31] "GET / HTTP/1.1" 500 -
