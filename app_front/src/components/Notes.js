@@ -30,7 +30,7 @@ class Notes extends React.Component {
         return(
                 <div>{self.state.notes.map(function(item, key) {
                     return (
-                            <Card>{item.user}</Card>
+                            <Card>{item.UID}</Card>
                     );
                 })}</div>
         );
