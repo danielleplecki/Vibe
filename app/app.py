@@ -20,14 +20,9 @@ def json_output(output):
 
 @app.route("/")
 def hello():
-    cursor.execute("SELECT * FROM songtest")
-    r = cursor.fetchall()
-    print (r)
-    output = {}
-    for entry in r:
-        output["id"] = entry[0]
-        output["name"] = entry[1]
-    return json_output(output)
+    stmt = """SELECT * FROM songtest"""
+    result = query(stmt)
+    return json_output(result)
 
 @app.route("/notes", methods=['POST'])
 def new_notes_handler():
