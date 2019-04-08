@@ -6,11 +6,10 @@ def get_auth_token():
 	client_secret = "048f1c57d1fe42db983f25153d87b0cf"
 	auth_str = "{i}:{s}".format(i=client_id, s=client_secret)
 	auth_url = "https://accounts.spotify.com/api/token"
-	encoded_auth = base64.b64encode(auth_str)
 	headers = {'Authorization': "Basic " + base64.b64encode(auth_str)}
 	data = {'grant_type': 'client_credentials'}
-        r = requests.post(auth_url, data=data, headers=headers)
-        return r.json()['access_token']
+	r = requests.post(auth_url, data=data, headers=headers)
+	return r.json()['access_token']
 
 def search(auth_token, keywords, search_type):
 	api_url = "https://api.spotify.com/v1/search"
