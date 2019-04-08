@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import '../App.css';
 import Notes from './Notes';
 
@@ -13,4 +14,8 @@ class App extends Component {
   }
 }
 
-export default App;
+const ConnectedApp = connect(
+    state => state
+)(App);
+
+export default ConnectedApp;

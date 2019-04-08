@@ -18,7 +18,6 @@ const loggerMiddleware = store => next => action => {
     console.info("State after:", store.getState());
 };
 
-// initialize state with session myid, if any
 let initialState = {};
 const history = createHistory();
 

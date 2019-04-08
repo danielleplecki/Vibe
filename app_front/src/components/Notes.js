@@ -19,7 +19,7 @@ class Notes extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        this.setState({posts: this.props.keys})
+        this.setState({notes: this.props.notes})
     }
 
     populateFeed = () => {
@@ -43,7 +43,7 @@ class Notes extends React.Component {
 }
 
 export default connect(state => ({
-    posts: state.notes
+    notes: state.notes
 }), {
     loadNotes
 })(Notes);
