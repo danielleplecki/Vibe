@@ -21,3 +21,9 @@ def search(auth_token, keywords, search_type):
 def search_for_one_song(auth_token, title):
 	search_results = search(auth_token, title, 'track')
 	return search_results['tracks']['items'][0]
+
+def get_song_features(auth_token, spotify_id):
+	api_url = "https://api.spotify.com/v1/audio-features/{id}".format(id=spotify_id)
+	headers = {'Authorization': 'Bearer ' + auth_token}
+	r = requests.get(api_url, headers=headers)
+	return r.json()

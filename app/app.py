@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request, abort
 from flask_cors import CORS, cross_origin
+from base_db import query, delete, insert
 from datetime import datetime
 import mysql.connector as db
 import json
@@ -27,38 +28,44 @@ def hello():
 
 @app.route("/notes", methods=['POST'])
 def new_notes_handler():
-    try:
-        post_id = "test"
-        user_id = request.form['UID']
-        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        message = request.form['message']
-        cursor.execute("""
-        INSERT into notes(ID, UID, time, message) values
-        (%s, %s, %s, %s)
-        """, (post_id, user_id, timestamp, message))
-        conn.commit()
-        return successReturn()
-    except ValueError:
-        abort(400, 'Error reading from post data')
+    data = request.get_json()
+    user_id = data['UID']
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    message = data['message']
+    stmt = """INSERT into notes(UID, time, message) values
+     (%s, %s, %s) """
+    vals = (user_id, timestamp, message)
+    rows_inserted = insert(stmt, vals)
+    return "{n} row(s) successfully inserted".format(n=rows_inserted)
 
 @app.route("/notes/<user>", methods=['GET'])
 def get_notes_handler(user):
     # for now just gets all notes
     # user will be necessary for later
-    cursor.execute("""
-    SELECT * FROM notes
-    ORDER BY time DESC
-    """)
-    r = cursor.fetchall()
-    output = []
-    for entry in r:
-        post_info = {}
-        post_info['ID'] = entry[0]
-        post_info['UID'] = entry[1]
-        post_info['time'] = entry[2]
-        post_info['message'] = entry[3]
-        output.append(post_info)
-    return json.dumps(output)
+    stmt = """SELECT * FROM notes ORDER BY time DESC"""
+    results = query(stmt)
+    return json.dumps(results, default=str)
+
+@app.route("/notes/<id>", methods=['DELETE'])
+def delete_notes_handler(id):
+    stmt = """DELETE FROM notes WHERE ID = %s"""
+    vals = (id,)
+    rows_deleted = delete(stmt, vals)
+    return "{n} row(s) successfully deleted".format(n=rows_deleted)
+
+
+@app.route("/songs", methods=['GET'])
+def get_all_songs():
+    stmt = """SELECT * FROM songs"""
+    results = query(stmt)
+    return json.dumps(results)
+
+@app.route("/songs/<name>", methods=['GET'])
+def get_song_by_name(name):
+    stmt = """SELECT * FROM songs WHERE name = %s"""
+    vals = (name,)
+    results = query(stmt, vals)
+    return json.dumps(results)
 
 if __name__ == "__main__":
     app.run('0.0.0.0')
