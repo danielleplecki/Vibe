@@ -10,7 +10,7 @@ class Notes extends React.Component {
         super(props);
         this.state = {
             loading: false,
-            posts: []
+            notes: []
         };
     }
 
@@ -19,7 +19,9 @@ class Notes extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        this.setState({notes: this.props.notes})
+        if(this.props.notes != prevProps.notes) {
+            this.setState({notes: this.props.notes})
+        }
     }
 
     populateFeed = () => {
