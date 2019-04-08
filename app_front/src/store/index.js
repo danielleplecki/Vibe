@@ -24,7 +24,6 @@ const history = createHistory();
 const createStoreWithMiddleware = compose(
     applyMiddleware(
         thunk,
-        loggerMiddleware,
         routerMiddleware(history),
     )
 )(createStore);
