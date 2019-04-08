@@ -27,7 +27,6 @@ const loadNotes = () => (dispatch, getState) => {
     })
         .then(response => response.json())
         .then(( {notes} ) => dispatch(notesLoaded(notes)))
-        .catch(err => dispatch(noteError(null)));
 };
 
 const deleteNote = (noteID) => (dispatch, getState) => {
