@@ -2,8 +2,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 import { loadNotes } from '../actions/notes';
 import Card from '@material-ui/core/Card';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 
 class Notes extends React.Component {
     constructor(props) {
@@ -30,7 +30,19 @@ class Notes extends React.Component {
         return(
                 <div>{self.state.notes.map(function(item, key) {
                     return (
-                            <Card>{item.UID}</Card>
+                            <Card>
+                                <CardContent>
+                                    <Typography variant="h5" component="h2">
+                                        {item.UID}
+                                    </Typography>
+                                    <Typography className={classes.pos}>
+                                        {item.time}
+                                    </Typography>
+                                    <Typography component="p">
+                                        {item.message}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
                     );
                 })}</div>
         );
