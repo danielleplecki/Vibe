@@ -15,6 +15,9 @@ cursor = conn.cursor()
 def successReturn():
     return jsonify({"success": True})
 
+def json_output(output):
+    return json.dumps(output, default=str, indent=4)
+
 @app.route("/")
 def hello():
     cursor.execute("SELECT * FROM songtest")
@@ -24,7 +27,7 @@ def hello():
     for entry in r:
         output["id"] = entry[0]
         output["name"] = entry[1]
-    return json.dumps(output)
+    return json_output(output)
 
 @app.route("/notes", methods=['POST'])
 def new_notes_handler():
@@ -44,7 +47,7 @@ def get_notes_handler(user):
     # user will be necessary for later
     stmt = """SELECT * FROM notes ORDER BY time DESC"""
     results = query(stmt)
-    return json.dumps(results, default=str)
+    return json_output(results)
 
 @app.route("/notes/<id>", methods=['DELETE'])
 def delete_notes_handler(id):
@@ -58,14 +61,14 @@ def delete_notes_handler(id):
 def get_all_songs():
     stmt = """SELECT * FROM songs"""
     results = query(stmt)
-    return json.dumps(results)
+    return json_output(results)
 
 @app.route("/songs/<name>", methods=['GET'])
 def get_song_by_name(name):
     stmt = """SELECT * FROM songs WHERE name = %s"""
     vals = (name,)
     results = query(stmt, vals)
-    return json.dumps(results)
+    return json_output(results)
 
 if __name__ == "__main__":
     app.run('0.0.0.0')
