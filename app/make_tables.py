@@ -36,6 +36,19 @@ def make_songs_tables():
     
     cursor.execute(create_songs_table_sql)
     cursor.execute(create_song_features_sql)
-    
+
+def make_notes_table():
+
+    create_notes_table_sql = """
+    CREATE TABLE notes(
+    ID varchar(255),
+    UID varchar(255),
+    time DATETIME,
+    message varchar(255)
+    )"""
+
+    cursor.execute(create_notes_table_sql)
+   
+ 
 if __name__ == '__main__':
     make_songs_tables()
