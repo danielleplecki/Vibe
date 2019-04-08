@@ -1,1 +1,3 @@
 app/nohup.out
+app_front/node_modules
+app_front/build
