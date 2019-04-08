@@ -7,11 +7,11 @@ import {
 
 import createHistory from 'history/createBrowserHistory';
 import { routerMiddleware, routerReducer as routing } from 'react-router-redux';
-import thunkMiddleware from 'redux-thunk';
+import thunk from 'redux-thunk';
 import reducer from './reducers';
-import createLogger from 'redux-logger';
+import { createLogger } from 'redux-logger';
 
-/**const loggerMiddleware = store => next => action => {
+const loggerMiddleware = store => next => action => {
     console.info("Action type:", action.type);
     console.info("Action payload:", action.payload);
     console.info("State before:", store.getState());
@@ -25,13 +25,17 @@ const history = createHistory();
 const createStoreWithMiddleware = compose(
     applyMiddleware(
         thunk,
-
+        loggerMiddleware,
+        routerMiddleware(history),
     )
 )(createStore);
 
-const store = createStoreWithMiddleware(reducer, initialState);*/
+const store = createStoreWithMiddleware(reducer, initialState);
 
-const loggerMiddleware = createLogger();
+export default store;
+export { history, store };
+
+/**const loggerMiddleware = createLogger();
 
 export default function configureStore(preloadedState) {
     return createStore(
@@ -39,8 +43,5 @@ export default function configureStore(preloadedState) {
         preloadedState,
         applyMiddleware(thunkMiddleware, loggerMiddleware)
     )
-}
+}*/
 
-const store = configureStore();
-
-export default store;
