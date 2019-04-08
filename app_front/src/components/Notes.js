@@ -16,6 +16,7 @@ class Notes extends React.Component {
 
     componentDidMount() {
         this.setState({ loading: true });
+        this.props.loadNotes();
     }
 
     componentDidUpdate(prevProps) {
