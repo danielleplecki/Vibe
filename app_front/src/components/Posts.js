@@ -1,7 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import { Card, GridList, GridListTile } from '@material-ui/core';
-
+import Card from '@material-ui/core/Card';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
 
 class Posts extends React.Component {
     constructor(props) {
@@ -21,22 +22,18 @@ class Posts extends React.Component {
         this.setState({ loading: true });
     }
 
-    componentDidUpdate(prevProps) {
-        this.setState({posts: this.props.keys})
-    }
+//    componentDidUpdate(prevProps) {
+//        this.setState({posts: this.props.keys})
+//    }
 
     populateFeed = () => {
         let self = this;
         return(
-            <GridList>
-                {self.state.posts.map(function(item, key) {
+                <div>{self.state.posts.map(function(item, key) {
                     return (
-                        <GridListTile key={key}>
                             <Card>{item.user}</Card>
-                        </GridListTile>
                     );
-                })}
-            </GridList>
+                })}</div>
         );
     };
 
