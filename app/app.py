@@ -38,8 +38,8 @@ def new_notes_handler():
     stmt = """INSERT into notes(UID, time, message) values
      (%s, %s, %s) """
     vals = (user_id, timestamp, message)
-    rows_inserted = insert(stmt, vals)
-    return "{n} row(s) successfully inserted".format(n=rows_inserted)
+    created_id = insert(stmt, vals)
+    return json_output({"ID" : created_id})
 
 @app.route("/notes/<user>", methods=['GET'])
 def get_notes_handler(user):

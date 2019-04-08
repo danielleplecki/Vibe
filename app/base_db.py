@@ -17,4 +17,4 @@ def delete(stmt, vals=()):
 def insert(stmt, vals=()):
     cursor.execute(stmt, vals)
     conn.commit()
-    return cursor.rowcount
+    return cursor.lastrowid
