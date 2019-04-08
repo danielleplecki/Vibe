@@ -32,10 +32,10 @@ class Notes extends React.Component {
                     return (
                             <Card>
                                 <CardContent>
-                                    <Typography variant="h5" component="h2">
+                                    <Typography variant="h5" component="h2" align="left">
                                         {item.UID}
                                     </Typography>
-                                    <Typography className={classes.pos}>
+                                    <Typography variant="subheading" align="left">
                                         {item.time}
                                     </Typography>
                                     <Typography component="p">
