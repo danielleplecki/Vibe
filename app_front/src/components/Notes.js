@@ -1,20 +1,16 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import { loadNotes } from '../actions/notes';
 import Card from '@material-ui/core/Card';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 
-class Posts extends React.Component {
+class Notes extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             loading: false,
-            posts: [
-                {user: 'Danielle'},
-                {user: 'Connor'},
-                {user: 'Austin'},
-                {user: 'Wyatt'}
-            ]
+            posts: []
         };
     }
 
@@ -22,14 +18,14 @@ class Posts extends React.Component {
         this.setState({ loading: true });
     }
 
-//    componentDidUpdate(prevProps) {
-//        this.setState({posts: this.props.keys})
-//    }
+    componentDidUpdate(prevProps) {
+        this.setState({posts: this.props.keys})
+    }
 
     populateFeed = () => {
         let self = this;
         return(
-                <div>{self.state.posts.map(function(item, key) {
+                <div>{self.state.notes.map(function(item, key) {
                     return (
                             <Card>{item.user}</Card>
                     );
@@ -39,7 +35,7 @@ class Posts extends React.Component {
 
     render() {
         return(
-            <div className="Post">
+            <div className="Notes">
                 {this.populateFeed()}
             </div>
         );
@@ -47,7 +43,7 @@ class Posts extends React.Component {
 }
 
 export default connect(state => ({
-    posts: state.posts
+    posts: state.notes
 }), {
-
-})(Posts);
+    loadNotes
+})(Notes);
