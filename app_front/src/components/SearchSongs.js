@@ -1,64 +1,86 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { searchSongs } from '../actions/songs';
-import TextField from '@material-ui/core/TextField';
+import { searchSongs, loadSongs } from '../actions/songs';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
+import TextField from "@material-ui/core/TextField/TextField";
+import CardContent from "@material-ui/core/CardContent/CardContent";
+import Typography from "@material-ui/core/Typography/Typography";
 
 class SearchSongs extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             loading: props.loading || false,
-            query: props.message || '' // props.message might need changed?
+            query: props.query || '',
+            songs: [],
+            showList: false
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.validate = this.validate.bind(this);
+    }
+
+    componentDidMount() {
+        this.setState({ loading: true });
+        this.props.loadSongs();
+    }
+
+    componentDidUpdate(prevProps) {
+        if(this.props.songs != prevProps.songs) {
+            this.setState({songs: this.props.songs})
+        }
     }
 
     handleChange(e) {
         this.setState({ [e.target.id]: e.target.value });
     }
 
-    validate() {
-        return !(this.state.query === '');
-    }
-
     handleSubmit() {
-        //Validate that there are no empty fields
-        if(!this.validate()) {
-            //POPUP ERROR
-        }
-
-        else {
-            const { query } = this.state;
-            this.props.searchSongs({
-                query
-            });
-
-        }
+        const { query } = this.state;
+        this.setState({showList: true});
     }
+
+    populateList = () => {
+        let self = this;
+        const songList = self.songs.filter(song => song.name.toLowerCase() === self.query.toLowerCase());
+        return(
+            <div>{songList.map(function(item, key) {
+                return (
+                    <Card>
+                        <CardContent>
+                            <Typography variant="subtitle2">
+                                {item.name}
+                            </Typography>
+                            <Typography variant="caption text">
+                                {item.artist}
+                            </Typography>
+                            <Typography variant="body1">
+                                {item.album_name}
+                            </Typography>
+                        </CardContent>
+                    </Card>
+                );
+            })}</div>
+        )};
 
     render() {
         return(
             <div className="SearchSongs">
                 <Card>
-                    <form>
-                        <TextField
-                            id="query"
-                            label="Search.."
-                            value={this.state.query}
-                            onChange={this.handleChange}
-                            margin="normal"
-                            multiline={true}
-                            fullWidth={true}
-                        />
-                        <Button variant="contained" color="primary" onClick={this.handleSubmit}>
-                            Search
-                        </Button>
-                    </form>
+                    <TextField
+                        id="query"
+                        label="Song"
+                        value={this.state.query}
+                        onChange={this.handleChange}
+                    />
+                    <Button variant="contained" color="primary" onClick={this.handleSubmit}>
+                        Search
+                    </Button>
+                    {this.state.showList ?
+                        this.populateList() :
+                        null
+                    }
                 </Card>
             </div>
         )
@@ -66,5 +88,6 @@ class SearchSongs extends React.Component {
 }
 
 export default connect(null, {
-    searchSongs
+    searchSongs,
+    loadSongs
 })(SearchSongs);

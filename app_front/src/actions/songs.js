@@ -18,7 +18,19 @@ const searchSongs = (song) => (dispatch, getState) => {
         });
 };
 
+const loadSongs = () => (dispatch, getState) => {
+    fetch("http://sp19-cs411-52.cs.illinois.edu:5000/songs", {
+        method: 'GET'
+    })
+        .then(response => response.json())
+        .then(( songs ) => dispatch(songsLoaded(songs)))
+        .catch(err => {
+            console.error(err);
+        });
+};
+
 
 export {
-    searchSongs
+    searchSongs,
+    loadSongs
 }

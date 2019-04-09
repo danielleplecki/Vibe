@@ -11,8 +11,8 @@ class App extends Component {
       <div className="App">
         <h1>Vibe</h1>
           <CreateNote />
-          <Notes />
           <SearchSongs />
+          <Notes />
       </div>
     );
   }
