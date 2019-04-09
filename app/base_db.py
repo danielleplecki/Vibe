@@ -23,8 +23,9 @@ def delete(stmt, vals=()):
     conn, cursor = get_conn_and_cursor()
     cursor.execute(stmt, vals)
     conn.commit()
+    rows_changed = cursor.rowcount
     close_conn_and_cursor(conn, cursor)
-    return cursor.rowcount
+    return rows_changed
 
 def insert(stmt, vals=()):
     conn, cursor = get_conn_and_cursor()
