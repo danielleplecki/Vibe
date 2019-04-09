@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request, abort
 from flask_cors import CORS, cross_origin
-from base_db import query, delete, insert
+from base_db import query, delete, insert, update
 from datetime import datetime
 import mysql.connector as db
 import json
@@ -57,6 +57,15 @@ def get_all_songs():
     stmt = """SELECT * FROM songs"""
     results = query(stmt)
     return json_output(results)
+
+@app.route("/notes/<id>", methods=['PUT'])
+def update_notes_handler(id):
+    data = request.get_json()
+    message = data['message']
+    stmt = """UPDATE notes SET message = %s WHERE ID = %s"""
+    vals = (message, id)
+    updated_rows = update(stmt, vals)
+    return json_output("{n} row(s) successfully updated".format(n=updated_rows))
 
 @app.route("/songs/<name>", methods=['GET'])
 def get_song_by_name(name):

@@ -27,9 +27,18 @@ def delete(stmt, vals=()):
     close_conn_and_cursor(conn, cursor)
     return rows_changed
 
+def update(stmt, vals=()):
+    conn, cursor = get_conn_and_cursor()
+    cursor.execute(stmt, vals)
+    conn.commit()
+    rows_updated = cursor.rowcount
+    close_conn_and_cursor(conn, cursor)
+    return rows_updated
+
 def insert(stmt, vals=()):
     conn, cursor = get_conn_and_cursor()
     cursor.execute(stmt, vals)
     conn.commit()
+    row_id = cursor.lastrowid
     close_conn_and_cursor(conn, cursor)
-    return cursor.lastrowid
+    return row_id
