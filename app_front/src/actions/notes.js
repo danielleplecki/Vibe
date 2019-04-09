@@ -48,6 +48,19 @@ const loadNotes = () => (dispatch, getState) => {
         });
 };
 
+const editNote = (note) => (dispatch, getState) => {
+    fetch(`http://sp19-cs411-52.cs.illinois.edu:5000/notes/${note.ID}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+            message: note.msg
+        }),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+        .then(response => response.json())
+};
+
 const deleteNote = (noteID) => (dispatch, getState) => {
     fetch(`http://sp19-cs411-52.cs.illinois.edu:5000/notes/${noteID}`, {
         method: 'DELETE',
@@ -60,5 +73,6 @@ export {
     loadNotes,
     createNote,
     deleteNote,
-    noteCreated
+    noteCreated,
+    editNote
 }
