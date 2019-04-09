@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { } from '../actions/songs';
+import { searchSongs } from '../actions/songs';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
