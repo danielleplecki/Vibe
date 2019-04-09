@@ -43,9 +43,10 @@ class SearchSongs extends React.Component {
 
     populateList = () => {
         let self = this;
-        const songList = self.state.songs.filter(song => song.name.toLowerCase() === self.query.toLowerCase());
+        const songList = self.state.songs;
         return(
             <div>{songList.map(function(item, key) {
+               if(item.name === self.state.query) {
                 return (
                     <Card>
                         <CardContent>
@@ -61,6 +62,7 @@ class SearchSongs extends React.Component {
                         </CardContent>
                     </Card>
                 );
+              }
             })}</div>
         )};
 
