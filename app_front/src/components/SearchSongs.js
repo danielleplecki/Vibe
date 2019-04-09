@@ -43,7 +43,7 @@ class SearchSongs extends React.Component {
 
     populateList = () => {
         let self = this;
-        const songList = self.songs.filter(song => song.name.toLowerCase() === self.query.toLowerCase());
+        const songList = self.state.songs.filter(song => song.name.toLowerCase() === self.query.toLowerCase());
         return(
             <div>{songList.map(function(item, key) {
                 return (
@@ -87,7 +87,9 @@ class SearchSongs extends React.Component {
     }
 }
 
-export default connect(null, {
+export default connect(state => ({
+    songs: state.songs
+}), {
     searchSongs,
     loadSongs
 })(SearchSongs);
