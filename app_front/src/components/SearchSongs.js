@@ -47,7 +47,7 @@ class SearchSongs extends React.Component {
                 <Card>
                     <form>
                         <TextField
-                            id="songQuery"
+                            id="query"
                             label="Search.."
                             value={this.state.query}
                             onChange={this.handleChange}

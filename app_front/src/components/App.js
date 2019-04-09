@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import '../App.css';
 import Notes from './Notes';
 import CreateNote from './CreateNote';
+import SearchSongs from './SearchSongs';
 
 class App extends Component {
   render() {
@@ -11,6 +12,7 @@ class App extends Component {
         <h1>Vibe</h1>
           <CreateNote />
           <Notes />
+          <SearchSongs />
       </div>
     );
   }
