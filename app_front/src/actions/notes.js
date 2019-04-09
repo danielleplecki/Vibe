@@ -53,9 +53,6 @@ const deleteNote = (noteID) => (dispatch, getState) => {
         method: 'DELETE',
     })
         .then(response => response.json())
-        .catch(err => {
-            console.error(err);
-        });
 };
 
 

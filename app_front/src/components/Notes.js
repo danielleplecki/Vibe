@@ -53,7 +53,7 @@ class Notes extends React.Component {
                                     <IconButton color="secondary">
                                         <EditIcon/>
                                     </IconButton>
-                                    <IconButton onClick={this.handleDelete(item)}>
+                                    <IconButton onClick={() => {self.handleDelete(item)}}>
                                         <DeleteIcon />
                                     </IconButton>
                                 </CardContent>
