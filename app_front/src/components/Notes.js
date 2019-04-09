@@ -32,13 +32,13 @@ class Notes extends React.Component {
                     return (
                             <Card>
                                 <CardContent>
-                                    <Typography variant="h5" component="h2" align="left">
+                                    <Typography variant="subtitle2" align="left">
                                         {item.UID}
                                     </Typography>
-                                    <Typography variant="subheading" align="left">
+                                    <Typography variant="caption text" align="left">
                                         {item.time}
                                     </Typography>
-                                    <Typography component="p">
+                                    <Typography variant="body1">
                                         {item.message}
                                     </Typography>
                                 </CardContent>

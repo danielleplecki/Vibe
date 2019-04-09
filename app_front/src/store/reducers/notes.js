@@ -18,7 +18,8 @@ const NotesReducer = (state = initialState, action) => {
             return [
                 ...state,
                 {
-                    sourceId: action.note.noteID
+                    UID: action.note.UID,
+                    msg: action.note.msg
                 }
             ];
 
