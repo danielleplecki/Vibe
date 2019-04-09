@@ -17,7 +17,9 @@ class Notes extends React.Component {
         this.state = {
             loading: false,
             edit: false,
-            editNote: {},
+            editUID: this.props.editUID || '',
+            editID: this.props.editID || '',
+            editMsg: this.props.editMsg || '',
             notes: []
         };
 
@@ -44,17 +46,17 @@ class Notes extends React.Component {
     }
 
     handleEditOpen(note) {
-        this.setState({ edit: true , editNote: note});
+        this.setState({ edit: true , editUID: note.UID, editID: note.ID, editMsg: note.message});
     }
 
     handleEditClose() {
-        this.setState({ edit: false , editNote: {}});
+        this.setState({ edit: false });
     }
 
     handleEditSubmit() {
-        const note = this.state.editNote;
+        const { editID, editMsg } = this.state;
         this.setState({ edit: false });
-        this.props.editNote(note);
+        this.props.editNote({ editID, editMsg });
     }
 
     handleChange(e) {
@@ -64,6 +66,7 @@ class Notes extends React.Component {
     populateFeed = () => {
         let self = this;
         return(
+            <div>
                 <div>{self.state.notes.map(function(item, key) {
                     return (
                             <Card>
@@ -87,6 +90,34 @@ class Notes extends React.Component {
                             </Card>
                     );
                 })}</div>
+                <Modal open={self.state.edit} onClose={self.handleEditClose}>
+                    <Card>
+                        <form>
+                            <TextField
+                                disabled
+                                id="editUID"
+                                label="User"
+                                defaultValue={self.state.editUID}
+                                margin="normal"
+                                fullWidth={true}
+                            />
+
+                            <TextField
+                                id="editMsg"
+                                label="Note"
+                                value={self.state.editMsg}
+                                onChange={self.handleChange}
+                                margin="normal"
+                                multiline={true}
+                                fullWidth={true}
+                            />
+                            <Button variant="contained" color="primary" onClick={self.handleEditSubmit}>
+                                Save Changes
+                            </Button>
+                        </form>
+                    </Card>
+                </Modal>
+             </div>
         );
     };
 
@@ -94,33 +125,6 @@ class Notes extends React.Component {
         return(
             <div className="Notes">
                 {this.populateFeed()}
-                <Modal open={this.state.edit} onClose={this.handleEditClose}>
-                    <Card>
-                        <form>
-                            <TextField
-                                disabled
-                                id="UID"
-                                label="User"
-                                defaultValue={this.state.editNote.UID}
-                                margin="normal"
-                                fullWidth={true}
-                            />
-
-                            <TextField
-                                id="msg"
-                                label="Note"
-                                value={this.state.editNote.msg}
-                                onChange={this.handleChange}
-                                margin="normal"
-                                multiline={true}
-                                fullWidth={true}
-                            />
-                            <Button variant="contained" color="primary" onClick={this.handleEditSubmit}>
-                                Save Changes
-                            </Button>
-                        </form>
-                    </Card>
-                </Modal>
             </div>
         );
     }

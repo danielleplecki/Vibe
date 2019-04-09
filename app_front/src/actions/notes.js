@@ -49,10 +49,10 @@ const loadNotes = () => (dispatch, getState) => {
 };
 
 const editNote = (note) => (dispatch, getState) => {
-    fetch(`http://sp19-cs411-52.cs.illinois.edu:5000/notes/${note.ID}`, {
+    fetch(`http://sp19-cs411-52.cs.illinois.edu:5000/notes/${note.editID}`, {
         method: 'PUT',
         body: JSON.stringify({
-            message: note.msg
+            message: note.editMsg
         }),
         headers: {
             "Content-Type": "application/json"
