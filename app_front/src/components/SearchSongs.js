@@ -10,7 +10,7 @@ class SearchSongs extends React.Component {
         super(props);
         this.state = {
             loading: props.loading || false,
-            query: props.message || ''
+            query: props.message || '' // props.message might need changed?
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -49,7 +49,7 @@ class SearchSongs extends React.Component {
                         <TextField
                             id="songQuery"
                             label="Search.."
-                            value={this.state.msg}
+                            value={this.state.query}
                             onChange={this.handleChange}
                             margin="normal"
                             multiline={true}
