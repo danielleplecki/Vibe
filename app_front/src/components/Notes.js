@@ -1,9 +1,12 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import { loadNotes } from '../actions/notes';
+import { loadNotes, deleteNote } from '../actions/notes';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit'
 
 class Notes extends React.Component {
     constructor(props) {
@@ -12,6 +15,8 @@ class Notes extends React.Component {
             loading: false,
             notes: []
         };
+
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
     componentDidMount() {
@@ -23,6 +28,10 @@ class Notes extends React.Component {
         if(this.props.notes != prevProps.notes) {
             this.setState({notes: this.props.notes})
         }
+    }
+
+    handleDelete(note) {
+        this.props.deleteNote(note.ID);
     }
 
     populateFeed = () => {
@@ -41,6 +50,12 @@ class Notes extends React.Component {
                                     <Typography variant="body1">
                                         {item.message}
                                     </Typography>
+                                    <IconButton color="secondary">
+                                        <EditIcon/>
+                                    </IconButton>
+                                    <IconButton onClick={this.handleDelete(item)}>
+                                        <DeleteIcon />
+                                    </IconButton>
                                 </CardContent>
                             </Card>
                     );
@@ -60,5 +75,6 @@ class Notes extends React.Component {
 export default connect(state => ({
     notes: state.notes
 }), {
-    loadNotes
+    loadNotes,
+    deleteNote
 })(Notes);

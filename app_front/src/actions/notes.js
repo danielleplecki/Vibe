@@ -32,6 +32,9 @@ const createNote = (note) => (dispatch, getState) => {
         .then(note => {
             dispatch(noteCreated(note));
         })
+        .catch(err => {
+            console.error(err);
+        });
 };
 
 const loadNotes = () => (dispatch, getState) => {
@@ -39,11 +42,20 @@ const loadNotes = () => (dispatch, getState) => {
         method: 'GET'
     })
         .then(response => response.json())
-        .then(( notes ) => dispatch(notesLoaded(notes)));
+        .then(( notes ) => dispatch(notesLoaded(notes)))
+        .catch(err => {
+            console.error(err);
+        });
 };
 
 const deleteNote = (noteID) => (dispatch, getState) => {
-
+    fetch(`http://sp19-cs411-52.cs.illinois.edu:5000/notes/${noteID}`, {
+        method: 'DELETE',
+    })
+        .then(response => response.json())
+        .catch(err => {
+            console.error(err);
+        });
 };
 
 
