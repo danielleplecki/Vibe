@@ -19,25 +19,6 @@ class CreateNote extends React.Component {
         this.validate = this.validate.bind(this);
     }
 
-    componentDidMount() {
-        let url = "http://sp19-cs411-52.cs.illinois.edu:5000/notes/" + this.props.UID;
-        this.setState({ loading: true });
-        fetch(url, {
-            method: 'GET'
-        })
-            .then(response => response.json())
-            .then(data => this.setState({
-                loading: false,
-                UID: data.UID,
-                msg: data.msg
-            }))
-            .catch(err => {
-                this.setState({ loading: false });
-                console.error(err);
-            });
-    }
-
-
     handleChange(e) {
         this.setState({ [e.target.id]: e.target.value });
     }

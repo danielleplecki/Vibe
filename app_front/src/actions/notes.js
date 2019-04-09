@@ -18,12 +18,15 @@ const notesUpdated = note => ({
 
 // create the note
 const createNote = (note) => (dispatch, getState) => {
-    fetch("http://sp19-cs411-52.cs.illinois.edu:5000/notes/aebrown22", {
+    fetch("http://sp19-cs411-52.cs.illinois.edu:5000/notes", {
         method: 'POST',
         body: JSON.stringify({
             UID: note.UID,
             message: note.msg
-        })
+        }),
+        headers: {
+            "Content-Type": "application/json"
+        }
     })
         .then(response => response.json())
         .then(note => {
