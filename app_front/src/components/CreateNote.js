@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { createNote } from '../actions/notes';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
 
 class CreateNote extends React.Component {
     constructor(props) {
@@ -64,26 +65,31 @@ class CreateNote extends React.Component {
     render() {
         return(
             <div className="CreateNote">
-                <form>
-                    <TextField
-                        disabled
-                        id="UID"
-                        label="User"
-                        defaultValue={this.state.UID}
-                        margin="normal"
-                    />
+                <Card>
+                    <form>
+                        <TextField
+                            disabled
+                            id="UID"
+                            label="User"
+                            defaultValue={this.state.UID}
+                            margin="normal"
+                            fullWidth={true}
+                        />
 
-                    <TextField
-                        id="msg"
-                        label="Note"
-                        value={this.state.msg}
-                        onChange={this.handleChange}
-                        margin="normal"
-                    />
-                    <Button variant="contained" color="primary" onClick={this.handleSubmit}>
-                        Post
-                    </Button>
-                </form>
+                        <TextField
+                            id="msg"
+                            label="Note"
+                            value={this.state.msg}
+                            onChange={this.handleChange}
+                            margin="normal"
+                            multiline={true}
+                            fullWidth={true}
+                        />
+                        <Button variant="contained" color="primary" onClick={this.handleSubmit}>
+                            Post
+                        </Button>
+                    </form>
+                </Card>
             </div>
         )
     }
