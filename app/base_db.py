@@ -1,4 +1,8 @@
 import mysql.connector as db
+import logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+logging.basicConfig()
 
 
 def get_conn_and_cursor():
@@ -10,16 +14,24 @@ def close_conn_and_cursor(conn, cursor):
     conn.close()
     cursor.close()
 
-def query(stmt, vals=()):
+def query(stmt, vals=(), with_description=True):
+    logger.info("Querying with vals {}".format(vals))
     conn, cursor = get_conn_and_cursor()
     cursor.execute(stmt, vals)
     results = []
+    if not with_description:
+        results = cursor.fetchall()
+        close_conn_and_cursor(conn, cursor)
+        if results and len(results[0]) == 1:
+            results = [row[0] for row in results]
+        return results
     for row in cursor.fetchall():
         results.append({cursor.description[i][0] : value for i, value in enumerate(row)})
     close_conn_and_cursor(conn, cursor)
     return results
 
 def delete(stmt, vals=()):
+    logger.info("Deleting with vals {}".format(vals))
     conn, cursor = get_conn_and_cursor()
     cursor.execute(stmt, vals)
     conn.commit()
@@ -28,6 +40,7 @@ def delete(stmt, vals=()):
     return rows_changed
 
 def update(stmt, vals=()):
+    logger.info("Updating with vals {}".format(vals))
     conn, cursor = get_conn_and_cursor()
     cursor.execute(stmt, vals)
     conn.commit()
@@ -36,6 +49,7 @@ def update(stmt, vals=()):
     return rows_updated
 
 def insert(stmt, vals=()):
+    logger.info("Inserting with vals {}".format(vals))
     conn, cursor = get_conn_and_cursor()
     cursor.execute(stmt, vals)
     conn.commit()
