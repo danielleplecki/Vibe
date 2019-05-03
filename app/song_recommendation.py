@@ -3,10 +3,11 @@ from collections import OrderedDict
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
+import matplotlib.pyplot as plt
 import base_db
 
 NUM_RECOMMENDATIONS_PER_CLUSTER = 5
-NUM_CLUSTERS = 3
+NUM_CLUSTERS = 5
 
 def get_favorite_song_ids_and_features_for_user(user):
     sql = """SELECT spotify_id, duration_ms, track_key, modality, time_signature, acousticness,
@@ -32,23 +33,22 @@ def get_song_ids_and_feature_data():
     return song_ids, song_features
 
 def cluster_favorite_songs(song_features, num_clusters):
-    kmeans = KMeans(n_clusters=num_clusters, random_state=None)
+    # kmeans = KMeans(n_clusters=num_clusters, random_state=None)
+    # kmeans.fit(song_features)
+    # return kmeans
+    max_score = 0
+    best_k = -1
+    for k in range(int(len(song_features)/2),len(song_features)):
+        kmeans = KMeans(n_clusters=k)
+        kmeans.fit(song_features)
+        labels = kmeans.labels_
+        score = silhouette_score(song_features, labels)
+        if score > max_score:
+            max_score = score
+            best_k = k
+    kmeans = KMeans(n_clusters=best_k)
     kmeans.fit(song_features)
     return kmeans
-    # max_score = 0
-    # best_k = -1
-    # for k in range(2,len(song_features)-1):
-    #     kmeans = KMeans(n_clusters=k)
-    #     kmeans.fit(song_features)
-    #     labels = kmeans.labels_
-    #     print(labels)
-    #     score = silhouette_score(song_features, labels)
-    #     if score > max_score:
-    #         max_score = score
-    #         best_k = k
-    # kmeans = KMeans(n_clusters=best_k)
-    # kmeans.fit(song_features)
-    # return kmeans.cluster_centers_
 
 def build_song_kd_tree(data):
     return KDTree(data)
@@ -110,9 +110,9 @@ def get_song_recommendations(user):
     recommended_song_ids = []
     recommended_label_dict = {}
     for index in recommendation_indexes:
-        #if song_ids[index] not in favorite_ids:
-        recommended_song_ids.append(song_ids[index])
-        recommended_label_dict[song_ids[index]] = label_dict[index]
+        if song_ids[index] not in favorite_ids:
+            recommended_song_ids.append(song_ids[index])
+            recommended_label_dict[song_ids[index]] = label_dict[index]
     recommended_songs = get_songs_from_ids(recommended_song_ids)
     favorite_songs = get_songs_from_ids(favorite_ids)
     print_results(favorite_songs, recommended_songs, favorite_label_dict, recommended_label_dict)
