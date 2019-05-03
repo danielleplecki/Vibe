@@ -3,6 +3,7 @@ from flask_cors import CORS, cross_origin
 from base_db import query, delete, insert, update
 from datetime import datetime
 import user_endpoint
+import follows_endpoint
 import mysql.connector as db
 import json
 import time
@@ -14,18 +15,24 @@ CORS(app)
 conn = db.connect(user='root', password='', database='vibe')
 cursor = conn.cursor()
 
-def successReturn():
-    return jsonify({"success": True})
-
 def json_output(output, status_code):
     if type(output) != str:
-        outout = json.dumps(output, default=str, indent=4)
+        output = json.dumps(output, default=str, indent=4)
     return Response(output, status_code, mimetype='application/json')
+
+def user_is_authenticated():
+    return 'username' in session
+
+def get_unauthenticated_response():
+    return Response("User not authenticated", 403, mimetype='application/json')
 
 @app.route("/login", methods = ['POST'])
 def login_user():
     data = request.get_json()
-    successful_login = user_endpoint.login_user(data['username'], data['password'])
+    try:
+        successful_login = user_endpoint.login_user(data['username'], data['password'])
+    except KeyError:
+        return json_output("Endpoint requires 'username' and 'password' in body", 400)
     if successful_login:
         session['username'] = data['username']
         return json_output("Successful Login", 200)
@@ -39,11 +46,49 @@ def logout_user():
 @app.route("/signup", methods = ['POST'])
 def post_user():
     data = request.get_json()
-    result = user_endpoint.post_user(data['username'], data['password'], data['name'])
+    try:
+        result = user_endpoint.post_user(data['username'], data['password'], data['name'])
+    except KeyError:
+        return json_output("Endpoint requires 'username', 'password', and 'name' in body", 400)
     if result is not None:
         return json_output("Successful Sign-up", 201)
     return json_output("Username already exists", 403)
 
+@app.route("/follows", methods= ['GET', 'POST', 'DELETE'])
+def follow():
+    print("Creed")
+    if not user_is_authenticated():
+        return get_unauthenticated_response()
+    if request.method == 'POST':
+        data = request.get_json()
+        try:
+            result = follows_endpoint.follow_user(data['followee'], session['username'])
+        except KeyError:
+            return json_output("Endpoint requires 'followee' in body", 400)
+        if result is not None:
+            return json_output("User followed successfully", 201)
+        return json_output("User is already followed", 400)
+    elif request.method == 'DELETE':
+        data = request.get_json()
+        try:
+            result = follows_endpoint.unfollow_user(data['followee'], session['username'])
+        except KeyError:
+            return json_output("Endpoint requires 'followee' in body", 400)
+        if result:
+            return json_output("User unfollowed successfully", 200)
+        return json_output("Cannot delete non-existing follow", 400)
+    else:
+        try:
+            following = request.args['following']
+            assert following.lower() == 'true' or following.lower() == 'false'
+        except (KeyError, AssertionError):
+            return json_output("Endpoint requires 'following' query param set to 'true' if following is desired, 'false' if followers is desired", 400)
+        if following == 'true':
+            results = follows_endpoint.get_people_user_follows(session['username'])
+            print(results)
+            return json_output(results, 200)
+        results = follows_endpoint.get_followers_for_user(session['username'])
+        return json_output(results, 200)
 
 @app.route("/notes", methods=['POST'])
 def new_notes_handler():

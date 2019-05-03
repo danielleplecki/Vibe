@@ -83,9 +83,22 @@ def make_users_table():
     """
     cursor.execute(create_user_sql)
 
+def make_follows_table():
+    sql = """
+    CREATE TABLE if not exists follows(
+        followee varchar(255),
+        follower varchar(255),
+        PRIMARY KEY (followee, follower),
+        FOREIGN KEY (followee) references users(username),
+        FOREIGN KEY (follower) references users(username)
+    )
+    """
+    cursor.execute(sql)
+
 if __name__ == '__main__':
     make_users_table()
     make_songs_tables()
     make_notes_table()
     make_artists_table()
     make_song_favorites_table()
+    make_follows_table()
