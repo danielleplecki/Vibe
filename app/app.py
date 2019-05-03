@@ -56,7 +56,6 @@ def post_user():
 
 @app.route("/follows", methods= ['GET', 'POST', 'DELETE'])
 def follow():
-    print("Creed")
     if not user_is_authenticated():
         return get_unauthenticated_response()
     if request.method == 'POST':
@@ -85,7 +84,6 @@ def follow():
             return json_output("Endpoint requires 'following' query param set to 'true' if following is desired, 'false' if followers is desired", 400)
         if following == 'true':
             results = follows_endpoint.get_people_user_follows(session['username'])
-            print(results)
             return json_output(results, 200)
         results = follows_endpoint.get_followers_for_user(session['username'])
         return json_output(results, 200)
