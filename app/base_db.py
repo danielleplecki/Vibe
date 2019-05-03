@@ -51,8 +51,11 @@ def update(stmt, vals=()):
 def insert(stmt, vals=()):
     logger.info("Inserting with vals {}".format(vals))
     conn, cursor = get_conn_and_cursor()
-    cursor.execute(stmt, vals)
-    conn.commit()
+    try:
+        cursor.execute(stmt, vals)
+        conn.commit()
+    except db.errors.IntegrityError:
+        return None
     row_id = cursor.lastrowid
     close_conn_and_cursor(conn, cursor)
     return row_id

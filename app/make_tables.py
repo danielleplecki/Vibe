@@ -66,12 +66,25 @@ def make_song_favorites_table():
     CREATE TABLE if not exists songFavorites(
         username varchar(255),
         song_spotify_id varchar(255),
-        PRIMARY KEY (username, song_spotify_id)
+        PRIMARY KEY (username, song_spotify_id),
+        FOREIGN KEY (username) references users(username),
+        FOREIGN KEY (song_spotify_id) references songs(spotify_id)
     )
     """
     cursor.execute(create_song_favs_sql)
 
+def make_users_table():
+    create_user_sql = """
+    CREATE TABLE if not exists users(
+        username varchar(255) PRIMARY KEY,
+        name varchar(255),
+        password varchar(255)
+    )
+    """
+    cursor.execute(create_user_sql)
+
 if __name__ == '__main__':
+    make_users_table()
     make_songs_tables()
     make_notes_table()
     make_artists_table()

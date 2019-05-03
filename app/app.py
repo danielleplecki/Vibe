@@ -1,12 +1,14 @@
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request, abort, session, Response
 from flask_cors import CORS, cross_origin
 from base_db import query, delete, insert, update
 from datetime import datetime
+import user_endpoint
 import mysql.connector as db
 import json
 import time
 
 app = Flask(__name__)
+app.secret_key = 'fjoiwefiowjefoiwej'
 CORS(app)
 
 conn = db.connect(user='root', password='', database='vibe')
@@ -15,14 +17,33 @@ cursor = conn.cursor()
 def successReturn():
     return jsonify({"success": True})
 
-def json_output(output):
-    return json.dumps(output, default=str, indent=4)
+def json_output(output, status_code):
+    if type(output) != str:
+        outout = json.dumps(output, default=str, indent=4)
+    return Response(output, status_code, mimetype='application/json')
 
-@app.route("/")
-def hello():
-    stmt = """SELECT * FROM songtest"""
-    result = query(stmt)
-    return json_output(result)
+@app.route("/login", methods = ['POST'])
+def login_user():
+    data = request.get_json()
+    successful_login = user_endpoint.login_user(data['username'], data['password'])
+    if successful_login:
+        session['username'] = data['username']
+        return json_output("Successful Login", 200)
+    return json_output("Username or password is incorrect", 403)
+
+@app.route("/logout", methods = ['POST'])
+def logout_user():
+    session.pop("username", None)
+    return json_output("Successful logout", 200)
+
+@app.route("/signup", methods = ['POST'])
+def post_user():
+    data = request.get_json()
+    result = user_endpoint.post_user(data['username'], data['password'], data['name'])
+    if result is not None:
+        return json_output("Successful Sign-up", 201)
+    return json_output("Username already exists", 403)
+
 
 @app.route("/notes", methods=['POST'])
 def new_notes_handler():
