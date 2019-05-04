@@ -138,6 +138,10 @@ def get_song_by_name(name):
     results = query(stmt, vals)
     return json_output(results)
 
+@app.route("/graph", methods=['GET'])
+def get_graph_vis():
+    return json_output(prepare_data())
+
 if __name__ == "__main__":
     app.run('0.0.0.0')
 
