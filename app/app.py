@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request, abort, session, Response
 from flask_cors import CORS, cross_origin
 from base_db import query, delete, insert, update
 from datetime import datetime
+from visual_data import prepare_data, graph_setup
 import user_endpoint
 import follows_endpoint
 import song_recommendation
@@ -182,7 +183,9 @@ def get_recommended_songs():
 
 @app.route("/graph", methods=['GET'])
 def get_graph_vis():
-    return json_output(prepare_data())
+    # should pass session['username]
+    res = graph_setup("testuser1")
+    return json_output(prepare_data(res[0], res[1]), 200)
 
 if __name__ == "__main__":
     app.run('0.0.0.0')

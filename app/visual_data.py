@@ -1,57 +1,53 @@
 from base_db import query
 
+# recurse once on your follower
+
 USER_TYPE = 0
 SONG_TYPE = 1
 ARTIST_TYPE = 2
 
-def prepare_data():
+def prepare_data(node_data, edge_data):
     output = {}
-    node_data = init_node_data()
-    edge_data = populate_edge_data()
     output["nodes"] = node_data
     output["links"] = edge_data
     print(output)
     return output
 
-def init_node_data():
-    data = []
-    users = query("SELECT * FROM users")
-    artists = query("SELECT * FROM artists")
-    songs = query("SELECT * FROM songs")
+def graph_setup(username):
+    node_data = []
+    edge_data = []
+    return gen_data(username, node_data, edge_data, layers=True)
 
-    for u in users:
-        # 1 index is username in users table
-        add_node(data, u[1], USER_TYPE)
-    for a in artists:
-        # 1 index is name in our artists table
-        add_node(data, a[1], ARTIST_TYPE)
-    for s in songs:
-        # 1 index is name in our songs table
-        add_node(data, s[1], SONG_TYPE)
+def gen_data(username, node_data, edge_data, layers=False):
+    user_data = query(userQuery(username), with_description=False)
+    song_data = query(songQuery(username), with_description=False)
+
+    for u in user_data:
+        if layers:
+            add_node(node_data, u[0], USER_TYPE, "filler")
+        add_node(node_data, u[1], USER_TYPE, "filler")
+        add_edge(edge_data, u[0], u[1], USER_TYPE)
     
-    return data
+    # TODO artist
 
-def populate_edge_data():
-    data = []
-    user_following = query("SELECT * FROM userFollowing")
-    artist_following = query("SELECT * FROM artistFollowing")
-    song_faves = query("SELECT * FROM songFavorites")
+    for s in song_data:
+        add_node(node_data, s[0], SONG_TYPE, s[1])
+        add_edge(edge_data, username, s[0], SONG_TYPE)
 
-    for uf in user_following:
-        add_edge(data, uf[1], uf[0], USER_TYPE)
-    for af in artist_following:
-        # Need artist following table?
-        add_edge(data, af[0], af[1], ARTIST_TYPE)
-    for sf in song_faves:
-        # song name needs to be added, assuming index for now
-        add_edge(data, sf[0], sf[2], SONG_TYPE)
-    
-    return data
+    if layers:
+        for u in user_data:
+            gen_data(u[1], node_data, edge_data)
 
-def add_node(node_data, name, ntype):
+    return (node_data, edge_data)
+
+
+def add_node(node_data, name, ntype, img):
     node = {}
     node["id"] = name
-    node["color"] = gen_color(ntype)
+    if ntype == USER_TYPE:
+        node["color"] = gen_color(ntype)
+    if ntype != USER_TYPE:
+        node["svg"] = img
     node_data.append(node)
 
 def add_edge(edge_data, source, target, ntype):
@@ -64,7 +60,23 @@ def add_edge(edge_data, source, target, ntype):
 def gen_color(ntype):
     if ntype == USER_TYPE:
         return "red"
-    elif ntype == "green":
+    elif ntype == ARTIST_TYPE:
         return "green"
     else:
         return "blue"
+
+def userQuery(username):
+    return "SELECT username, followee FROM users, follows\
+    WHERE username='"+username+"' AND username=follower"
+
+def artistQuery(username):
+    #TODO When artist following table added
+    return """
+    SELECT * FROM artists
+    where """
+
+def songQuery(username):
+    return "SELECT songs.name, songs.image_url FROM songs, songFavorites\
+    WHERE songs.spotify_id=songFavorites.song_spotify_id\
+    AND songFavorites.username='"+username+"'"
+
