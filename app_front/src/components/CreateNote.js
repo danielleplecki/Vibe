@@ -70,7 +70,7 @@ class CreateNote extends React.Component {
     submitButton() {
 
     }
-    
+
     render() {
         return(
             <div className="note">
@@ -103,21 +103,21 @@ class CreateNote extends React.Component {
                                 </CardContent>
                             </ButtonBase>
                         </Card>
-                        <form>
-                            <TextField
-                                id="msg"
-                                label="Note"
-                                value={this.state.msg}
-                                onChange={this.handleChange}
-                                margin="normal"
-                                multiline={true}
-                                fullWidth={true}
-                            />
-                            <Button variant="contained" color="primary" onClick={this.handleSubmit}>
-                                Post
-                            </Button>
-                        </form>
                     </CardContent>
+                    <form>
+                        <TextField
+                            id="msg"
+                            label="Note"
+                            value={this.state.msg}
+                            onChange={this.handleChange}
+                            margin="normal"
+                            multiline={true}
+                            fullWidth={true}
+                        />
+                        <Button variant="contained" color="primary" onClick={this.handleSubmit}>
+                            Post
+                        </Button>
+                    </form>
                 </Card>
             </div>
         )

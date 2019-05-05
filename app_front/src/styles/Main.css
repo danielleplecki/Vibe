@@ -2,6 +2,21 @@
   text-align: center;
 }
 
+body {
+    margin: 0;
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.page {
+    padding: 8px;
+    flex-grow: 1;
+}
+
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 40vmin;
