@@ -115,7 +115,8 @@ def make_spotify_users_table():
     CREATE TABLE if not exists spotifyUsers(
         username varchar(255) PRIMARY KEY,
         name varchar(255),
-        image varchar(255)
+        image varchar(255),
+        time_joined datetime
     )
     """
     cursor.execute(sql)
