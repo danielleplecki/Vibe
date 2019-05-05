@@ -1,19 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import '../App.css';
-import Notes from './Notes';
-import CreateNote from './CreateNote';
-import SearchSongs from './SearchSongs';
+import { Route, Switch } from 'react-router';
+import '../styles/Main.css';
+import Navbar from './Navbar';
+import SideNav from './SideNav';
+import HomePage from './HomePage';
+import UserPage from './UserPage';
 
 class App extends Component {
   render() {
-    return (
-      <div className="App">
-        <h1>Vibe</h1>
-          <CreateNote />
-          <SearchSongs />
-          <Notes />
-      </div>
+      return (
+          <div className="App">
+              <Navbar />
+              <div className="content">
+                  <SideNav />
+                  <Switch>
+                      <Route exact path="/:id" component={UserPage} />
+                      <Route exact path="/" component={HomePage} />
+                  </Switch>
+              </div>
+          </div>
     );
   }
 }

@@ -1,14 +1,8 @@
-import {
-    applyMiddleware,
-    combineReducers,
-    createStore,
-    compose
-} from 'redux';
-
-import createHistory from 'history/createBrowserHistory';
-import { routerMiddleware, routerReducer as routing } from 'react-router-redux';
+import { applyMiddleware, createStore, compose } from 'redux';
+import createBrowserHistory from 'history/createBrowserHistory';
+import { routerMiddleware } from 'connected-react-router';
 import thunk from 'redux-thunk';
-import reducer from './reducers';
+import createReducer from './reducers';
 
 const loggerMiddleware = store => next => action => {
     console.info("Action type:", action.type);
@@ -19,17 +13,19 @@ const loggerMiddleware = store => next => action => {
 };
 
 let initialState = {};
-const history = createHistory();
+const history = createBrowserHistory();
 
-const createStoreWithMiddleware = compose(
-    applyMiddleware(
-        thunk,
-        loggerMiddleware,
-        routerMiddleware(history),
-    )
-)(createStore);
-
-const store = createStoreWithMiddleware(reducer, initialState);
+const store = createStore(
+    createReducer(history),
+    initialState,
+    compose(
+        applyMiddleware(
+            routerMiddleware(history),
+            thunk,
+            loggerMiddleware
+        ),
+    ),
+);
 
 export default store;
 export { history, store };

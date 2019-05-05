@@ -4,6 +4,13 @@ import { createNote } from '../actions/notes';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
+import SongIcon from '@material-ui/icons/MusicNote';
+import ArtistIcon from '@material-ui/icons/Person';
+import SearchSongs from './SearchSongs';
+import CardContent from "@material-ui/core/CardContent/CardContent";
+import Typography from "@material-ui/core/Typography/Typography";
+import ButtonBase from "@material-ui/core/ButtonBase/ButtonBase";
+import CardHeader from "@material-ui/core/CardHeader/CardHeader";
 
 class CreateNote extends React.Component {
     constructor(props) {
@@ -11,7 +18,12 @@ class CreateNote extends React.Component {
         this.state = {
             loading: props.loading || false,
             UID: 'aebrown22',
-            msg: props.message || ''
+            msg: props.message || '',
+            songOpen: false,
+            song: '',
+            artistOpen: false,
+            artist: '',
+            contentChosen: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -43,33 +55,69 @@ class CreateNote extends React.Component {
         }
     }
 
+    addArtist() {
+
+    }
+
+    addSong() {
+
+    }
+
+    searchButton() {
+
+    }
+
+    submitButton() {
+
+    }
+    
     render() {
         return(
-            <div className="CreateNote">
+            <div className="note">
                 <Card>
-                    <form>
-                        <TextField
-                            disabled
-                            id="UID"
-                            label="User"
-                            defaultValue={this.state.UID}
-                            margin="normal"
-                            fullWidth={true}
-                        />
-
-                        <TextField
-                            id="msg"
-                            label="Note"
-                            value={this.state.msg}
-                            onChange={this.handleChange}
-                            margin="normal"
-                            multiline={true}
-                            fullWidth={true}
-                        />
-                        <Button variant="contained" color="primary" onClick={this.handleSubmit}>
-                            Post
-                        </Button>
-                    </form>
+                    <CardHeader className="card-title" title="Create Note">Create Note</CardHeader>
+                    <CardContent className="content">
+                        <Card className="content-selector">
+                            <ButtonBase
+                                className="card-action"
+                                onClick={this.addArtist}
+                            >
+                            <CardContent>
+                                <ArtistIcon/>
+                                <Typography component="h5" variant="h5">
+                                    Add an Artist
+                                </Typography>
+                            </CardContent>
+                        </ButtonBase>
+                        </Card>
+                        <Card className="content-selector">
+                            <ButtonBase
+                                className="card-action"
+                                onClick={this.addSong}
+                            >
+                                <CardContent>
+                                    <SongIcon/>
+                                    <Typography component="h5" variant="h5">
+                                        Add a Song
+                                    </Typography>
+                                </CardContent>
+                            </ButtonBase>
+                        </Card>
+                        <form>
+                            <TextField
+                                id="msg"
+                                label="Note"
+                                value={this.state.msg}
+                                onChange={this.handleChange}
+                                margin="normal"
+                                multiline={true}
+                                fullWidth={true}
+                            />
+                            <Button variant="contained" color="primary" onClick={this.handleSubmit}>
+                                Post
+                            </Button>
+                        </form>
+                    </CardContent>
                 </Card>
             </div>
         )

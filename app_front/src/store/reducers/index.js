@@ -1,16 +1,16 @@
-import { routerReducer } from 'react-router-redux';
+import { connectRouter } from 'connected-react-router';
 import { combineReducers } from 'redux';
 import appReducer from './app';
 import notesReducer from './notes';
 import songsReducer from './songs';
 
-const reducer = combineReducers(
+const createReducer = (history) => combineReducers(
     {
         app: appReducer,
-        router: routerReducer,
+        router: connectRouter(history),
         notes: notesReducer,
         songs: songsReducer
     }
 );
 
-export default reducer;
+export default createReducer;
