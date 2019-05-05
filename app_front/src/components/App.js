@@ -6,6 +6,7 @@ import Navbar from './Navbar';
 import SideNav from './SideNav';
 import HomePage from './HomePage';
 import UserPage from './UserPage';
+import GraphPage from './GraphPage';
 
 class App extends Component {
   render() {
@@ -15,6 +16,7 @@ class App extends Component {
               <div className="content">
                   <SideNav />
                   <Switch>
+                      <Route exact path="/graph" component={GraphPage} />
                       <Route exact path="/:id" component={UserPage} />
                       <Route exact path="/" component={HomePage} />
                   </Switch>
