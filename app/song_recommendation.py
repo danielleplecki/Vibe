@@ -124,5 +124,3 @@ def get_song_recommendations(user):
     favorite_songs = get_songs_from_ids(favorite_ids)
     print_results(favorite_songs, recommended_songs, favorite_label_dict, recommended_label_dict)
     return recommended_songs
-
-get_song_recommendations("aebrown22")
