@@ -11,6 +11,7 @@ class SearchSongs extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            open: props.open,
             loading: props.loading || false,
             query: props.query || '',
             songs: [],
@@ -26,8 +27,14 @@ class SearchSongs extends React.Component {
         this.props.loadSongs();
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.value !== this.props.value) {
+            this.setState({ value: nextProps.value });
+        }
+    }
+
     componentDidUpdate(prevProps) {
-        if(this.props.songs != prevProps.songs) {
+        if(this.props.songs !== prevProps.songs) {
             this.setState({songs: this.props.songs})
         }
     }
