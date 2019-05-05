@@ -121,6 +121,17 @@ def make_spotify_users_table():
     """
     cursor.execute(sql)
 
+def make_artist_follows_table():
+    sql = """
+    CREATE TABLE if not exists artistFollows(
+        artist_spotify_id varchar(255),
+        follower varchar(255),
+        PRIMARY KEY (artist_spotify_id, follower),
+        FOREIGN KEY (artist_spotify_id) references artists(spotify_id),
+        FOREIGN KEY (follower) references users(username)
+    )"""
+    cursor.execute(sql)
+
 if __name__ == '__main__':
     make_users_table()
     make_songs_tables()
@@ -130,3 +141,4 @@ if __name__ == '__main__':
     make_follows_table()
     make_features_table()
     make_spotify_users_table()
+    make_artist_follows_table()

@@ -20,6 +20,7 @@ def graph_setup(username):
 
 def gen_data(username, node_data, edge_data, layers=False):
     user_data = query(userQuery(username), with_description=False)
+    artist_data = query(artistQuery(username), with_description=False)
     song_data = query(songQuery(username), with_description=False)
 
     for u in user_data:
@@ -28,7 +29,9 @@ def gen_data(username, node_data, edge_data, layers=False):
         add_node(node_data, u[1], USER_TYPE, "filler")
         add_edge(edge_data, u[0], u[1], USER_TYPE)
     
-    # TODO artist
+    for a in artist_data:
+        add_node(node_data, a[0], ARTIST_TYPE, a[1])
+        add_edge(edge_data, username, a[0], ARTIST_TYPE)
 
     for s in song_data:
         add_node(node_data, s[0], SONG_TYPE, s[1])
@@ -44,6 +47,7 @@ def gen_data(username, node_data, edge_data, layers=False):
 def add_node(node_data, name, ntype, img):
     node = {}
     node["id"] = name
+    node["name"] = name
     if ntype == USER_TYPE:
         node["color"] = gen_color(ntype)
     if ntype != USER_TYPE:
@@ -70,10 +74,9 @@ def userQuery(username):
     WHERE username='"+username+"' AND username=follower"
 
 def artistQuery(username):
-    #TODO When artist following table added
-    return """
-    SELECT * FROM artists
-    where """
+    return "SELECT artists.name, artists.image_url FROM artists, artistFollows\
+    WHERE artists.spotify_id = artistFollows.artist_spotify_id\
+    AND artistFollows.follower='"+username+"'"
 
 def songQuery(username):
     return "SELECT songs.name, songs.image_url FROM songs, songFavorites\
