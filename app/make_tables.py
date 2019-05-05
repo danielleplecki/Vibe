@@ -52,6 +52,53 @@ def make_notes_table():
 
     cursor.execute(create_notes_table_sql)
 
+def make_artists_table():
+    create_artists_table_sql = """
+    CREATE TABLE if not exists artists(
+    spotify_id varchar(255) PRIMARY KEY,
+    name varchar(255)
+    )
+    """
+    cursor.execute(create_artists_table_sql)
+
+def make_song_favorites_table():
+    create_song_favs_sql = """
+    CREATE TABLE if not exists songFavorites(
+        username varchar(255),
+        song_spotify_id varchar(255),
+        PRIMARY KEY (username, song_spotify_id),
+        FOREIGN KEY (username) references users(username),
+        FOREIGN KEY (song_spotify_id) references songs(spotify_id)
+    )
+    """
+    cursor.execute(create_song_favs_sql)
+
+def make_users_table():
+    create_user_sql = """
+    CREATE TABLE if not exists users(
+        username varchar(255) PRIMARY KEY,
+        name varchar(255),
+        password varchar(255)
+    )
+    """
+    cursor.execute(create_user_sql)
+
+def make_follows_table():
+    sql = """
+    CREATE TABLE if not exists follows(
+        followee varchar(255),
+        follower varchar(255),
+        PRIMARY KEY (followee, follower),
+        FOREIGN KEY (followee) references users(username),
+        FOREIGN KEY (follower) references users(username)
+    )
+    """
+    cursor.execute(sql)
+
 if __name__ == '__main__':
+    make_users_table()
     make_songs_tables()
     make_notes_table()
+    make_artists_table()
+    make_song_favorites_table()
+    make_follows_table()

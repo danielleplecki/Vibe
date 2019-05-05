@@ -1,13 +1,14 @@
 import mysql.connector as db
 from base_db import query
 from get_spotify_data import get_auth_token, get_song_features
+import time
 
 conn = db.connect(user='root', password='', database='vibe')
 cursor = conn.cursor()
 
 def fill_song_features_table():
 
-    stmt = """SELECT * from songs"""
+    stmt = """SELECT * from songs where spotify_id not in (SELECT spotify_id from songFeatures)"""
     all_songs = query(stmt)
     auth_token = get_auth_token()
     sql = """INSERT INTO songFeatures (
@@ -15,7 +16,8 @@ def fill_song_features_table():
     acousticness, danceability, energy, instrumentalness,
     liveness, loudness, speechiness, valence, tempo, spotify_id, uri
     )
-    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    ON DUPLICATE KEY UPDATE uri=uri"""
     for song in all_songs:
         features = get_song_features(auth_token, song['spotify_id'])
         duration_ms = features['duration_ms']
@@ -37,6 +39,7 @@ def fill_song_features_table():
         val = (duration_ms, track_key, modality, time_signature, acousticness,
     danceability, energy, instrumentalness, liveness, loudness, speechiness,
     valence, tempo, ID, uri)
+        print("ADDING features for id {}".format(ID))
         cursor.execute(sql, val)
         conn.commit()
 
