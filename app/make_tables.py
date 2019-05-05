@@ -48,7 +48,8 @@ def make_notes_table():
     UID varchar(255),
     time DATETIME,
     message varchar(255),
-    PRIMARY KEY (ID)
+    PRIMARY KEY (ID),
+    FOREIGN KEY (UID) references users(username)
     )"""
 
     cursor.execute(create_notes_table_sql)

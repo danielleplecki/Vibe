@@ -4,6 +4,7 @@ from base_db import query, delete, insert, update
 from datetime import datetime
 import user_endpoint
 import follows_endpoint
+import song_recommendation
 import mysql.connector as db
 import json
 import time
@@ -117,8 +118,8 @@ def new_notes_handler():
     created_id = insert(stmt, vals)
     return json_output({"ID" : created_id}, 201)
 
-@app.route("/notes/<user>", methods=['GET'])
-def get_notes_handler(user):
+@app.route("/notes", methods=['GET'])
+def get_notes_handler():
     # for now just gets all notes
     # user will be necessary for later
     stmt = """SELECT * FROM notes ORDER BY time DESC"""
@@ -133,13 +134,6 @@ def delete_notes_handler(id):
     result = "{n} row(s) successfully deleted".format(n=rows_deleted)
     json_output(result, 200)
 
-
-@app.route("/songs", methods=['GET'])
-def get_all_songs():
-    stmt = """SELECT * FROM songs"""
-    results = query(stmt)
-    return json_output(results, 200)
-
 @app.route("/notes/<id>", methods=['PUT'])
 def update_notes_handler(id):
     data = request.get_json()
@@ -149,12 +143,42 @@ def update_notes_handler(id):
     updated_rows = update(stmt, vals)
     return json_output("{n} row(s) successfully updated".format(n=updated_rows), 200)
 
-@app.route("/songs/<name>", methods=['GET'])
-def get_song_by_name(name):
-    stmt = """SELECT * FROM songs WHERE name = %s"""
-    vals = (name,)
+@app.route("/songs", methods=['GET'])
+def search_song_by_name():
+    name = request.args.get("name", None)
+    if name is None:
+        return json_output("Endpoint requres 'name' query parameter\n", 400)
+    stmt = """SELECT * FROM songs WHERE name LIKE %s"""
+    vals = ("%" + name + "%",)
     results = query(stmt, vals)
     return json_output(results, 200)
+
+@app.route("/artists", methods=['GET'])
+def search_artist_by_name():
+    name = request.args.get("name", None)
+    if name is None:
+        return json_output("Endpoint requres 'name' query parameter\n", 400)
+    stmt = """SELECT * FROM artists WHERE name LIKE %s"""
+    vals = ("%" + name + "%",)
+    results = query(stmt, vals)
+    return json_output(results, 200)
+
+@app.route("/users", methods=['GET'])
+def search_users_by_name_or_username():
+    name = request.args.get("name", None)
+    if name is None:
+        return json_output("Endpoint requres 'name' query parameter\n", 400)
+    stmt = """SELECT username, name FROM users WHERE name LIKE %s or username LIKE %s"""
+    vals = ("%" + name + "%", "%" + name + "%")
+    results = query(stmt, vals)
+    return json_output(results, 200)
+
+@app.route("/recommended", methods=['GET'])
+def get_recommended_songs():
+    if not user_is_authenticated():
+        return get_unauthenticated_response()
+    result = song_recommendation.get_song_recommendations(session['username'])
+    return json_output(result, 200)
 
 @app.route("/graph", methods=['GET'])
 def get_graph_vis():
