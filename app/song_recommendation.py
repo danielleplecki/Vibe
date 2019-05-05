@@ -90,13 +90,20 @@ def print_results(favorite_songs, rec_songs, favorite_label_dict, rec_label_dict
 def get_song_recommendations(user):
     song_ids, song_features = get_song_ids_and_feature_data()
     favorite_ids, favorite_song_features = get_favorite_song_ids_and_features_for_user(user)
-
     song_features, favorite_song_features = scale_song_feature_data(song_features, favorite_song_features)
-    kmeans_results = cluster_favorite_songs(favorite_song_features, NUM_CLUSTERS)
-    cluster_centers = kmeans_results.cluster_centers_
+    cluster_centers = None
     favorite_label_dict = {}
-    for id, label in zip(favorite_ids, kmeans_results.labels_):
-        favorite_label_dict[id] = label
+    if len(favorite_ids) == 0:
+        return []
+    elif len(favorite_ids) <= 3:
+        cluster_centers = favorite_song_features
+        for label, id in enumerate(favorite_ids):
+            favorite_label_dict[id] = label
+    else:
+        kmeans_results = cluster_favorite_songs(favorite_song_features, NUM_CLUSTERS)
+        cluster_centers = kmeans_results.cluster_centers_
+        for id, label in zip(favorite_ids, kmeans_results.labels_):
+            favorite_label_dict[id] = label
 
     kd_tree = build_song_kd_tree(song_features)
     recommendation_indexes = []
@@ -119,5 +126,3 @@ def get_song_recommendations(user):
     return recommended_songs
 
 get_song_recommendations("aebrown22")
-
-

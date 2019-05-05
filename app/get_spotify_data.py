@@ -9,7 +9,7 @@ def get_auth_token():
 	client_secret = "048f1c57d1fe42db983f25153d87b0cf"
 	auth_str = "{i}:{s}".format(i=client_id, s=client_secret)
 	auth_url = "https://accounts.spotify.com/api/token"
-	headers = {'Authorization': "Basic " + base64.b64encode(auth_str)}
+	headers = {'Authorization': "Basic " + base64.b64encode(bytes(auth_str, 'utf-8')).decode('utf-8')}
 	data = {'grant_type': 'client_credentials'}
 	r = requests.post(auth_url, data=data, headers=headers)
 	return r.json()['access_token']
@@ -38,5 +38,29 @@ def search_for_track_by_artist(auth_token, track_name, artist_name):
 def get_song_features(auth_token, spotify_id):
 	api_url = "https://api.spotify.com/v1/audio-features/{id}".format(id=spotify_id)
 	headers = {'Authorization': 'Bearer ' + auth_token}
+	r = requests.get(api_url, headers=headers)
+	return r.json()
+
+def get_song(auth_token, spotify_id):
+	api_url = "https://api.spotify.com/v1/tracks/{id}".format(id=spotify_id)
+	headers = {'Authorization': 'Bearer ' + auth_token}
+	r = requests.get(api_url, headers=headers)
+	return r.json()
+
+def get_artist(auth_token, spotify_id):
+	api_url = "https://api.spotify.com/v1/artists/{id}".format(id=spotify_id)
+	headers = {'Authorization': 'Bearer ' + auth_token}
+	r = requests.get(api_url, headers=headers)
+	return r.json()
+
+def get_album(auth_token, spotify_id):
+	api_url = "https://api.spotify.com/v1/albums/{id}".format(id=spotify_id)
+	headers = {'Authorization': 'Bearer ' + auth_token}
+	r = requests.get(api_url, headers=headers)
+	return r.json()
+
+def get_user(personal_auth_token):
+	api_url = "https://api.spotify.com/v1/me"
+	headers = {'Authorization': 'Bearer ' + personal_auth_token}
 	r = requests.get(api_url, headers=headers)
 	return r.json()

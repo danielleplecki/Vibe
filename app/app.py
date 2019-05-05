@@ -28,6 +28,9 @@ def get_unauthenticated_response():
 
 @app.route("/login", methods = ['POST'])
 def login_user():
+    '''
+    THIS IS FOR DOING OUR OWN LOGIN
+    '''
     data = request.get_json()
     try:
         successful_login = user_endpoint.login_user(data['username'], data['password'])
@@ -37,6 +40,20 @@ def login_user():
         session['username'] = data['username']
         return json_output("Successful Login", 200)
     return json_output("Username or password is incorrect", 403)
+    # '''
+    # THIS IS FOR DOING SPOTIFY LOGIN
+    # '''
+    # data = request.get_json()
+    # try:
+    #     access_token = data['accessToken']
+    # except KeyError:
+    #     return json_output("Endpoint requires 'accessToken' in body", 400)
+    # result = user_endpoint.spotify_login_user(access_token)
+    # if result is None:
+    #     return json_output("Invalid access token", 401)
+    # session['username'] = result['username']
+    # return json_output(result, 200)
+
 
 @app.route("/logout", methods = ['POST'])
 def logout_user():
@@ -98,7 +115,7 @@ def new_notes_handler():
      (%s, %s, %s) """
     vals = (user_id, timestamp, message)
     created_id = insert(stmt, vals)
-    return json_output({"ID" : created_id})
+    return json_output({"ID" : created_id}, 201)
 
 @app.route("/notes/<user>", methods=['GET'])
 def get_notes_handler(user):
@@ -106,21 +123,22 @@ def get_notes_handler(user):
     # user will be necessary for later
     stmt = """SELECT * FROM notes ORDER BY time DESC"""
     results = query(stmt)
-    return json_output(results)
+    return json_output(results, 200)
 
 @app.route("/notes/<id>", methods=['DELETE'])
 def delete_notes_handler(id):
     stmt = """DELETE FROM notes WHERE ID = %s"""
     vals = (id,)
     rows_deleted = delete(stmt, vals)
-    return "{n} row(s) successfully deleted".format(n=rows_deleted)
+    result = "{n} row(s) successfully deleted".format(n=rows_deleted)
+    json_output(result, 200)
 
 
 @app.route("/songs", methods=['GET'])
 def get_all_songs():
     stmt = """SELECT * FROM songs"""
     results = query(stmt)
-    return json_output(results)
+    return json_output(results, 200)
 
 @app.route("/notes/<id>", methods=['PUT'])
 def update_notes_handler(id):
@@ -129,14 +147,14 @@ def update_notes_handler(id):
     stmt = """UPDATE notes SET message = %s WHERE ID = %s"""
     vals = (message, id)
     updated_rows = update(stmt, vals)
-    return json_output("{n} row(s) successfully updated".format(n=updated_rows))
+    return json_output("{n} row(s) successfully updated".format(n=updated_rows), 200)
 
 @app.route("/songs/<name>", methods=['GET'])
 def get_song_by_name(name):
     stmt = """SELECT * FROM songs WHERE name = %s"""
     vals = (name,)
     results = query(stmt, vals)
-    return json_output(results)
+    return json_output(results, 200)
 
 @app.route("/graph", methods=['GET'])
 def get_graph_vis():
