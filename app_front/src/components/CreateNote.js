@@ -1,4 +1,5 @@
 import React from 'react';
+import '../styles/components/Notes.css';
 import { connect } from 'react-redux';
 import { createNote } from '../actions/notes';
 import TextField from '@material-ui/core/TextField';
@@ -20,7 +21,7 @@ class CreateNote extends React.Component {
             UID: 'aebrown22',
             msg: props.message || '',
             songOpen: false,
-            song: '',
+            song: {},
             artistOpen: false,
             artist: '',
             contentChosen: false
@@ -29,6 +30,8 @@ class CreateNote extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.validate = this.validate.bind(this);
+        this.addArtist = this.addArtist.bind(this);
+        this.addSong = this.addSong.bind(this);
     }
 
     handleChange(e) {
@@ -55,12 +58,16 @@ class CreateNote extends React.Component {
         }
     }
 
-    addArtist() {
+    handleClose = song => {
+        this.setState({ song, songOpen: false, contentChosen: true });
+    };
 
+    addArtist() {
+        this.setState({ artistOpen: true });
     }
 
     addSong() {
-
+        this.setState({ songOpen: true });
     }
 
     searchButton() {
@@ -71,53 +78,92 @@ class CreateNote extends React.Component {
 
     }
 
+    getContent = () => {
+        let self = this;
+        return(
+            <CardContent className="content">
+                <Card className="content-selector">
+                    <ButtonBase
+                        className="card-action"
+                        onClick={self.addArtist}
+                    >
+                        <CardContent>
+                            <ArtistIcon/>
+                            <Typography component="h5" variant="h5">
+                                Add an Artist
+                            </Typography>
+                        </CardContent>
+                    </ButtonBase>
+                </Card>
+                <SearchSongs
+                    classes={{
+                        paper: "paper",
+                    }}
+                    open={this.state.artistOpen}
+                    onClose={this.handleClose}
+                    value={this.state.artist}
+                />
+                <Card className="content-selector">
+                    <ButtonBase
+                        className="card-action"
+                        onClick={self.addSong}
+                    >
+                        <CardContent>
+                            <SongIcon/>
+                            <Typography component="h5" variant="h5">
+                                Add a Song
+                            </Typography>
+                        </CardContent>
+                    </ButtonBase>
+                </Card>
+                <SearchSongs
+                    classes={{
+                        paper: "paper",
+                    }}
+                    open={this.state.songOpen}
+                    onClose={this.handleClose}
+                    value={this.state.song}
+                />
+            </CardContent>
+        );
+    };
+
+    getMessage = () => {
+        let self = this;
+        return(
+            <CardContent>
+                <img src={self.state.song.image_url}/>
+                <Typography component="h5" variant="h5">
+                    {self.state.song.name}
+                </Typography>
+                <form>
+                    <TextField
+                        id="msg"
+                        label="Note"
+                        value={this.state.msg}
+                        onChange={this.handleChange}
+                        margin="normal"
+                        multiline={true}
+                        fullWidth={true}
+                    />
+                    <Button variant="contained" color="primary" onClick={this.handleSubmit}>
+                        Post
+                    </Button>
+                </form>
+            </CardContent>
+        );
+    };
+
     render() {
         return(
             <div className="note">
                 <Card>
                     <CardHeader className="card-title" title="Create Note">Create Note</CardHeader>
-                    <CardContent className="content">
-                        <Card className="content-selector">
-                            <ButtonBase
-                                className="card-action"
-                                onClick={this.addArtist}
-                            >
-                            <CardContent>
-                                <ArtistIcon/>
-                                <Typography component="h5" variant="h5">
-                                    Add an Artist
-                                </Typography>
-                            </CardContent>
-                        </ButtonBase>
-                        </Card>
-                        <Card className="content-selector">
-                            <ButtonBase
-                                className="card-action"
-                                onClick={this.addSong}
-                            >
-                                <CardContent>
-                                    <SongIcon/>
-                                    <Typography component="h5" variant="h5">
-                                        Add a Song
-                                    </Typography>
-                                </CardContent>
-                            </ButtonBase>
-                        </Card>
-                    </CardContent>
-                    <form>
-                        <TextField
-                            id="msg"
-                            label="Note"
-                            value={this.state.msg}
-                            onChange={this.handleChange}
-                            margin="normal"
-                            multiline={true}
-                            fullWidth={true}
-                        />
-                        <Button variant="contained" color="primary" onClick={this.handleSubmit}>
-                            Post
-                        </Button>
-                    </form>
+                    {this.state.contentChosen ?
+                        this.getMessage() :
+                        this.getContent()
+                    }
+
                 </Card>
             </div>
         )

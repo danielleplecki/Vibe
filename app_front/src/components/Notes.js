@@ -36,7 +36,7 @@ class Notes extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if(this.props.notes != prevProps.notes) {
+        if(this.props.notes !== prevProps.notes) {
             this.setState({notes: this.props.notes})
         }
     }
@@ -69,7 +69,7 @@ class Notes extends React.Component {
             <div>
                 <div>{self.state.notes.map(function(item, key) {
                     return (
-                            <Card>
+                            <Card className="note">
                                 <CardContent>
                                     <Typography variant="subtitle2" align="left">
                                         {item.UID}

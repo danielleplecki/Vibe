@@ -6,6 +6,16 @@ import Card from '@material-ui/core/Card';
 import TextField from "@material-ui/core/TextField/TextField";
 import CardContent from "@material-ui/core/CardContent/CardContent";
 import Typography from "@material-ui/core/Typography/Typography";
+import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions/DialogActions";
+import Dialog from "@material-ui/core/Dialog/Dialog";
+import List from "@material-ui/core/List/List";
+import ListItem from "@material-ui/core/ListItem/ListItem";
+import ListItemText from "@material-ui/core/ListItemText/ListItemText";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar/ListItemAvatar";
+import Avatar from "@material-ui/core/Avatar/Avatar";
+import ListSubheader from "@material-ui/core/ListSubheader/ListSubheader";
 
 class SearchSongs extends React.Component {
     constructor(props) {
@@ -15,16 +25,18 @@ class SearchSongs extends React.Component {
             loading: props.loading || false,
             query: props.query || '',
             songs: [],
-            showList: false
+            showResults: false,
+            selectedIndex: 0
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+
     }
 
     componentDidMount() {
         this.setState({ loading: true });
-        this.props.loadSongs();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -39,57 +51,93 @@ class SearchSongs extends React.Component {
         }
     }
 
+    searchButton() {
+        let self = this;
+        return(<Button onClick={this.handleSearch} color="primary">
+            Search
+        </Button>
+        );
+    }
+
+    handleSearch() {
+        const  name  = this.state.query;
+        this.props.searchSongs({name});
+        this.setState({showResults: true});
+    }
+
+    submitButton() {
+        let self = this;
+        return(<Button onClick={this.handleSubmit} color="primary">
+                Add Song
+            </Button>
+        );
+    }
+
+    handleListItemClick = (event, index) => {
+        this.setState({ selectedIndex: index });
+    };
+
+    handleSubmit() {
+        const song = this.state.songs[this.state.selectedIndex];
+        this.props.onClose(song);
+    }
+
     handleChange(e) {
         this.setState({ [e.target.id]: e.target.value });
     }
 
-    handleSubmit() {
-        const { query } = this.state;
-        this.setState({showList: true});
-    }
-
-    populateList = () => {
+    populateResults = () => {
         let self = this;
-        const songList = self.state.songs.filter(song => song.name.toLowerCase() === self.state.query.toLowerCase());;
         return(
-            <div>{songList.map(function(item, key) {
-                return (
-                    <Card>
-                        <CardContent>
-                            <Typography variant="subtitle2">
-                                {item.name}
-                            </Typography>
-                            <Typography variant="caption text">
-                                {item.artist}
-                            </Typography>
-                            <Typography variant="body1">
-                                {item.album_name}
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                );
-            })}</div>
+            <List component="nav">
+                {self.state.songs.map(function(item, key) {
+                    return (
+                        <ListItem button
+                                  key={key}
+                                  selected={self.state.selectedIndex === 0}
+                                  onClick={event => self.handleListItemClick(event, 0)}>
+                            <ListItemAvatar>
+                                <Avatar src={item.image_url} style={{ borderRadius: 0 }} />
+                            </ListItemAvatar>
+                            <ListItemText primary={item.name} />
+                            <ListSubheader primary={item.artist} />
+                        </ListItem>
+                    );
+                })}
+            </List>
         )};
 
     render() {
+        const { value, ...other } = this.props;
         return(
-            <div className="SearchSongs">
-                <Card>
+            <Dialog
+                disableBackdropClick
+                disableEscapeKeyDown
+                maxWidth="xs"
+                onEntering={this.handleEntering}
+                aria-labelledby="confirmation-dialog-title"
+                {...other}
+            >
+                <DialogTitle id="confirmation-dialog-title">Search a Song</DialogTitle>
+                <DialogContent>
                     <TextField
                         id="query"
                         label="Song"
                         value={this.state.query}
                         onChange={this.handleChange}
                     />
-                    <Button variant="contained" color="primary" onClick={this.handleSubmit}>
-                        Search
-                    </Button>
-                    {this.state.showList ?
-                        this.populateList() :
+                    {this.state.showResults ?
+                        this.populateResults() :
                         null
                     }
-                </Card>
-            </div>
+                </DialogContent>
+                <DialogActions>
+                    {this.state.showResults ?
+                        this.submitButton() :
+                        this.searchButton()
+                    }
+                </DialogActions>
+            </Dialog>
         )
     }
 }

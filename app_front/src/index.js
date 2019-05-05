@@ -21,6 +21,7 @@ ReactDOM.render(
     <JssProvider jss={jss} generateClassName={generateClassName}>
         <Provider store={store}>
             <ConnectedRouter history={history}>
+
                 <App />
             </ConnectedRouter>
         </Provider>

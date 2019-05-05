@@ -38,7 +38,7 @@ const createNote = (note) => (dispatch, getState) => {
 };
 
 const loadNotes = () => (dispatch, getState) => {
-    fetch("http://sp19-cs411-52.cs.illinois.edu:5000/notes/aebrown22", {
+    fetch("http://sp19-cs411-52.cs.illinois.edu:5000/notes", {
         method: 'GET'
     })
         .then(response => response.json())
