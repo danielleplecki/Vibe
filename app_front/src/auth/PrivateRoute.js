@@ -39,7 +39,7 @@ class PrivateRoute extends React.Component {
 }
 
 export default connect(state => ({
-    authorized: state.auth.authorized
+    authorized: state.user.authorized
 }), {
     authorizeUser
 })(PrivateRoute);

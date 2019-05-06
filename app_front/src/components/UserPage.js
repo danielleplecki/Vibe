@@ -4,18 +4,19 @@ import '../styles/components/UserPage.css';
 import Notes from './Notes';
 import CardMedia from "@material-ui/core/CardMedia/CardMedia";
 import Card from "@material-ui/core/Card/Card";
-import user from './default-user-img.jpg';
 import Avatar from "@material-ui/core/Avatar/Avatar";
 import CardContent from "@material-ui/core/CardContent/CardContent";
 import Typography from "@material-ui/core/Typography/Typography";
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import EditIcon from "@material-ui/core/SvgIcon/SvgIcon";
+import { connect } from 'react-redux';
+import {authorizeUser, getTokenAndAuthorize} from "../auth/actions";
 
 class UserPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: '',
+            user: this.props.user,
             recents: [
                 {name: 'Feel So Close - Radio Edit', artist: 'Calvin Harris', image_url: 'https://i.scdn.co/image/0c2d72aeb2d1a6d2026d791e2331abb8634fc536'},
                 {name: 'One Dance', artist: 'Drake', image_url: 'https://i.scdn.co/image/53cade3f121243b5ba7a5747ff306bc220d41e59'},
@@ -25,19 +26,25 @@ class UserPage extends Component {
         };
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.user !== prevProps.user) {
+            this.setState({user: this.props.user})
+        }
+    }
+
     render() {
         return(
             <Card className="page">
                 <div className="profile-header">
-                    <CardMedia className="profile-photo" title="User profile photo">
-                        <Avatar src={user} className="profile-img"/>
+                    <CardMedia className="profile-photo" title="User profile photo" image="picture">
+                        <Avatar src={this.state.user.image} className="profile-img"/>
                     </CardMedia>
                     <CardContent className="profile-details">
                         <Typography component="h2" variant="h2" align="left">
-                            Jon Snow
+                            {this.state.user.name}
                         </Typography>
                         <Typography variant="subtitle1" color="textSecondary" align="left">
-                            Vibing since 5/4/19
+                            Vibing since {this.state.user.time_joined}
                         </Typography>
                     </CardContent>
                 </div>
@@ -67,4 +74,7 @@ class UserPage extends Component {
     }
 }
 
-export default UserPage;
+export default connect(state => ({
+    user: state.user,
+}), {
+})(UserPage);

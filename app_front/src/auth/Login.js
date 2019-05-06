@@ -12,7 +12,7 @@ class Login extends React.Component {
         this.state = {
             code : undefined,
             gotToken: false,
-            token: '',
+            token: null,
             authorized: false
         };
 
@@ -86,8 +86,8 @@ class Login extends React.Component {
 }
 
 export default connect(state => ({
-    authorized: state.auth.authorized,
-    token: state.auth.token
+    authorized: state.user.authorized,
+    token: state.user.token
 }), {
     authorizeUser,
     getTokenAndAuthorize

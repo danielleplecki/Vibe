@@ -15,9 +15,14 @@
     width: 240px;
     padding-top: 60px;
     flex-shrink: 0;
+    justify-content: center;
 }
 
 .drawer-paper {
     width: 240px;
     padding-top: 72px;
+}
+
+.side-avatar {
+    margin: auto;
 }

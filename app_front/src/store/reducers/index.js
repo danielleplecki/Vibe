@@ -9,7 +9,7 @@ const createReducer = (history) => combineReducers(
     {
         app: appReducer,
         router: connectRouter(history),
-        auth: authReducer,
+        user: authReducer,
         notes: notesReducer,
         songs: songsReducer
     }
