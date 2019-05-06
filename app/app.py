@@ -141,9 +141,20 @@ def new_notes_handler():
 def get_notes_handler():
     # for now just gets all notes
     # user will be necessary for later
-    stmt = """SELECT * FROM notes ORDER BY time DESC"""
-    results = query(stmt)
-    return json_output(results, 200)
+    stmt = """
+            (SELECT * from notes, artists
+                WHERE type = 'artist' AND notes.content_id = artists.spotify_id
+                ORDER BY time DESC)
+            """
+    notes = query(stmt)
+    stmt = """
+            (SELECT * from notes, songs
+                WHERE type = 'song' AND notes.content_id = songs.spotify_id
+                ORDER BY time DESC)
+            """
+    song_notes = query(stmt)
+    notes.extend(song_notes)
+    return json_output(notes, 200)
 
 @app.route("/notes/<id>", methods=['DELETE'])
 def delete_notes_handler(id):
