@@ -54,10 +54,10 @@ class Login extends React.Component {
 
     swapCodeForToken(){
       if (this.state.code) {
-        fetch("http://localhost:5000/code", this.getTokenLinkOptions(this.state.code))
+        fetch("http://sp19-cs411-52.cs.illinois.edu:5000/code", this.getTokenLinkOptions(this.state.code))
           .then(async response => {
             response.json().then( result => {
-                fetch("http://localhost:5000/login", {
+                fetch("http://sp19-cs411-52.cs.illinois.edu:5000/login", {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json; charset=utf-8",
