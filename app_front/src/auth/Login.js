@@ -78,8 +78,15 @@ class Login extends React.Component {
 
     render() {
         return(
-            <div className="Login">
-                <a href={this.getAuthorizeLink()}>"Login With Spotify"</a>
+            <div className="login">
+            {this.swapCodeForToken()}
+            <img src="https://s3-us-west-2.amazonaws.com/vibe-411-dev/background.png" class="loginimage"/>
+            <div className="loginlogo">
+              <label class="loginlabel">Vibe</label>
+            </div>
+            <div className="loginlinkdiv">
+                <a href={this.getAuthorizeLink()} class='loginlink'>"Login With Spotify"</a>
+            </div>
             </div>
         )
     }
