@@ -214,8 +214,14 @@ def get_current_user():
     user = session['username']
     stmt = """SELECT * from spotifyUsers WHERE username = %s"""
     vals = (user,)
-    results = query(stmt, vals)[0]
-    return json_output(results, 200)
+    user = query(stmt, vals)[0]
+    stmt = """SELECT count(*) as num_follows from follows where followee = %s"""
+    num_follows = query(stmt, vals)[0]
+    stmt = """SELECT count(*) as num_notes from notes where UID = %s"""
+    num_notes = query(stmt, vals)[0]
+    user.update(num_follows)
+    user.update(num_notes)
+    return json_output(user, 200)
 
 
 @app.route("/timeline", methods=['GET'])
@@ -256,5 +262,3 @@ def get_graph_vis():
 
 if __name__ == "__main__":
     app.run('0.0.0.0')
-
-
