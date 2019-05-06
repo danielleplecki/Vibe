@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import '../styles/components/Login.css';
 import { Redirect } from 'react-router-dom'
 import Button from '@material-ui/core/Button';
 
@@ -80,7 +81,7 @@ class Login extends React.Component {
 
     render() {
         return(
-            <div className="Login">
+            <div className="login">
             {this.swapCodeForToken()}
             <a href={this.getAuthorizeLink()}>"Login With Spotify"</a>
             </div>
