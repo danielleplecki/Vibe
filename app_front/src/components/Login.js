@@ -59,6 +59,7 @@ class Login extends React.Component {
             response.json().then( result => {
                 fetch("http://sp19-cs411-52.cs.illinois.edu:5000/login", {
                   method: "POST",
+                  credentials: 'include',
                   headers: {
                     "Content-Type": "application/json; charset=utf-8",
                   },
