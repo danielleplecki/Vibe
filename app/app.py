@@ -203,6 +203,17 @@ def search_users_by_name_or_username():
     results = query(stmt, vals)
     return json_output(results, 200)
 
+@app.route("/me", methods=['GET'])
+def get_current_user():
+    if not user_is_authenticated():
+        return get_unauthenticated_response()
+    user = session['username']
+    stmt = """SELECT * from spotifyUsers WHERE username = %s"""
+    vals = (user,)
+    results = query(stmt, vals)[0]
+    return json_output(results, 200)
+
+
 @app.route("/timeline", methods=['GET'])
 def get_timeline():
     if not user_is_authenticated():
