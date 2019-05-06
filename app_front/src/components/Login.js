@@ -6,7 +6,6 @@ import Button from '@material-ui/core/Button';
 const querystring = require('querystring');
 const redirect_uri = "http://localhost:3000/login"
 const client_id = "8adbd806dc8e4c88803ef47802693e4e";
-const client_secret = "048f1c57d1fe42db983f25153d87b0cf"
 
 class Login extends React.Component {
     constructor(props) {
