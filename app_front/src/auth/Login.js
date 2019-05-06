@@ -1,9 +1,9 @@
 import React from 'react';
 import { getTokenAndAuthorize, authorizeUser } from './actions';
 import { connect } from 'react-redux';
-
+import '../styles/components/Login.css';
 const querystring = require('querystring');
-const redirect_uri = "http://localhost:3000/login"
+const redirect_uri = "http://localhost:3000/login";
 const client_id = "8adbd806dc8e4c88803ef47802693e4e";
 
 class Login extends React.Component {
@@ -73,13 +73,13 @@ class Login extends React.Component {
 
         else if (this.state.code) {
             this.props.getTokenAndAuthorize(this.getTokenLinkOptions(this.state.code));
-      }
+        }
     }
 
     render() {
         return(
             <div className="Login">
-            <a href={this.getAuthorizeLink()}>"Login With Spotify"</a>
+                <a href={this.getAuthorizeLink()}>"Login With Spotify"</a>
             </div>
         )
     }
