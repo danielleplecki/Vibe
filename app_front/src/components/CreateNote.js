@@ -139,7 +139,7 @@ class CreateNote extends React.Component {
                 <form>
                     <TextField
                         id="msg"
-                        label="Note"
+                        label="Add a note!"
                         value={this.state.msg}
                         onChange={this.handleChange}
                         margin="normal"

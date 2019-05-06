@@ -15,7 +15,7 @@ import ListItem from "@material-ui/core/ListItem/ListItem";
 import ListItemText from "@material-ui/core/ListItemText/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar/Avatar";
-import ListSubheader from "@material-ui/core/ListSubheader/ListSubheader";
+import '../styles/components/Search.css';
 
 class SearchSongs extends React.Component {
     constructor(props) {
@@ -26,7 +26,7 @@ class SearchSongs extends React.Component {
             query: props.query || '',
             songs: [],
             showResults: false,
-            selectedIndex: 0
+            selectedIndex: -1
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -94,13 +94,20 @@ class SearchSongs extends React.Component {
                     return (
                         <ListItem button
                                   key={key}
-                                  selected={self.state.selectedIndex === 0}
-                                  onClick={event => self.handleListItemClick(event, 0)}>
+                                  selected={self.state.selectedIndex === key}
+                                  className="content-item"
+                                  onClick={event => self.handleListItemClick(event, key)}>
                             <ListItemAvatar>
                                 <Avatar src={item.image_url} style={{ borderRadius: 0 }} />
                             </ListItemAvatar>
-                            <ListItemText primary={item.name} />
-                            <ListSubheader primary={item.artist} />
+                            <ListItemText>
+                                <Typography component="subtitle2" variant="subtitle2" align="center" >
+                                    {item.name}
+                                </Typography>
+                                <Typography component="caption-text" variant="caption-text" align="center" >
+                                    {item.artist}
+                                </Typography>
+                            </ListItemText>
                         </ListItem>
                     );
                 })}

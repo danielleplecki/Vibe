@@ -1,0 +1,15 @@
+.content-item {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.content-item:hover {
+    background-color: rgba(0, 0, 0, 0.14);
+}
+
+.content-item:focus {
+    background-color: rgba(0, 0, 0, 0.25);
+}
+
+.search-results {
+    background-color: rgba(0, 0, 0, 0);
+}
