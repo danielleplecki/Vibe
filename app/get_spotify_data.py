@@ -4,6 +4,17 @@ import base64
 class TooManyRequestsException(Exception):
 	pass
 
+def get_token_from_code(code):
+	client_id = "8adbd806dc8e4c88803ef47802693e4e"
+	client_secret = "048f1c57d1fe42db983f25153d87b0cf"
+	redirect_uri = "http://localhost:3000/login"
+	auth_str = "{i}:{s}".format(i=client_id, s=client_secret)
+	auth_url = "https://accounts.spotify.com/api/token"
+	headers = {'Authorization': "Basic " + base64.b64encode(bytes(auth_str, 'utf-8')).decode('utf-8')}
+	data = {'grant_type': 'authorization_code', 'code': code, 'redirect_uri': redirect_uri}
+	r = requests.post(auth_url, data=data, headers=headers)
+	return r.json().get('access_token', None)
+
 def get_auth_token():
 	client_id = "8adbd806dc8e4c88803ef47802693e4e"
 	client_secret = "048f1c57d1fe42db983f25153d87b0cf"

@@ -48,10 +48,11 @@ def make_notes_table():
     UID varchar(255),
     time DATETIME,
     message varchar(255),
+    type ENUM('song', 'artist'),
+    content_id varchar(255),
     PRIMARY KEY (ID),
-    FOREIGN KEY (UID) references users(username)
+    FOREIGN KEY (UID) references spotifyUsers(username)
     )"""
-
     cursor.execute(create_notes_table_sql)
 
 def make_artists_table():
@@ -70,7 +71,7 @@ def make_song_favorites_table():
         username varchar(255),
         song_spotify_id varchar(255),
         PRIMARY KEY (username, song_spotify_id),
-        FOREIGN KEY (username) references users(username),
+        FOREIGN KEY (username) references spotifyUsers(username),
         FOREIGN KEY (song_spotify_id) references songs(spotify_id)
     )
     """
@@ -104,8 +105,8 @@ def make_follows_table():
         followee varchar(255),
         follower varchar(255),
         PRIMARY KEY (followee, follower),
-        FOREIGN KEY (followee) references users(username),
-        FOREIGN KEY (follower) references users(username)
+        FOREIGN KEY (followee) references spotifyUsers(username),
+        FOREIGN KEY (follower) references spotifyUsers(username)
     )
     """
     cursor.execute(sql)
@@ -128,7 +129,7 @@ def make_artist_follows_table():
         follower varchar(255),
         PRIMARY KEY (artist_spotify_id, follower),
         FOREIGN KEY (artist_spotify_id) references artists(spotify_id),
-        FOREIGN KEY (follower) references users(username)
+        FOREIGN KEY (follower) references spotifyUsers(username)
     )"""
     cursor.execute(sql)
 

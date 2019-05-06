@@ -7,8 +7,10 @@ import user_endpoint
 import follows_endpoint
 import song_recommendation
 import mysql.connector as db
+import requests
 import json
 import time
+import get_spotify_data
 
 app = Flask(__name__)
 app.secret_key = 'fjoiwefiowjefoiwej'
@@ -30,37 +32,46 @@ def get_unauthenticated_response():
 
 @app.route("/login", methods = ['POST'])
 def login_user():
-    '''
-    THIS IS FOR DOING OUR OWN LOGIN
-    '''
-    data = request.get_json()
-    try:
-        successful_login = user_endpoint.login_user(data['username'], data['password'])
-    except KeyError:
-        return json_output("Endpoint requires 'username' and 'password' in body", 400)
-    if successful_login:
-        session['username'] = data['username']
-        return json_output("Successful Login", 200)
-    return json_output("Username or password is incorrect", 403)
     # '''
-    # THIS IS FOR DOING SPOTIFY LOGIN
+    # THIS IS FOR DOING OUR OWN LOGIN
     # '''
     # data = request.get_json()
     # try:
-    #     access_token = data['accessToken']
+    #     successful_login = user_endpoint.login_user(data['username'], data['password'])
     # except KeyError:
-    #     return json_output("Endpoint requires 'accessToken' in body", 400)
-    # result = user_endpoint.spotify_login_user(access_token)
-    # if result is None:
-    #     return json_output("Invalid access token", 401)
-    # session['username'] = result['username']
-    # return json_output(result, 200)
+    #     return json_output("Endpoint requires 'username' and 'password' in body", 400)
+    # if successful_login:
+    #     session['username'] = data['username']
+    #     return json_output("Successful Login", 200)
+    # return json_output("Username or password is incorrect", 403)
+    '''
+    THIS IS FOR DOING SPOTIFY LOGIN
+    '''
+    data = request.get_json()
+    try:
+        access_token = data['accessToken']
+    except KeyError:
+        return json_output("Endpoint requires 'accessToken' in body", 400)
+    result = user_endpoint.spotify_login_user(access_token)
+    if result is None:
+        return json_output("Invalid access token", 401)
+    session['username'] = result['username']
+    return json_output(result, 200)
 
 
 @app.route("/logout", methods = ['POST'])
 def logout_user():
     session.pop("username", None)
     return json_output("Successful logout", 200)
+
+@app.route("/code", methods = ['POST'])
+def swap_code():
+    data = request.get_json()
+    token = get_spotify_data.get_token_from_code(data['code'])
+    if token is None:
+        return json_output("Invalid access code", 401)
+    print(token)
+    return json_output({"token" : token}, 200)
 
 @app.route("/signup", methods = ['POST'])
 def post_user():
@@ -109,13 +120,20 @@ def follow():
 
 @app.route("/notes", methods=['POST'])
 def new_notes_handler():
+    if not user_is_authenticated():
+        return get_unauthenticated_response()
     data = request.get_json()
-    user_id = data['UID']
-    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    message = data['message']
-    stmt = """INSERT into notes(UID, time, message) values
-     (%s, %s, %s) """
-    vals = (user_id, timestamp, message)
+    try:
+        user = session['username']
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        message = data['message']
+        type = data['type']
+        content_id = data['contentId']
+    except KeyError:
+        return json_output("Endpoint requires 'message', 'type', and 'contentId' in body", 400)
+    stmt = """INSERT into notes(UID, time, message, type, content_id) values
+     (%s, %s, %s, %s, %s) """
+    vals = (user, timestamp, message, type, content_id)
     created_id = insert(stmt, vals)
     return json_output({"ID" : created_id}, 201)
 
@@ -169,10 +187,33 @@ def search_users_by_name_or_username():
     name = request.args.get("name", None)
     if name is None:
         return json_output("Endpoint requres 'name' query parameter\n", 400)
-    stmt = """SELECT username, name FROM users WHERE name LIKE %s or username LIKE %s"""
+    stmt = """SELECT username, name FROM spotifyUsers WHERE name LIKE %s or username LIKE %s"""
     vals = ("%" + name + "%", "%" + name + "%")
     results = query(stmt, vals)
     return json_output(results, 200)
+
+@app.route("/timeline", methods=['GET'])
+def get_timeline():
+    if not user_is_authenticated():
+        return get_unauthenticated_response()
+    user = session['username']
+    stmt = """
+            (SELECT * from notes, artists
+                WHERE type = 'artist' AND notes.content_id = artists.spotify_id
+                AND UID in (SELECT followee from follows WHERE follower = %s UNION SELECT %s)
+                ORDER BY time DESC)
+            """
+    vals = (user, user)
+    notes = query(stmt, vals)
+    stmt = """
+            (SELECT * from notes, songs
+                WHERE type = 'song' AND notes.content_id = songs.spotify_id
+                AND UID in (SELECT followee from follows where follower = %s UNION SELECT %s)
+                ORDER BY time DESC)
+            """
+    song_notes = query(stmt, vals)
+    notes.extend(song_notes)
+    return json_output(notes, 200)
 
 @app.route("/recommended", methods=['GET'])
 def get_recommended_songs():
