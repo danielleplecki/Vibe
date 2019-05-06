@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request, abort, session, Response
+#from flask.ext.session import Session
 from flask_cors import CORS, cross_origin
 from base_db import query, delete, insert, update
 from datetime import datetime
@@ -13,8 +14,10 @@ import time
 import get_spotify_data
 
 app = Flask(__name__)
+#SESSION_TYPE = 'redis'
 app.secret_key = 'fjoiwefiowjefoiwej'
 CORS(app)
+#Session(app)
 
 conn = db.connect(user='root', password='', database='vibe')
 cursor = conn.cursor()
@@ -31,6 +34,7 @@ def get_unauthenticated_response():
     return Response("User not authenticated", 403, mimetype='application/json')
 
 @app.route("/login", methods = ['POST'])
+@cross_origin(supports_credentials=True)
 def login_user():
     # '''
     # THIS IS FOR DOING OUR OWN LOGIN
