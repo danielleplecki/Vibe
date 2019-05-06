@@ -1,4 +1,4 @@
-a {
+.login {
     background-color: #3f51b5;
     box-shadow: 2px 4px 10px rgba(0,0,0,.2);
     padding: 20px 20px;
@@ -9,6 +9,10 @@ a {
     margin-right: -50%;
 }
 
-a:hover{
+.login:hover{
   background-color: #555;
+}
+
+.loginlink {
+  color: white;
 }

@@ -83,7 +83,7 @@ class Login extends React.Component {
         return(
             <div className="login">
             {this.swapCodeForToken()}
-            <a href={this.getAuthorizeLink()}>"Login With Spotify"</a>
+            <a href={this.getAuthorizeLink()} class='loginlink'>"Login With Spotify"</a>
             </div>
         )
     }
