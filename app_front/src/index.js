@@ -2,10 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
+import { Route, Switch } from 'react-router';
 import JssProvider from 'react-jss/lib/JssProvider';
 import { create } from 'jss';
 import { createGenerateClassName, jssPreset } from '@material-ui/core/styles';
 import App from './components/App';
+import Login from './components/Login';
 import * as serviceWorker from './serviceWorker';
 import store from './store';
 import { history } from './store';
@@ -21,8 +23,10 @@ ReactDOM.render(
     <JssProvider jss={jss} generateClassName={generateClassName}>
         <Provider store={store}>
             <ConnectedRouter history={history}>
-
-                <App />
+              <Switch>
+                  <Route exact path="/login" component={Login} />
+                  <Route path="/" component={App} />
+              </Switch>
             </ConnectedRouter>
         </Provider>
     </JssProvider>,
