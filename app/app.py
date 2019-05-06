@@ -198,7 +198,7 @@ def search_users_by_name_or_username():
     name = request.args.get("name", None)
     if name is None:
         return json_output("Endpoint requres 'name' query parameter\n", 400)
-    stmt = """SELECT username, name FROM spotifyUsers WHERE name LIKE %s or username LIKE %s"""
+    stmt = """SELECT username, name, image FROM spotifyUsers WHERE name LIKE %s or username LIKE %s"""
     vals = ("%" + name + "%", "%" + name + "%")
     results = query(stmt, vals)
     return json_output(results, 200)
