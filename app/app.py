@@ -23,8 +23,9 @@ conn = db.connect(user='root', password='', database='vibe')
 cursor = conn.cursor()
 
 def json_output(output, status_code):
-    if type(output) != str:
-        output = json.dumps(output, default=str, indent=4)
+    if type(output) == str:
+        output = {"message": output}
+    output = json.dumps(output, default=str, indent=4)
     return Response(output, status_code, mimetype='application/json')
 
 def json_error(message, status_code):
@@ -155,12 +156,17 @@ def new_notes_handler():
     created_id = insert(stmt, vals)
     return json_output({"ID" : created_id}, 201)
 
-# @app.route("/notes/<id>/favorites", methods=['POST'])
-# @cross_origin(supports_credentials=True)
-# def favorite_note():
-#     if not user_is_authenticated():
-#         return get_unauthenticated_response()
-#     data = request.get_json()
+@app.route("/notes/<id>/favorites", methods=['POST'])
+@cross_origin(supports_credentials=True)
+def favorite_note(id):
+    if not user_is_authenticated():
+        return get_unauthenticated_response()
+    stmt = """INSERT into noteFavorites (note_id, liker) VALUES (%s, %s)"""
+    vals = (id, session['username'])
+    result = insert(stmt, vals)
+    if result is None:
+        return json_error("Note with that ID does not exist or note is already liked by current user", 400)
+    return json_output("Successfully favorited note", 201)
 
 @app.route("/notes", methods=['GET'])
 @cross_origin(supports_credentials=True)
