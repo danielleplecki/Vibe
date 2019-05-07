@@ -64,11 +64,13 @@ def login_user():
 
 
 @app.route("/logout", methods = ['POST'])
+@cross_origin(supports_credentials=True)
 def logout_user():
     session.pop("username", None)
     return json_output("Successful logout", 200)
 
 @app.route("/code", methods = ['POST'])
+@cross_origin(supports_credentials=True)
 def swap_code():
     data = request.get_json()
     token = get_spotify_data.get_token_from_code(data['code'])
@@ -78,6 +80,7 @@ def swap_code():
     return json_output({"token" : token}, 200)
 
 @app.route("/signup", methods = ['POST'])
+@cross_origin(supports_credentials=True)
 def post_user():
     data = request.get_json()
     try:
@@ -89,6 +92,7 @@ def post_user():
     return json_output("Username already exists", 403)
 
 @app.route("/follows", methods= ['GET', 'POST', 'DELETE'])
+@cross_origin(supports_credentials=True)
 def follow():
     if not user_is_authenticated():
         return get_unauthenticated_response()
@@ -123,6 +127,7 @@ def follow():
         return json_output(results, 200)
 
 @app.route("/notes", methods=['POST'])
+@cross_origin(supports_credentials=True)
 def new_notes_handler():
     if not user_is_authenticated():
         return get_unauthenticated_response()
@@ -142,6 +147,7 @@ def new_notes_handler():
     return json_output({"ID" : created_id}, 201)
 
 @app.route("/notes", methods=['GET'])
+@cross_origin(supports_credentials=True)
 def get_notes_handler():
     # for now just gets all notes
     # user will be necessary for later
@@ -161,6 +167,7 @@ def get_notes_handler():
     return json_output(notes, 200)
 
 @app.route("/notes/<id>", methods=['DELETE'])
+@cross_origin(supports_credentials=True)
 def delete_notes_handler(id):
     stmt = """DELETE FROM notes WHERE ID = %s"""
     vals = (id,)
@@ -169,6 +176,7 @@ def delete_notes_handler(id):
     json_output(result, 200)
 
 @app.route("/notes/<id>", methods=['PUT'])
+@cross_origin(supports_credentials=True)
 def update_notes_handler(id):
     data = request.get_json()
     message = data['message']
@@ -178,6 +186,7 @@ def update_notes_handler(id):
     return json_output("{n} row(s) successfully updated".format(n=updated_rows), 200)
 
 @app.route("/songs", methods=['GET'])
+@cross_origin(supports_credentials=True)
 def search_song_by_name():
     name = request.args.get("name", None)
     if name is None:
@@ -188,6 +197,7 @@ def search_song_by_name():
     return json_output(results, 200)
 
 @app.route("/artists", methods=['GET'])
+@cross_origin(supports_credentials=True)
 def search_artist_by_name():
     name = request.args.get("name", None)
     if name is None:
@@ -198,6 +208,7 @@ def search_artist_by_name():
     return json_output(results, 200)
 
 @app.route("/users", methods=['GET'])
+@cross_origin(supports_credentials=True)
 def search_users_by_name_or_username():
     name = request.args.get("name", None)
     if name is None:
@@ -208,6 +219,7 @@ def search_users_by_name_or_username():
     return json_output(results, 200)
 
 @app.route("/me", methods=['GET'])
+@cross_origin(supports_credentials=True)
 def get_current_user():
     if not user_is_authenticated():
         return get_unauthenticated_response()
@@ -225,6 +237,7 @@ def get_current_user():
 
 
 @app.route("/timeline", methods=['GET'])
+@cross_origin(supports_credentials=True)
 def get_timeline():
     if not user_is_authenticated():
         return get_unauthenticated_response()
@@ -248,6 +261,7 @@ def get_timeline():
     return json_output(notes, 200)
 
 @app.route("/recommended", methods=['GET'])
+@cross_origin(supports_credentials=True)
 def get_recommended_songs():
     if not user_is_authenticated():
         return get_unauthenticated_response()
@@ -255,6 +269,7 @@ def get_recommended_songs():
     return json_output(result, 200)
 
 @app.route("/graph", methods=['GET'])
+@cross_origin(supports_credentials=True)
 def get_graph_vis():
     # should pass session['username]
     res = graph_setup("testuser1")
