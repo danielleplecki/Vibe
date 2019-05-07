@@ -200,6 +200,16 @@ def get_notifications():
     results = query(stmt, vals)
     return json_output(results, 200)
 
+@app.route("/recents", methods=['GET'])
+@cross_origin(supports_credentials=True)
+def get_recents():
+    if not user_is_authenticated():
+        return get_unauthenticated_response()
+    username = session['username']
+    notes = notes_endpoint.get_notes(username)
+    notes = notes[:4]
+    return json_output(notes, 200)
+
 @app.route("/songs", methods=['GET'])
 @cross_origin(supports_credentials=True)
 def search_song_by_name():
