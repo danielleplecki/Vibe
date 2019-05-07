@@ -8,23 +8,26 @@ import Card from '@material-ui/core/Card';
 import SongIcon from '@material-ui/icons/MusicNote';
 import ArtistIcon from '@material-ui/icons/Person';
 import SearchSongs from './SearchSongs';
+import SearchArtists from './SearchArtists';
 import CardContent from "@material-ui/core/CardContent/CardContent";
 import Typography from "@material-ui/core/Typography/Typography";
 import ButtonBase from "@material-ui/core/ButtonBase/ButtonBase";
 import CardHeader from "@material-ui/core/CardHeader/CardHeader";
+import {loadSongs, searchSongs} from "../actions/songs";
 
 class CreateNote extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             loading: props.loading || false,
-            UID: 'aebrown22',
+            user: props.user,
             msg: props.message || '',
             songOpen: false,
             song: {},
             artistOpen: false,
-            artist: '',
-            contentChosen: false
+            artist: {},
+            contentChosen: false,
+            contentType: ''
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -58,8 +61,12 @@ class CreateNote extends React.Component {
         }
     }
 
-    handleClose = song => {
-        this.setState({ song, songOpen: false, contentChosen: true });
+    handleSongClose = song => {
+        this.setState({ song, songOpen: false, contentChosen: true, contentType: 'song' });
+    };
+
+    handleArtistClose = artist => {
+        this.setState({ artist, artistOpen: false, contentChosen: true, contentType: 'artist' });
     };
 
     addArtist() {
@@ -95,12 +102,12 @@ class CreateNote extends React.Component {
                         </CardContent>
                     </ButtonBase>
                 </Card>
-                <SearchSongs
+                <SearchArtists
                     classes={{
                         paper: "paper",
                     }}
                     open={this.state.artistOpen}
-                    onClose={this.handleClose}
+                    onClose={this.handleArtistClose}
                     value={this.state.artist}
                 />
                 <Card className="content-selector">
@@ -121,7 +128,7 @@ class CreateNote extends React.Component {
                         paper: "paper",
                     }}
                     open={this.state.songOpen}
-                    onClose={this.handleClose}
+                    onClose={this.handleSongClose}
                     value={this.state.song}
                 />
             </CardContent>
@@ -130,11 +137,12 @@ class CreateNote extends React.Component {
 
     getMessage = () => {
         let self = this;
+        let content = self.contentType === 'song'? self.state.song : self.state.artist;
         return(
             <CardContent>
-                <img src={self.state.song.image_url}/>
+                <img src={content.image_url}/>
                 <Typography component="h5" variant="h5">
-                    {self.state.song.name}
+                    {content.name}
                 </Typography>
                 <form>
                     <TextField
@@ -170,6 +178,8 @@ class CreateNote extends React.Component {
     }
 }
 
-export default connect(null, {
+export default connect(state => ({
+    user: state.user
+}), {
     createNote
 })(CreateNote);

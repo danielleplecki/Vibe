@@ -2,7 +2,7 @@ import { history } from '../store';
 
 const userAuthorized = (user, token) => (
     {
-        type: 'auth:USER_AUTHORIZED',
+        type: 'user:USER_AUTHORIZED',
         username: user.username,
         name: user.name,
         image: user.image,
@@ -13,7 +13,7 @@ const userAuthorized = (user, token) => (
 
 const getTokenAndAuthorize = (code) => (dispatch, getState) => {
     fetch("http://sp19-cs411-52.cs.illinois.edu:5000/code", code)
-        .then(response => response.json())
+        .then(async response => response.json())
         .then(result => dispatch(authorizeUser(result)))
         .catch(err => {
             console.error(err);
@@ -30,7 +30,7 @@ const authorizeUser = (result) => (dispatch, getState) => {
         body: JSON.stringify({
             "accessToken": result.token
         })
-    }).then(response => response.json())
+    }).then(async response => response.json())
         .then(user => dispatch(userAuthorized(user, result.token)))
         .then(history.push('/'))
         .catch(err => {
@@ -42,4 +42,3 @@ export {
     getTokenAndAuthorize,
     authorizeUser
 };
-

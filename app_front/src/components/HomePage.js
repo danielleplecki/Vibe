@@ -9,7 +9,7 @@ class HomePage extends Component {
         return(
             <div className="page">
                 <CreateNote />
-                <Notes />
+                <Notes feed="timeline"/>
             </div>
         );
     }

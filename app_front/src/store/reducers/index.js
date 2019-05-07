@@ -3,15 +3,17 @@ import { combineReducers } from 'redux';
 import appReducer from './app';
 import notesReducer from './notes';
 import songsReducer from './songs';
-import authReducer from '../../auth/reducer';
+import artistsReducer from './artists';
+import userReducer from './user';
 
 const createReducer = (history) => combineReducers(
     {
         app: appReducer,
         router: connectRouter(history),
-        user: authReducer,
+        user: userReducer,
         notes: notesReducer,
-        songs: songsReducer
+        songs: songsReducer,
+        artists: artistsReducer
     }
 );
 

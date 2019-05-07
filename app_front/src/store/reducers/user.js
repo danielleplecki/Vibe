@@ -7,9 +7,9 @@ const initialState = {
     token: null
 };
 
-const authReducer = (state = initialState, action) => {
+const userReducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'auth:USER_AUTHORIZED':
+        case 'user:USER_AUTHORIZED':
             return {
                 ...state,
                 authorized: true,
@@ -25,4 +25,4 @@ const authReducer = (state = initialState, action) => {
     }
 };
 
-export default authReducer;
+export default userReducer;

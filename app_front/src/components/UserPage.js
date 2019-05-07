@@ -7,10 +7,7 @@ import Card from "@material-ui/core/Card/Card";
 import Avatar from "@material-ui/core/Avatar/Avatar";
 import CardContent from "@material-ui/core/CardContent/CardContent";
 import Typography from "@material-ui/core/Typography/Typography";
-import IconButton from "@material-ui/core/IconButton/IconButton";
-import EditIcon from "@material-ui/core/SvgIcon/SvgIcon";
 import { connect } from 'react-redux';
-import {authorizeUser, getTokenAndAuthorize} from "../auth/actions";
 
 class UserPage extends Component {
     constructor(props) {
@@ -68,7 +65,7 @@ class UserPage extends Component {
                         );
                     })}
                 </div>
-                <Notes />
+                <Notes feed="profile" />
             </Card>
         );
     }

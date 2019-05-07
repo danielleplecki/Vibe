@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import { loadNotes, deleteNote, editNote } from '../actions/notes';
+import { loadTimelineNotes, loadProfileNotes, deleteNote, editNote } from '../actions/notes';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
@@ -32,7 +32,12 @@ class Notes extends React.Component {
 
     componentDidMount() {
         this.setState({ loading: true });
-        this.props.loadNotes();
+        if(this.props.feed === "timeline") {
+            this.props.loadTimelineNotes();
+        }
+        else {
+            this.props.loadProfileNotes();
+        }
     }
 
     componentDidUpdate(prevProps) {
@@ -133,7 +138,8 @@ class Notes extends React.Component {
 export default connect(state => ({
     notes: state.notes
 }), {
-    loadNotes,
+    loadTimelineNotes,
+    loadProfileNotes,
     deleteNote,
     editNote
 })(Notes);

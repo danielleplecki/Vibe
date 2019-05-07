@@ -1,5 +1,5 @@
 import React from 'react';
-import { getTokenAndAuthorize, authorizeUser } from './actions';
+import { getTokenAndAuthorize, authorizeUser } from '../actions/user';
 import { connect } from 'react-redux';
 import '../styles/components/Login.css';
 const querystring = require('querystring');
