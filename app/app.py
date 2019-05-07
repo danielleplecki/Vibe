@@ -6,6 +6,7 @@ from datetime import datetime
 from visual_data import prepare_data, graph_setup
 import user_endpoint
 import follows_endpoint
+import notes_endpoint
 import song_recommendation
 import mysql.connector as db
 import requests
@@ -143,17 +144,14 @@ def new_notes_handler():
         return get_unauthenticated_response()
     data = request.get_json()
     try:
-        user = session['username']
+        username = session['username']
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         message = data['message']
         type = data['type']
         content_id = data['contentId']
     except KeyError:
         return json_error("Endpoint requires 'message', 'type', and 'contentId' in body", 400)
-    stmt = """INSERT into notes(UID, time, message, type, content_id) values
-     (%s, %s, %s, %s, %s) """
-    vals = (user, timestamp, message, type, content_id)
-    created_id = insert(stmt, vals)
+    created_id = notes_endpoint.post_note(username, timestamp, message, type, content_id)
     return json_output({"ID" : created_id}, 201)
 
 @app.route("/notes/<id>/favorites", methods=['POST'])
@@ -161,9 +159,7 @@ def new_notes_handler():
 def favorite_note(id):
     if not user_is_authenticated():
         return get_unauthenticated_response()
-    stmt = """INSERT into noteFavorites (note_id, liker) VALUES (%s, %s)"""
-    vals = (id, session['username'])
-    result = insert(stmt, vals)
+    result = notes_endpoint.favorite_note(id, session['username'])
     if result is None:
         return json_error("Note with that ID does not exist or note is already liked by current user", 400)
     return json_output("Successfully favorited note", 201)
@@ -171,56 +167,26 @@ def favorite_note(id):
 @app.route("/notes", methods=['GET'])
 @cross_origin(supports_credentials=True)
 def get_notes_handler():
-    name = request.args.get("username", None)
-    if name is None:
-        stmt = """
-                (SELECT * from notes, artists
-                    WHERE type = 'artist' AND notes.content_id = artists.spotify_id
-                    ORDER BY time DESC)
-                """
-        notes = query(stmt)
-        stmt = """
-                (SELECT * from notes, songs
-                    WHERE type = 'song' AND notes.content_id = songs.spotify_id
-                    ORDER BY time DESC)
-                """
-        song_notes = query(stmt)
-        notes.extend(song_notes)
-        return json_output(notes, 200)
-    else:
-        stmt = """
-                (SELECT * from notes, artists
-                    WHERE type = 'artist' AND notes.content_id = artists.spotify_id AND UID = %s
-                    ORDER BY time DESC)
-                """
-        vals = (name,)
-        notes = query(stmt, vals)
-        stmt = """
-                (SELECT * from notes, songs
-                    WHERE type = 'song' AND notes.content_id = songs.spotify_id AND UID = %s
-                    ORDER BY time DESC)
-                """
-        song_notes = query(stmt, vals)
-        notes.extend(song_notes)
-        return json_output(notes, 200)
+    username = request.args.get("username", None)
+    notes = notes_endpoint.get_notes(username)
+    return json_output(notes, 200)
 
 @app.route("/notes/<id>", methods=['DELETE'])
 @cross_origin(supports_credentials=True)
 def delete_notes_handler(id):
-    stmt = """DELETE FROM notes WHERE ID = %s"""
-    vals = (id,)
-    rows_deleted = delete(stmt, vals)
+    rows_deleted = notes_endpoint.delete_note(id)
     result = "{n} row(s) successfully deleted".format(n=rows_deleted)
-    json_output(result, 200)
+    return json_output(result, 200)
 
 @app.route("/notes/<id>", methods=['PUT'])
 @cross_origin(supports_credentials=True)
 def update_notes_handler(id):
     data = request.get_json()
-    message = data['message']
-    stmt = """UPDATE notes SET message = %s WHERE ID = %s"""
-    vals = (message, id)
-    updated_rows = update(stmt, vals)
+    try:
+        message = data['message']
+    except KeyError:
+        return json_error("Endpoint requires 'message' in body", 400)
+    updated_rows = notes_endpoint.update_note(id, message)
     return json_output("{n} row(s) successfully updated".format(n=updated_rows), 200)
 
 @app.route("/songs", methods=['GET'])
