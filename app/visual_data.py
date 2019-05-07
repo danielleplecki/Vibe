@@ -25,8 +25,8 @@ def gen_data(username, node_data, edge_data, layers=False):
 
     for u in user_data:
         if layers:
-            add_node(node_data, u[0], USER_TYPE, "filler")
-        add_node(node_data, u[1], USER_TYPE, "filler")
+            add_node(node_data, u[0], USER_TYPE, u[2])
+        add_node(node_data, u[1], USER_TYPE, u[2])
         add_edge(edge_data, u[0], u[1], USER_TYPE)
 
     for a in artist_data:
@@ -48,10 +48,7 @@ def add_node(node_data, name, ntype, img):
     node = {}
     node["id"] = name
     node["name"] = name
-    if ntype == USER_TYPE:
-        node["color"] = gen_color(ntype)
-    if ntype != USER_TYPE:
-        node["svg"] = img
+    node["svg"] = img
     node_data.append(node)
 
 def add_edge(edge_data, source, target, ntype):
@@ -70,7 +67,7 @@ def gen_color(ntype):
         return "blue"
 
 def userQuery(username):
-    return "SELECT username, followee FROM spotifyUsers, follows\
+    return "SELECT username, followee, image FROM spotifyUsers, follows\
     WHERE username='"+username+"' AND username=follower"
 
 def artistQuery(username):
