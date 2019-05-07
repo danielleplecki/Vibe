@@ -37,8 +37,19 @@ const createNote = (note) => (dispatch, getState) => {
         });
 };
 
-const loadNotes = () => (dispatch, getState) => {
-    fetch("http://sp19-cs411-52.cs.illinois.edu:5000/notes/aebrown22", {
+const loadTimelineNotes = () => (dispatch, getState) => {
+    fetch("http://sp19-cs411-52.cs.illinois.edu:5000/timeline", {
+        method: 'GET'
+    })
+        .then(response => response.json())
+        .then(( notes ) => dispatch(notesLoaded(notes)))
+        .catch(err => {
+            console.error(err);
+        });
+};
+
+const loadProfileNotes = () => (dispatch, getState) => {
+    fetch("http://sp19-cs411-52.cs.illinois.edu:5000/notes", {
         method: 'GET'
     })
         .then(response => response.json())
@@ -70,7 +81,8 @@ const deleteNote = (noteID) => (dispatch, getState) => {
 
 
 export {
-    loadNotes,
+    loadTimelineNotes,
+    loadProfileNotes,
     createNote,
     deleteNote,
     noteCreated,

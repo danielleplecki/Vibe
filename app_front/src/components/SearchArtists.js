@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { searchSongs, loadSongs } from '../actions/songs';
+import { searchArtists } from '../actions/artists';
 import Button from '@material-ui/core/Button';
 import TextField from "@material-ui/core/TextField/TextField";
 import Typography from "@material-ui/core/Typography/Typography";
@@ -15,14 +15,14 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar/Avatar";
 import '../styles/components/Search.css';
 
-class SearchSongs extends React.Component {
+class SearchArtists extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             open: props.open,
             loading: props.loading || false,
             query: props.query || '',
-            songs: [],
+            artists: [],
             showResults: false,
             selectedIndex: -1
         };
@@ -44,28 +44,28 @@ class SearchSongs extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if(this.props.songs !== prevProps.songs) {
-            this.setState({songs: this.props.songs})
+        if(this.props.artists !== prevProps.artists) {
+            this.setState({artists: this.props.artists})
         }
     }
 
     searchButton() {
         let self = this;
-        return(<Button onClick={this.handleSearch} color="primary">
-            Search
-        </Button>
+        return(<Button onClick={self.handleSearch} color="primary">
+                Search
+            </Button>
         );
     }
 
     handleSearch() {
         const  name  = this.state.query;
-        this.props.searchSongs({name});
+        this.props.searchArtists({name});
         this.setState({showResults: true});
     }
 
     submitButton() {
         let self = this;
-        return(<Button onClick={this.handleSubmit} color="primary">
+        return(<Button onClick={self.handleSubmit} color="primary">
                 Add Song
             </Button>
         );
@@ -76,8 +76,8 @@ class SearchSongs extends React.Component {
     };
 
     handleSubmit() {
-        const song = this.state.songs[this.state.selectedIndex];
-        this.props.onClose(song);
+        const artist = this.state.artists[this.state.selectedIndex];
+        this.props.onClose(artist);
     }
 
     handleChange(e) {
@@ -88,7 +88,7 @@ class SearchSongs extends React.Component {
         let self = this;
         return(
             <List component="nav">
-                {self.state.songs.map(function(item, key) {
+                {self.state.artists.map(function(item, key) {
                     return (
                         <ListItem button
                                   key={key}
@@ -96,7 +96,7 @@ class SearchSongs extends React.Component {
                                   className="content-item"
                                   onClick={event => self.handleListItemClick(event, key)}>
                             <ListItemAvatar>
-                                <Avatar src={item.image_url} style={{ borderRadius: 0 }} />
+                                <Avatar src={item.image_url} />
                             </ListItemAvatar>
                             <ListItemText>
                                 <Typography component="subtitle2" variant="subtitle2" align="center" >
@@ -123,11 +123,11 @@ class SearchSongs extends React.Component {
                 aria-labelledby="confirmation-dialog-title"
                 {...other}
             >
-                <DialogTitle id="confirmation-dialog-title">Search a Song</DialogTitle>
+                <DialogTitle id="confirmation-dialog-title">Search an Artist</DialogTitle>
                 <DialogContent>
                     <TextField
                         id="query"
-                        label="Song"
+                        label="Artist"
                         value={this.state.query}
                         onChange={this.handleChange}
                     />
@@ -148,8 +148,7 @@ class SearchSongs extends React.Component {
 }
 
 export default connect(state => ({
-    songs: state.songs
+    artists: state.artists
 }), {
-    searchSongs,
-    loadSongs
-})(SearchSongs);
+    searchArtists
+})(SearchArtists);

@@ -7,8 +7,12 @@ const songsLoaded = songs => ({
 });
 
 // search for the song
-const searchSongs = (song) => (dispatch, getState) => {
-    fetch(`http://sp19-cs411-52.cs.illinois.edu:5000/songs/${song.query}`, {
+const searchSongs = (query) => (dispatch, getState) => {
+    let url = new URL('http://sp19-cs411-52.cs.illinois.edu:5000/songs');
+    JSON.stringify(query);
+    Object.keys(query).forEach(key => url.searchParams.append(key, query[key]));
+    console.log(url);
+    fetch(url.href, {
         method: 'GET'
     })
         .then(response => response.json())
