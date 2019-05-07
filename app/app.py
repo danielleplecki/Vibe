@@ -188,8 +188,6 @@ def get_notes_handler():
         notes.extend(song_notes)
         return json_output(notes, 200)
     else:
-        if not user_is_authenticated():
-            return get_unauthenticated_response()
         stmt = """
                 (SELECT * from notes, artists
                     WHERE type = 'artist' AND notes.content_id = artists.spotify_id AND UID = %s
