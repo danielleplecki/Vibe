@@ -11,7 +11,8 @@ def make_songs_tables():
     name varchar(255),
     artist varchar(255),
     album_name varchar(255),
-    image_url varchar(255)
+    image_url varchar(255),
+    INDEX name (name)
     )
     """
 
@@ -60,7 +61,8 @@ def make_artists_table():
     CREATE TABLE if not exists artists(
     spotify_id varchar(255) PRIMARY KEY,
     name varchar(255),
-    image_url varchar(255)
+    image_url varchar(255),
+    INDEX name (name)
     )
     """
     cursor.execute(create_artists_table_sql)
@@ -133,6 +135,18 @@ def make_artist_follows_table():
     )"""
     cursor.execute(sql)
 
+def make_note_favorites_table():
+    sql = """
+    CREATE TABLE if not exists noteFavorites(
+        note_id int NOT NULL,
+        liker varchar(255),
+        PRIMARY KEY (note_id, liker),
+        FOREIGN KEY (note_id) references notes(ID),
+        FOREIGN KEY (liker) references spotifyUsers(username)
+    )
+    """
+    cursor.execute(sql)
+
 if __name__ == '__main__':
     make_users_table()
     make_songs_tables()
@@ -143,3 +157,4 @@ if __name__ == '__main__':
     make_features_table()
     make_spotify_users_table()
     make_artist_follows_table()
+    make_note_favorites_table()
