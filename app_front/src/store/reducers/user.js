@@ -1,4 +1,4 @@
-const initialState = {
+const initialUserState = {
     username: null,
     name: null,
     image: null,
@@ -7,9 +7,9 @@ const initialState = {
     token: null
 };
 
-const userReducer = (state = initialState, action) => {
+const userReducer = (state = initialUserState, action) => {
     switch (action.type) {
-        case 'user:USER_AUTHORIZED':
+        case 'USER:USER_AUTHORIZED':
             return {
                 ...state,
                 authorized: true,
@@ -25,4 +25,18 @@ const userReducer = (state = initialState, action) => {
     }
 };
 
-export default userReducer;
+const initialUsersState = [];
+
+const usersReducer = (state = initialUsersState, action) => {
+    switch (action.type) {
+        case 'USERS:LOADED':
+            return [
+                ...action.users
+            ];
+
+            default:
+                return state;
+    }
+};
+
+export { userReducer, usersReducer };

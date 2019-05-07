@@ -35,7 +35,7 @@ class Navbar extends Component {
                         <div className="grow" />
                         <div className="search">
                             <div className="search-icon">
-                                <SearchIcon />
+                                <SearchIcon  />
                             </div>
                             <InputBase
                                 placeholder="Search…"
@@ -50,7 +50,7 @@ class Navbar extends Component {
                                 <NotificationsIcon />
                             </Badge>
                         </IconButton>
-                        <IconButton color="inherit" component={RouterLink} to="/1234">
+                        <IconButton color="inherit" component={RouterLink} to="1234">
                             <AccountCircle />
                         </IconButton>
                     </Toolbar>

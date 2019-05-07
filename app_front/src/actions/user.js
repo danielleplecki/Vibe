@@ -2,7 +2,7 @@ import { history } from '../store';
 
 const userAuthorized = (user, token) => (
     {
-        type: 'user:USER_AUTHORIZED',
+        type: 'USER:USER_AUTHORIZED',
         username: user.username,
         name: user.name,
         image: user.image,
@@ -10,6 +10,11 @@ const userAuthorized = (user, token) => (
         token: token
     }
 );
+
+const usersLoaded = users => ({
+    type: 'USERS:LOADED',
+    users: users
+});
 
 const getTokenAndAuthorize = (code) => (dispatch, getState) => {
     fetch("http://sp19-cs411-52.cs.illinois.edu:5000/code", code)
@@ -38,7 +43,23 @@ const authorizeUser = (result) => (dispatch, getState) => {
         });
 };
 
+const searchUsers = (query) => (dispatch, getState) => {
+    let url = new URL('http://sp19-cs411-52.cs.illinois.edu:5000/users');
+    JSON.stringify(query);
+    Object.keys(query).forEach(key => url.searchParams.append(key, query[key]));
+    console.log(url);
+    fetch(url.href, {
+        method: 'GET'
+    })
+        .then(response => response.json())
+        .then((users) => dispatch(usersLoaded(users)))
+        .catch(err => {
+            console.error(err);
+        });
+};
+
 export {
     getTokenAndAuthorize,
-    authorizeUser
+    authorizeUser,
+    searchUsers
 };

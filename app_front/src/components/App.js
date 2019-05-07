@@ -7,6 +7,7 @@ import SideNav from './SideNav';
 import HomePage from './HomePage';
 import UserPage from './UserPage';
 import GraphPage from './GraphPage';
+import SearchUsersPage from './SearchUsersPage';
 
 class App extends Component {
   render() {
@@ -17,6 +18,7 @@ class App extends Component {
                   <SideNav />
                   <Switch>
                       <Route exact path="/graph" component={GraphPage} />
+                      <Route exact path="/search_results" component={SearchUsersPage} />
                       <Route exact path="/:id" component={UserPage} />
                       <Route exact path="/" component={HomePage} />
                   </Switch>
