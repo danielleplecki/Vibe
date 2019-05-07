@@ -126,15 +126,9 @@ def follow():
             return json_output("User unfollowed successfully", 200)
         return json_error("Cannot delete non-existing follow", 400)
     else:
-        try:
-            following = request.args['following']
-            assert following.lower() == 'true' or following.lower() == 'false'
-        except (KeyError, AssertionError):
-            return json_error("Endpoint requires 'following' query param set to 'true' if following is desired, 'false' if followers is desired", 400)
-        if following == 'true':
-            results = follows_endpoint.get_people_user_follows(session['username'])
-            return json_output(results, 200)
-        results = follows_endpoint.get_followers_for_user(session['username'])
+        following = follows_endpoint.get_people_user_follows(session['username'])
+        followers = follows_endpoint.get_followers_for_user(session['username'])
+        results = {"following" : following, "followers" : followers}
         return json_output(results, 200)
 
 @app.route("/notes", methods=['POST'])
