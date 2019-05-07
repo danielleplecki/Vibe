@@ -147,6 +147,29 @@ def make_note_favorites_table():
     """
     cursor.execute(sql)
 
+def make_notifications_table():
+    sql = """
+    CREATE TABLE if not exists notifications(
+        ID int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        username varchar(255),
+        message varchar(255),
+        FOREIGN KEY (username) references spotifyUsers(username)
+    )
+    """
+    cursor.execute(sql)
+
+def create_notification_trigger():
+    sql = """
+    CREATE TRIGGER notification_trigger
+        AFTER INSERT ON noteFavorites
+        FOR EACH ROW
+    BEGIN
+        INSERT INTO notifications (username, message)
+        SELECT UID, CONCAT((SELECT name from spotifyUsers where username=NEW.liker), " liked your note") from notes where ID = NEW.note_id;
+    END
+    """
+    cursor.execute(sql)
+
 if __name__ == '__main__':
     make_users_table()
     make_songs_tables()
@@ -158,3 +181,5 @@ if __name__ == '__main__':
     make_spotify_users_table()
     make_artist_follows_table()
     make_note_favorites_table()
+    make_notifications_table()
+    create_notification_trigger()
