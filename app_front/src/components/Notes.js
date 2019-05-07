@@ -20,7 +20,7 @@ class Notes extends React.Component {
             editUID: this.props.editUID || '',
             editID: this.props.editID || '',
             editMsg: this.props.editMsg || '',
-            notes: []
+            notes: this.props.notes
         };
 
         this.handleDelete = this.handleDelete.bind(this);
@@ -36,13 +36,14 @@ class Notes extends React.Component {
             this.props.loadTimelineNotes();
         }
         else {
-            this.props.loadProfileNotes();
+            const username = this.props.username;
+            this.props.loadProfileNotes({username});
         }
     }
 
     componentDidUpdate(prevProps) {
         if(this.props.notes !== prevProps.notes) {
-            this.setState({notes: this.props.notes})
+            this.setState({notes: this.props.notes, loading: false})
         }
     }
 
@@ -129,7 +130,7 @@ class Notes extends React.Component {
     render() {
         return(
             <div className="Notes">
-                {this.populateFeed()}
+                {this.state.loading? null: this.populateFeed()}
             </div>
         );
     }

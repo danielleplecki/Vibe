@@ -18,8 +18,8 @@ class App extends Component {
                   <SideNav />
                   <Switch>
                       <Route exact path="/graph" component={GraphPage} />
-                      <Route exact path="/search_results" component={SearchUsersPage} />
-                      <Route exact path="/:id" component={UserPage} />
+                      <Route exact path="/search/:query" component={SearchUsersPage} />
+                      <Route exact path="/:username" component={UserPage} />
                       <Route exact path="/" component={HomePage} />
                   </Switch>
               </div>

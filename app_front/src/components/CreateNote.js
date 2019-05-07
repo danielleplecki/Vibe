@@ -20,7 +20,7 @@ class CreateNote extends React.Component {
         super(props);
         this.state = {
             loading: props.loading || false,
-            user: props.user,
+            user: props.rootUser,
             msg: props.message || '',
             songOpen: false,
             song: {},
@@ -179,7 +179,7 @@ class CreateNote extends React.Component {
 }
 
 export default connect(state => ({
-    user: state.user
+    user: state.rootUser
 }), {
     createNote
 })(CreateNote);

@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { searchUsers } from '../actions/user';
+import { searchUsers } from '../actions/users';
+import { history } from '../store';
 import Button from '@material-ui/core/Button';
 import TextField from "@material-ui/core/TextField/TextField";
 import Typography from "@material-ui/core/Typography/Typography";
@@ -28,6 +29,8 @@ class SearchUsersPage extends React.Component {
 
     componentDidMount() {
         this.setState({ loading: true });
+        const name = this.props.match.params.query;
+        this.props.searchUsers({name});
     }
 
     componentDidUpdate(prevProps) {
@@ -37,7 +40,8 @@ class SearchUsersPage extends React.Component {
     }
 
     handleListItemClick = (event, index) => {
-        this.setState({ selectedIndex: index });
+        const user = this.state.users[index].username;
+        history.push(`/${user}`);
     };
 
     render() {
@@ -70,7 +74,7 @@ class SearchUsersPage extends React.Component {
 }
 
 export default connect(state => ({
-    users: state.users
+    users: state.users.users
 }), {
     searchUsers
 })(SearchUsersPage);

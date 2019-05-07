@@ -7,12 +7,6 @@ const NotesReducer = (state = initialState, action) => {
                 ...action.notes
             ];
 
-        case 'NOTES:ERROR':
-            return {
-                ...state,
-                popupType: action.popup.popupType,
-                popupProps: action.popup.popupProps
-            };
 
         case 'NOTES:CREATED':
             return [

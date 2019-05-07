@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { loadProfileNotes } from '../actions/notes';
 import '../styles/components/Notes.css';
 import '../styles/components/UserPage.css';
 import Notes from './Notes';
@@ -8,12 +9,15 @@ import Avatar from "@material-ui/core/Avatar/Avatar";
 import CardContent from "@material-ui/core/CardContent/CardContent";
 import Typography from "@material-ui/core/Typography/Typography";
 import { connect } from 'react-redux';
+import { getUser } from '../actions/users';
 
 class UserPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: this.props.user,
+            searchedUser: null,
+            rootUser: this.props.rootUser,
+            notes: [],
             recents: [
                 {name: 'Feel So Close - Radio Edit', artist: 'Calvin Harris', image_url: 'https://i.scdn.co/image/0c2d72aeb2d1a6d2026d791e2331abb8634fc536'},
                 {name: 'One Dance', artist: 'Drake', image_url: 'https://i.scdn.co/image/53cade3f121243b5ba7a5747ff306bc220d41e59'},
@@ -23,25 +27,49 @@ class UserPage extends Component {
         };
     }
 
+    componentDidMount() {
+        this.setState({ loading: true });
+        if(this.props.match.params.username === "me") {
+            const username = this.props.rootUser.username;
+            this.props.loadProfileNotes({username});
+        }
+        else {
+            const name = this.props.match.params.username;
+            const username = name
+            this.props.getUser({name});
+            this.props.loadProfileNotes({username});
+        }
+    }
+
     componentDidUpdate(prevProps) {
-        if (this.props.user !== prevProps.user) {
-            this.setState({user: this.props.user})
+        if (this.props.rootUser !== prevProps.rootUser) {
+            this.setState({rootUser: this.props.rootUser})
+        }
+
+        if (this.props.searchedUser !== prevProps.searchedUser) {
+            this.setState({searchedUser: this.props.searchedUser})
+        }
+
+        if(this.props.notes !== prevProps.notes) {
+            this.setState({notes: this.props.notes})
         }
     }
 
     render() {
+        const user = this.props.match.params.username === "me"? this.state.rootUser : this.state.searchedUser;
+        if(user == null) { return null; }
         return(
             <Card className="page">
                 <div className="profile-header">
                     <CardMedia className="profile-photo" title="User profile photo" image="picture">
-                        <Avatar src={this.state.user.image} className="profile-img"/>
+                        <Avatar src={user.image} className="profile-img"/>
                     </CardMedia>
                     <CardContent className="profile-details">
                         <Typography component="h2" variant="h2" align="left">
-                            {this.state.user.name}
+                            {user.name}
                         </Typography>
                         <Typography variant="subtitle1" color="textSecondary" align="left">
-                            Vibing since {this.state.user.time_joined}
+                            Vibing since {user.time_joined}
                         </Typography>
                     </CardContent>
                 </div>
@@ -65,13 +93,17 @@ class UserPage extends Component {
                         );
                     })}
                 </div>
-                <Notes feed="profile" />
+                <Notes feed="profile" username={user.username} />
             </Card>
         );
     }
 }
 
 export default connect(state => ({
-    user: state.user,
+    rootUser: state.rootUser,
+    notes: state.notes,
+    searchedUser: state.users.searchedUser
 }), {
+    loadProfileNotes,
+    getUser
 })(UserPage);

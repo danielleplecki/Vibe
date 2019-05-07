@@ -1,10 +1,14 @@
 import React from 'react';
-import { getTokenAndAuthorize, authorizeUser } from '../actions/user';
+import { getTokenAndAuthorize, authorizeUser } from '../actions/rootUser';
 import { connect } from 'react-redux';
 import '../styles/components/Login.css';
+import { history } from '../store';
+
+
 const querystring = require('querystring');
 const redirect_uri = "http://localhost:3000/login";
 const client_id = "8adbd806dc8e4c88803ef47802693e4e";
+
 
 class Login extends React.Component {
     constructor(props) {
@@ -26,13 +30,14 @@ class Login extends React.Component {
         const params = new URLSearchParams(this.props.location.search);
         const code = params.get('code');
         if (code){
-            this.setState({"code" : code})
+            this.setState({code : code})
         }
     }
 
     componentDidUpdate(prevProps) {
         if (this.props.authorized !== prevProps.authorized) {
-            this.setState({authorized: this.props.authorized})
+            this.setState({authorized: this.props.authorized});
+            history.push("/");
         }
 
         if (this.props.token !== prevProps.token) {
@@ -93,8 +98,8 @@ class Login extends React.Component {
 }
 
 export default connect(state => ({
-    authorized: state.user.authorized,
-    token: state.user.token
+    authorized: state.rootUser.authorized,
+    token: state.rootUser.token
 }), {
     authorizeUser,
     getTokenAndAuthorize

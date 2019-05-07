@@ -15,22 +15,30 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar/Avatar";
 import ListSubheader from "@material-ui/core/ListSubheader/ListSubheader";
 import { connect } from "react-redux";
+import { getRootUser } from "../actions/rootUser";
 
 class SideNav extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: this.props.user
+            loading: true,
+            rootUser: undefined
         };
     }
 
+    componentDidMount() {
+        this.setState({loading: true});
+        this.props.getRootUser();
+    }
+
     componentDidUpdate(prevProps) {
-        if (this.props.user !== prevProps.user) {
-            this.setState({user: this.props.user})
+        if (this.props.rootUser !== prevProps.rootUser) {
+            this.setState({rootUser: this.props.rootUser, loading: false});
         }
     }
 
     render() {
+        if(this.state.loading){ return null; }
         return(
             <Drawer
                 className="drawer sidenav"
@@ -42,8 +50,8 @@ class SideNav extends Component {
             >
                 <div className="toolbar" />
                 <List>
-                    <Avatar src={this.state.user.image} className="side-avatar" />
-                    <ListItemText primary={this.state.user.name} />
+                    <Avatar src={this.state.rootUser.image} className="side-avatar" />
+                    <ListItemText primary={this.state.rootUser.name} />
                     <ListItemText secondary="30 followers" />
                     <ListItemText secondary="53 notes" />
                 </List>
@@ -68,6 +76,7 @@ class SideNav extends Component {
 }
 
 export default connect(state => ({
-    user: state.user,
+    rootUser: state.rootUser,
 }), {
+    getRootUser
 })(SideNav);

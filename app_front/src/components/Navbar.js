@@ -14,8 +14,35 @@ import AppBar from "@material-ui/core/AppBar/AppBar";
 import '../styles/components/Navbar.css';
 import Button from "@material-ui/core/Button/Button";
 import ListItem from "@material-ui/core/ListItem/ListItem";
+import { history } from '../store';
+import TextField from "@material-ui/core/TextField/TextField";
 
 class Navbar extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            open: props.open,
+            loading: props.loading || false,
+            query: props.query || '',
+            songs: [],
+            showResults: false,
+            selectedIndex: -1
+        };
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleKeyDown = this.handleKeyDown.bind(this);
+    }
+
+    handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            history.push(`/search/${this.state.query}`);
+        }
+    };
+
+    handleChange(e) {
+        this.setState({ [e.target.id]: e.target.value });
+    }
+
     render() {
         return (
             <div className="navbar">
@@ -43,6 +70,11 @@ class Navbar extends Component {
                                     root: "input-root",
                                     input: "input-input",
                                 }}
+                                onKeyDown={this.handleKeyDown}
+                                id="query"
+                                label="Song"
+                                value={this.state.query}
+                                onChange={this.handleChange}
                             />
                         </div>
                         <IconButton color="inherit">
@@ -50,7 +82,7 @@ class Navbar extends Component {
                                 <NotificationsIcon />
                             </Badge>
                         </IconButton>
-                        <IconButton color="inherit" component={RouterLink} to="1234">
+                        <IconButton color="inherit" component={RouterLink} to="/me">
                             <AccountCircle />
                         </IconButton>
                     </Toolbar>

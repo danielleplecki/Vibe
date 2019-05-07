@@ -1,20 +1,14 @@
 import React from "react";
 import connect from "react-redux/es/connect/connect";
-import {authorizeUser} from "../actions/user";
+import {authorizeUser} from "../actions/rootUser";
 import {Redirect, Route} from "react-router";
 
 class PrivateRoute extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            authorized: props.authorized
+            authorized: this.props.rootUser.authorized
         };
-    }
-
-    componentDidUpdate(prevProps) {
-        if (this.props.authorized !== prevProps.authorized) {
-            this.setState({authorized: this.props.authorized})
-        }
     }
 
 
@@ -38,7 +32,5 @@ class PrivateRoute extends React.Component {
     }
 }
 
-export default connect(state => ({
-    authorized: state.user.authorized
-}), {
+export default connect(state => state, {
 })(PrivateRoute);

@@ -4,17 +4,20 @@ import appReducer from './app';
 import notesReducer from './notes';
 import songsReducer from './songs';
 import artistsReducer from './artists';
-import { userReducer, usersReducer } from './user';
+import rootUserReducer from './rootUser';
+import usersReducer from './users';
+import followReducer from './follow';
 
 const createReducer = (history) => combineReducers(
     {
         app: appReducer,
         router: connectRouter(history),
-        user: userReducer,
+        rootUser: rootUserReducer,
         users: usersReducer,
         notes: notesReducer,
         songs: songsReducer,
-        artists: artistsReducer
+        artists: artistsReducer,
+        followers: followReducer
     }
 );
 
