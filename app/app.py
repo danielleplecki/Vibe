@@ -189,6 +189,17 @@ def update_notes_handler(id):
     updated_rows = notes_endpoint.update_note(id, message)
     return json_output("{n} row(s) successfully updated".format(n=updated_rows), 200)
 
+@app.route("/notifications", methods=['GET'])
+@cross_origin(supports_credentials=True)
+def get_notifications():
+    if not user_is_authenticated():
+        return get_unauthenticated_response()
+    username = session['username']
+    stmt = """SELECT * from notifications WHERE username = %s"""
+    vals = (username,)
+    results = query(stmt, vals)
+    return json_output(results, 200)
+
 @app.route("/songs", methods=['GET'])
 @cross_origin(supports_credentials=True)
 def search_song_by_name():
