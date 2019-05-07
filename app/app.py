@@ -286,8 +286,7 @@ def get_recommended_songs():
 @app.route("/graph", methods=['GET'])
 @cross_origin(supports_credentials=True)
 def get_graph_vis():
-    # should pass session['username]
-    res = graph_setup("testuser1")
+    res = graph_setup(session['username'])
     return json_output(prepare_data(res[0], res[1]), 200)
 
 if __name__ == "__main__":
