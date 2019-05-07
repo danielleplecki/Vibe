@@ -6,8 +6,8 @@ import Navbar from './Navbar';
 import SideNav from './SideNav';
 import HomePage from './HomePage';
 import UserPage from './UserPage';
-import GraphPage from './GraphPage';
 import SearchUsersPage from './SearchUsersPage';
+import GraphPage from './GraphPage';
 
 class App extends Component {
   render() {

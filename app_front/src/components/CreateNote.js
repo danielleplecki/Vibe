@@ -52,10 +52,12 @@ class CreateNote extends React.Component {
         }
 
         else {
-            const { UID, msg } = this.state;
+            const { UID, msg, contentType } = this.state;
+            const ID = this.state.contentType === "song"? this.state.song.spotify_id : this.state.artist.spotify_id;
             this.props.createNote({
-                UID,
-                msg
+                message: msg,
+                type: contentType,
+                contentId: ID
             });
 
         }

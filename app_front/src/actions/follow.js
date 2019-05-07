@@ -5,7 +5,8 @@ const followersLoaded = users => ({
 
 const getFollowers = () => (dispatch, getState) => {
     fetch("http://sp19-cs411-52.cs.illinois.edu:5000/me", {
-        method: 'GET'
+        method: 'GET',
+        credentials: 'include',
     })
         .then(response => response.json())
         .then((users) => dispatch(followersLoaded(users)))

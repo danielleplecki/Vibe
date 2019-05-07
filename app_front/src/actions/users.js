@@ -16,7 +16,8 @@ const getUser = (query) => (dispatch, getState) => {
     Object.keys(query).forEach(key => url.searchParams.append(key, query[key]));
     console.log(url);
     fetch(url.href, {
-        method: 'GET'
+        method: 'GET',
+        credentials: 'include',
     })
         .then(response => response.json())
         .then((users) => dispatch(userLoaded(users)))
@@ -31,7 +32,8 @@ const searchUsers = (query) => (dispatch, getState) => {
     Object.keys(query).forEach(key => url.searchParams.append(key, query[key]));
     console.log(url);
     fetch(url.href, {
-        method: 'GET'
+        method: 'GET',
+        credentials: 'include',
     })
         .then(response => response.json())
         .then((users) => dispatch(usersLoaded(users)))

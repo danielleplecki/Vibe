@@ -6,7 +6,8 @@ const initialState = {
     num_notes: null,
     num_follows: null,
     authorized: null,
-    token: null
+    token: null,
+    graph: null
 };
 
 const rootUserReducer = (state = initialState, action) => {
@@ -29,12 +30,17 @@ const rootUserReducer = (state = initialState, action) => {
             }
 
 
-
         case 'ROOT_USER:USER_LOADED':
             return {
                 ...state,
                 num_follows: action.user.num_follows,
                 num_notes: action.user.num_notes
+            };
+
+        case 'ROOT_USER:GRAPH_LOADED':
+            return {
+                ...state,
+                graph: action.graph
             };
 
         default:

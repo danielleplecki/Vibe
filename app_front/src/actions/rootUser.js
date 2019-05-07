@@ -16,12 +16,30 @@ const userLoaded = user => ({
     user: user
 });
 
+const graphLoaded = graph => ({
+    type: 'ROOT_USER:GRAPH_LOADED',
+    graph: graph
+});
+
 const getRootUser = () => (dispatch, getState) => {
     fetch("http://sp19-cs411-52.cs.illinois.edu:5000/me", {
-        method: 'GET'
+        method: 'GET',
+        credentials: 'include'
     })
         .then(response => response.json())
         .then(( user ) => dispatch(userLoaded(user)))
+        .catch(err => {
+            console.error(err);
+        });
+};
+
+const getGraph = () => (dispatch, getState) => {
+    fetch("http://sp19-cs411-52.cs.illinois.edu:5000/graph", {
+        method: 'GET',
+        credentials: 'include',
+    })
+        .then(response => response.json())
+        .then(( graph ) => dispatch(graphLoaded(graph)))
         .catch(err => {
             console.error(err);
         });
@@ -58,5 +76,6 @@ const authorizeUser = (result) => (dispatch, getState) => {
 export {
     getTokenAndAuthorize,
     authorizeUser,
-    getRootUser
+    getRootUser,
+    getGraph
 };

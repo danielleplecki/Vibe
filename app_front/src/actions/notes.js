@@ -20,6 +20,7 @@ const notesUpdated = note => ({
 const createNote = (note) => (dispatch, getState) => {
     fetch("http://sp19-cs411-52.cs.illinois.edu:5000/notes", {
         method: 'POST',
+        credentials: 'include',
         body: JSON.stringify({
             UID: note.UID,
             message: note.msg
@@ -39,7 +40,8 @@ const createNote = (note) => (dispatch, getState) => {
 
 const loadTimelineNotes = () => (dispatch, getState) => {
     fetch("http://sp19-cs411-52.cs.illinois.edu:5000/timeline", {
-        method: 'GET'
+        method: 'GET',
+        credentials: 'include'
     })
         .then(response => response.json())
         .then(( notes ) => dispatch(notesLoaded(notes)))
@@ -50,7 +52,8 @@ const loadTimelineNotes = () => (dispatch, getState) => {
 
 const loadProfileNotes = () => (dispatch, getState) => {
     fetch("http://sp19-cs411-52.cs.illinois.edu:5000/notes", {
-        method: 'GET'
+        method: 'GET',
+        credentials: 'include',
     })
         .then(response => response.json())
         .then(( notes ) => dispatch(notesLoaded(notes)))
@@ -62,6 +65,7 @@ const loadProfileNotes = () => (dispatch, getState) => {
 const editNote = (note) => (dispatch, getState) => {
     fetch(`http://sp19-cs411-52.cs.illinois.edu:5000/notes/${note.editID}`, {
         method: 'PUT',
+        credentials: 'include',
         body: JSON.stringify({
             message: note.editMsg
         }),
@@ -75,6 +79,7 @@ const editNote = (note) => (dispatch, getState) => {
 const deleteNote = (noteID) => (dispatch, getState) => {
     fetch(`http://sp19-cs411-52.cs.illinois.edu:5000/notes/${noteID}`, {
         method: 'DELETE',
+        credentials: 'include',
     })
         .then(response => response.json())
 };
