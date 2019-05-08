@@ -235,10 +235,28 @@ def search_users_by_name_or_username():
     name = request.args.get("name", None)
     if name is None:
         return json_error("Endpoint requres 'name' query parameter\n", 400)
-    stmt = """SELECT username, name, image FROM spotifyUsers WHERE name LIKE %s or username LIKE %s"""
+    stmt = """SELECT * FROM spotifyUsers WHERE name LIKE %s or username LIKE %s"""
     vals = ("%" + name + "%", "%" + name + "%")
     results = query(stmt, vals)
     return json_output(results, 200)
+
+@app.route("/users/<username>", methods=['GET'])
+@cross_origin(supports_credentials=True)
+def get_user(username):
+    user = username
+    stmt = """SELECT * from spotifyUsers WHERE username = %s"""
+    vals = (user,)
+    user = query(stmt, vals)[0]
+    stmt = """SELECT count(*) as num_followers from follows where followee = %s"""
+    num_followers = query(stmt, vals)[0]
+    stmt = """SELECT count(*) as num_following from follows where follower = %s"""
+    num_following = query(stmt, vals)[0]
+    stmt = """SELECT count(*) as num_notes from notes where UID = %s"""
+    num_notes = query(stmt, vals)[0]
+    user.update(num_followers)
+    user.update(num_following)
+    user.update(num_notes)
+    return json_output(user, 200)
 
 @app.route("/me", methods=['GET'])
 @cross_origin(supports_credentials=True)
@@ -249,11 +267,14 @@ def get_current_user():
     stmt = """SELECT * from spotifyUsers WHERE username = %s"""
     vals = (user,)
     user = query(stmt, vals)[0]
-    stmt = """SELECT count(*) as num_follows from follows where followee = %s"""
-    num_follows = query(stmt, vals)[0]
+    stmt = """SELECT count(*) as num_followers from follows where followee = %s"""
+    num_followers = query(stmt, vals)[0]
+    stmt = """SELECT count(*) as num_following from follows where follower = %s"""
+    num_following = query(stmt, vals)[0]
     stmt = """SELECT count(*) as num_notes from notes where UID = %s"""
     num_notes = query(stmt, vals)[0]
-    user.update(num_follows)
+    user.update(num_followers)
+    user.update(num_following)
     user.update(num_notes)
     return json_output(user, 200)
 
