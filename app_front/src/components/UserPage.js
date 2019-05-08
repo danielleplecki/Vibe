@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { history } from '../store';
 import { loadProfileNotes } from '../actions/notes';
+import { loadRecents } from '../actions/songs';
 import '../styles/components/Notes.css';
 import '../styles/components/UserPage.css';
 import Notes from './Notes';
@@ -20,12 +21,7 @@ class UserPage extends Component {
             searchedUser: null,
             rootUser: this.props.rootUser,
             notes: [],
-            recents: [
-                {name: 'Feel So Close - Radio Edit', artist: 'Calvin Harris', image_url: 'https://i.scdn.co/image/0c2d72aeb2d1a6d2026d791e2331abb8634fc536'},
-                {name: 'One Dance', artist: 'Drake', image_url: 'https://i.scdn.co/image/53cade3f121243b5ba7a5747ff306bc220d41e59'},
-                {name: 'Apparently', artist: 'J. Cole', image_url: 'https://i.scdn.co/image/176606ea8b00ee668e47de155c95a6fc1418bad6'},
-                {name: 'Born To Be Yours', artist: 'Kygo', image_url: 'https://i.scdn.co/image/ba230e4737d90e652e42b7198b2c38157a3ed600'}
-            ]
+            recents: []
         };
     }
 
@@ -34,12 +30,20 @@ class UserPage extends Component {
         if(this.props.match.params.username === "me") {
             const username = this.props.rootUser.username;
             this.props.loadProfileNotes({username});
+            this.props.loadRecents({username})
         }
         else {
             const name = this.props.match.params.username;
             const username = name;
             this.props.getUser(username);
             this.props.loadProfileNotes({username});
+            this.props.loadRecents({username})
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.value !== this.props.value) {
+            this.setState({ value: nextProps.value });
         }
     }
 
@@ -55,6 +59,33 @@ class UserPage extends Component {
         if(this.props.notes !== prevProps.notes) {
             this.setState({notes: this.props.notes})
         }
+
+        if(this.props.recents !== prevProps.recents){
+          this.setState({recents: this.props.recents})
+        }
+    }
+
+    populateRecents  = () => {
+      let self = this;
+          return (
+            <div className="profile-recents">
+            {self.state.recents.map(function(item, key){
+              return(
+                <Card className="recent-item">
+                    <CardContent>
+                        <Avatar src={item.image_url} className="recent-img" />
+                        <Typography component="subtitle2" variant="subtitle2" align="center" >
+                            {item.name}
+                        </Typography>
+                        <Typography component="caption-text" variant="caption-text" align="center" >
+                            {item.artist}
+                        </Typography>
+                    </CardContent>
+                </Card>
+              );
+            })}
+            </div>
+          );
     }
 
 
@@ -88,25 +119,14 @@ class UserPage extends Component {
                               }}>{user.num_following} following</Link>
                     </CardContent>
                 </div>
+                <div>
                 <Typography component="h4" variant="h4" align="left">
                     Recent Vibes
                 </Typography>
-                <div className="profile-recents">
-                    {this.state.recents.map(function(item, key) {
-                        return (
-                            <Card className="recent-item">
-                                <CardContent>
-                                    <Avatar src={item.image_url} className="recent-img" />
-                                    <Typography component="subtitle2" variant="subtitle2" align="center" >
-                                        {item.name}
-                                    </Typography>
-                                    <Typography component="caption-text" variant="caption-text" align="center" >
-                                        {item.artist}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
-                        );
-                    })}
+                  {this.state.recents ?
+                    this.populateRecents() :
+                    null
+                  }
                 </div>
                 <Notes feed="profile" username={this.props.match.params.username} />
             </Card>
@@ -117,8 +137,10 @@ class UserPage extends Component {
 export default connect(state => ({
     rootUser: state.rootUser,
     notes: state.notes,
-    searchedUser: state.users.searchedUser
+    searchedUser: state.users.searchedUser,
+    recents: state.recents
 }), {
     loadProfileNotes,
+    loadRecents,
     getUser
 })(UserPage);
