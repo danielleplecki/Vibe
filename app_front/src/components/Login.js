@@ -6,7 +6,7 @@ import { history } from '../store';
 
 
 const querystring = require('querystring');
-const redirect_uri = "http://localhost:3000/login";
+const redirect_uri = window.location.hostname === 'localhost' ? "http://localhost:3000/login" : "http://sp19-cs411-52.cs.illinois.edu/login"
 const client_id = "8adbd806dc8e4c88803ef47802693e4e";
 
 
