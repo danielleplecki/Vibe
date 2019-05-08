@@ -84,7 +84,9 @@ def logout_user():
 @cross_origin(supports_credentials=True)
 def swap_code():
     data = request.get_json()
-    token = get_spotify_data.get_token_from_code(data['code'])
+    origin = request.environ.get("HTTP_ORIGIN", None)
+    redirect_uri = "http://sp19-cs411-52.cs.illinois.edu/login" if origin and 'sp19' in origin else "http://localhost:3000/login"
+    token = get_spotify_data.get_token_from_code(data['code'], redirect_uri)
     if token is None:
         return json_error("Invalid access code", 401)
     print(token)
