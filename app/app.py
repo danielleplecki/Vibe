@@ -136,6 +136,14 @@ def get_follows(username):
     results = {"following" : following, "followers" : followers}
     return json_output(results, 200)
 
+@app.route("/favorites", methods=['GET'])
+@cross_origin(supports_credentials=True)
+def get_favorite_notes():
+    if not user_is_authenticated():
+        return get_unauthenticated_response()
+    notes = notes_endpoint.get_favorite_notes(session['username'])
+    return json_output(notes, 200)
+
 @app.route("/notes", methods=['POST'])
 @cross_origin(supports_credentials=True)
 def new_notes_handler():

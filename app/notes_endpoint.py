@@ -89,3 +89,23 @@ def get_notes(username):
         notes.extend(song_notes)
         notes = sorted(notes, key=lambda note: note['time'], reverse=True)
         return notes
+
+def get_favorite_notes(username):
+    stmt = """
+            (SELECT * from notes, artists
+                WHERE type = 'artist' AND notes.content_id = artists.spotify_id
+                AND notes.ID in (SELECT note_id from noteFavorites where liker = %s)
+                ORDER BY time DESC)
+            """
+    vals = (username,)
+    notes = base_db.query(stmt, vals)
+    stmt = """
+            (SELECT * from notes, songs
+                WHERE type = 'song' AND notes.content_id = songs.spotify_id
+                AND notes.ID in (SELECT note_id from noteFavorites where liker = %s)
+                ORDER BY time DESC)
+            """
+    song_notes = base_db.query(stmt, vals)
+    notes.extend(song_notes)
+    notes = sorted(notes, key=lambda note: note['time'], reverse=True)
+    return notes
