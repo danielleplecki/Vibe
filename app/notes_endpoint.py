@@ -87,4 +87,5 @@ def get_notes(username):
                 """
         song_notes = base_db.query(stmt, vals)
         notes.extend(song_notes)
+        notes = sorted(notes, key=lambda note: note['time'], reverse=True)
         return notes

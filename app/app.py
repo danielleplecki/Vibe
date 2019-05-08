@@ -301,6 +301,7 @@ def get_timeline():
             """
     song_notes = query(stmt, vals)
     notes.extend(song_notes)
+    notes = sorted(notes, key=lambda note: note['time'], reverse=True)
     return json_output(notes, 200)
 
 @app.route("/recommended", methods=['GET'])
