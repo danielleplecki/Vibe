@@ -11,7 +11,7 @@ const initialState = {
     recommended: null,
     favorites: null,
     notifications: null,
-    num_notifications: 0
+    num_notifications: -1
 };
 
 const rootUserReducer = (state = initialState, action) => {

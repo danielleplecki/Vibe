@@ -122,6 +122,22 @@ const addFavorite = (note) => (dispatch, getState) => {
         });
 };
 
+const addFollower = (username) => (dispatch, getState) => {
+    fetch(`http://sp19-cs411-52.cs.illinois.edu:5000/follows`, {
+        method: "POST",
+        credentials: 'include',
+        body: JSON.stringify({
+            followee: username
+        }),
+        headers: {
+            "Content-Type": "application/json; charset=utf-8",
+        }
+    }).then(async response => response.json())
+        .catch(err => {
+            console.error(err);
+        });
+};
+
 const getTokenAndAuthorize = (code) => (dispatch, getState) => {
     fetch("http://sp19-cs411-52.cs.illinois.edu:5000/code", code)
         .then(async response => response.json())
@@ -159,5 +175,6 @@ export {
     addFavorite,
     getFavorites,
     getNotifications,
-    clearNotifications
+    clearNotifications,
+    addFollower
 };

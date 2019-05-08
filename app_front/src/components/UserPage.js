@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { history } from '../store';
 import { loadProfileNotes } from '../actions/notes';
 import { loadRecents } from '../actions/songs';
+import { addFollower } from '../actions/rootUser';
 import '../styles/components/Notes.css';
 import '../styles/components/UserPage.css';
 import Notes from './Notes';
@@ -13,7 +14,8 @@ import Typography from "@material-ui/core/Typography/Typography";
 import { connect } from 'react-redux';
 import { getUser } from '../actions/users';
 import Link from "@material-ui/core/Link/Link";
-import Divider from "@material-ui/core/Divider/Divider";
+import FollowIcon from "@material-ui/icons/PersonAdd";
+import IconButton from "@material-ui/core/IconButton/IconButton";
 
 class UserPage extends Component {
     constructor(props) {
@@ -24,6 +26,8 @@ class UserPage extends Component {
             notes: [],
             recents: []
         };
+
+        this.handleFollow = this.handleFollow.bind(this);
     }
 
     componentDidMount() {
@@ -64,6 +68,11 @@ class UserPage extends Component {
         if(this.props.recents !== prevProps.recents){
           this.setState({recents: this.props.recents})
         }
+    }
+
+    handleFollow() {
+        const username = this.props.match.params.username
+        this.props.addFollower(username);
     }
 
     populateRecents  = () => {
@@ -108,9 +117,14 @@ class UserPage extends Component {
                         <Avatar src={user.image} className="profile-img"/>
                     </CardMedia>
                     <CardContent className="profile-details">
-                        <Typography component="h2" variant="h2" align="left">
-                            {user.name}
-                        </Typography>
+                        <div>
+                            <Typography component="h2" variant="h2" align="left">
+                                {user.name}
+                            </Typography>
+                            <IconButton color="inherit" onClick={this.handleFollow}>
+                                <FollowIcon />
+                            </IconButton>
+                        </div>
                         <Typography variant="subtitle1" color="textSecondary" align="left">
                             Vibing since {user.time_joined}
                         </Typography>
@@ -152,5 +166,6 @@ export default connect(state => ({
 }), {
     loadProfileNotes,
     loadRecents,
-    getUser
+    getUser,
+    addFollower
 })(UserPage);
