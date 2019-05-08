@@ -13,6 +13,8 @@ import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import Modal from '@material-ui/core/Modal';
 import TextField from "@material-ui/core/TextField/TextField";
 import Button from "@material-ui/core/Button/Button";
+import Avatar from "@material-ui/core/Avatar/Avatar";
+import '../styles/components/Notes.css';
 
 class Notes extends React.Component {
     constructor(props) {
@@ -99,15 +101,47 @@ class Notes extends React.Component {
         );
     };
 
+    songDetails = (item) => {
+        return(
+            <div className="content-details">
+                <Typography component="h4" variant="h4" align="left" >
+                    {item.name}
+                </Typography>
+                <Typography component="caption-text" variant="caption-text" align="left">
+                    {item.album_name}
+                </Typography>
+                <br/>
+                <Typography component="h5" variant="h5" align="left" >
+                    {item.artist}
+                </Typography>
+            </div>
+        );
+    };
+
+    artistDetails = (item) => {
+        return(
+            <div className="content-details">
+                <Typography component="h4" variant="h4" align="left" >
+                    {item.name}
+                </Typography>
+            </div>
+        );
+    };
+
     populateFeed = () => {
         let self = this;
+        if(self.state.notes.length === 0) {
+            return (
+                <p>Currently no notes</p>
+            );
+        }
 
         return(
             <div>
                 <div>{self.state.notes.map(function(item, key) {
                     item.favorited = true;
                     return (
-                            <Card className="note">
+                            <Card className="page">
                                 <CardContent>
                                     <Typography variant="subtitle2" align="left">
                                         {item.UID}
@@ -115,6 +149,10 @@ class Notes extends React.Component {
                                     <Typography variant="caption text" align="left">
                                         {item.time}
                                     </Typography>
+                                    <div className="note-content">
+                                        <Avatar src={item.image_url} style={{ borderRadius: 0 }} className="content-image" />
+                                        {item.type === "song"? self.songDetails(item): self.artistDetails(item)}
+                                    </div>
                                     <Typography variant="body1">
                                         {item.message}
                                     </Typography>

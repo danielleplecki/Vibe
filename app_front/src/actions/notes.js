@@ -31,9 +31,7 @@ const createNote = (note) => (dispatch, getState) => {
         }
     })
         .then(response => response.json())
-        .then(note => {
-            dispatch(noteCreated(note));
-        })
+        .then(dispatch(loadTimelineNotes()))
         .catch(err => {
             console.error(err);
         });

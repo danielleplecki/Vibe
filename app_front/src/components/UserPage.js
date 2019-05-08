@@ -68,6 +68,12 @@ class UserPage extends Component {
 
     populateRecents  = () => {
       let self = this;
+      if(self.state.recents.length === 0) {
+          return (
+              <p>Currently no recent vibes</p>
+          );
+      }
+
           return (
             <div className="profile-recents">
             {self.state.recents.map(function(item, key){
@@ -87,7 +93,7 @@ class UserPage extends Component {
             })}
             </div>
           );
-    }
+    };
 
 
 

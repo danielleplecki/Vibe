@@ -2,7 +2,7 @@ import React from 'react';
 import { Graph } from 'react-d3-graph';
 import { getGraph } from '../actions/rootUser';
 import {connect} from "react-redux";
-import {deleteNote, editNote, loadProfileNotes, loadTimelineNotes} from "../actions/notes";
+import '../styles/Main.css';
 
 class GraphPage extends React.Component {
     constructor(props) {
@@ -43,6 +43,7 @@ class GraphPage extends React.Component {
                         id="graph"
                         data={this.state.graph}
                         config={myconfig}
+                        className="graph"
                     />
                 </div>
             </div>

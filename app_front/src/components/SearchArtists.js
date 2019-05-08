@@ -66,7 +66,7 @@ class SearchArtists extends React.Component {
     submitButton() {
         let self = this;
         return(<Button onClick={self.handleSubmit} color="primary">
-                Add Song
+                Add Artist
             </Button>
         );
     }
