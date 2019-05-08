@@ -26,7 +26,8 @@ def gen_data(username, node_data, edge_data, layers=False):
     for u in user_data:
         if layers:
             add_node(node_data, u[0], USER_TYPE, u[2])
-        add_node(node_data, u[1], USER_TYPE, u[2])
+        followee_img = (query(getFolloweeImageQuery(u[1]), with_description=False))[0]
+        add_node(node_data, u[1], USER_TYPE, followee_img)
         add_edge(edge_data, u[0], u[1], USER_TYPE)
 
     for a in artist_data:
@@ -79,4 +80,8 @@ def songQuery(username):
     return "SELECT songs.name, songs.image_url FROM songs, songFavorites\
     WHERE songs.spotify_id=songFavorites.song_spotify_id\
     AND songFavorites.username='"+username+"'"
+
+def getFolloweeImageQuery(username):
+    return "SELECT image FROM spotifyUsers\
+    WHERE username='"+username+"'"
 
