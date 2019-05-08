@@ -81,10 +81,10 @@ class UserPage extends Component {
                 <Card className="recent-item">
                     <CardContent>
                         <Avatar src={item.image_url} className="recent-img" />
-                        <Typography component="subtitle2" variant="subtitle2" align="left" >
+                        <Typography component="subtitle2" variant="subtitle2" align="center" >
                             {item.name}
                         </Typography>
-                        <Typography component="caption-text" variant="caption-text" align="left" >
+                        <Typography component="caption-text" variant="caption-text" align="center" >
                             {item.artist}
                         </Typography>
                     </CardContent>
