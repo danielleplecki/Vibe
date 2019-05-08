@@ -108,7 +108,7 @@ class UserPage extends Component {
                         );
                     })}
                 </div>
-                <Notes feed="profile" username={user.username} />
+                <Notes feed="profile" username={this.props.match.params.username} />
             </Card>
         );
     }
