@@ -11,3 +11,27 @@
     padding-bottom: 0;
     text-align: left;
 }
+
+.notediv {
+  float: left;
+}
+
+.infodiv {
+  float:left;
+}
+
+.favoritediv {
+  float:right;
+}
+
+.messagediv {
+  margin-top: 25px;
+}
+
+.note-img {
+    margin: auto;
+    width: 30%;
+    align: left;
+    height: auto;
+    display: inline-block;
+}
