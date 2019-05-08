@@ -12,6 +12,7 @@
     text-align: left;
 }
 
+<<<<<<< HEAD
 .note-content {
     display: flex;
     flex-direction: row;
@@ -33,3 +34,28 @@
     width: 25%;
     height: auto;
 }
+=======
+.notediv {
+  float: left;
+}
+
+.infodiv {
+  float:left;
+}
+
+.favoritediv {
+  float:right;
+}
+
+.messagediv {
+  margin-top: 25px;
+}
+
+.note-img {
+    margin: auto;
+    width: 30%;
+    align: left;
+    height: auto;
+    display: inline-block;
+}
+>>>>>>> 8ca9f66a3ae42d5d112f2686310fecaeacdde2e0
