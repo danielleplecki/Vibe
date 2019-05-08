@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { searchUsers } from '../actions/users';
+import { getFollows } from '../actions/follow';
 import { history } from '../store';
 import Button from '@material-ui/core/Button';
 import TextField from "@material-ui/core/TextField/TextField";
@@ -17,11 +18,14 @@ import Avatar from "@material-ui/core/Avatar/Avatar";
 import '../styles/components/Search.css';
 import Card from "@material-ui/core/Card/Card";
 
-class SearchUsersPage extends React.Component {
+class UserResultsPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            loading: true,
+            rootUser: this.props.rootUser || {},
             users: [],
+            follows: [],
             selectedIndex: -1
         };
 
@@ -29,27 +33,79 @@ class SearchUsersPage extends React.Component {
 
     componentDidMount() {
         this.setState({ loading: true });
-        const name = this.props.match.params.query;
-        this.props.searchUsers({name});
+        if(this.props.match.params.follow) {
+            let username = this.props.match.params.username;
+            if(username === "me"){
+                username = this.state.rootUser.username;
+                this.setState({ canEdit: true });
+            }
+
+            this.props.getFollows(username);
+            if(this.props.match.params.follow === "followers") {
+                this.setState({ title: "Followers" });
+            }
+
+            else {
+                this.setState({ title: "Following" });
+            }
+        }
+
+        else {
+            this.setState({ title: "Search Results" });
+            const name = this.props.match.params.query;
+            this.props.searchUsers({name});
+        }
     }
 
     componentDidUpdate(prevProps) {
         if(this.props.users !== prevProps.users) {
-            this.setState({users: this.props.users})
+            this.setState({users: this.props.users, loading: false})
+        }
+
+        if(this.props.rootUser !== prevProps.rootUser) {
+            this.setState({rootUser: this.props.rootUser, loading: false})
+        }
+
+        if(this.props.follows !== prevProps.follows) {
+            this.setState({follows: this.props.follows, loading: false})
         }
     }
 
     handleListItemClick = (event, index) => {
-        const user = this.state.users[index].username;
-        history.push(`/${user}`);
+        if(this.state.title === "Search Results") {
+            const user = this.state.users[index].username;
+            history.push(`/${user}`);
+        }
+
+        else if(this.state.title === "Followers") {
+            const user = this.state.follows.followers[index].username;
+            history.push(`/${user}`);
+        }
+
+        else {
+            const user = this.state.follows.following[index].username;
+            history.push(`/${user}`);
+        }
     };
 
     render() {
         let self = this;
+        if(this.state.loading) { return null; }
+
+        let results = this.state.users;
+        if(this.state.title === "Followers") {
+            results = this.state.follows.followers;
+        }
+
+        else if(this.state.title === "Following") {
+            results = this.state.follows.following;
+        }
+
         return(
             <Card className="page">
+                <h1>{this.state.title}</h1>
                 <List component="nav">
-                    {self.state.users.map(function(item, key) {
+                    {results.map(function(item, key) {
                         return (
                             <ListItem button
                                       key={key}
@@ -74,7 +130,10 @@ class SearchUsersPage extends React.Component {
 }
 
 export default connect(state => ({
-    users: state.users.users
+    users: state.users.users,
+    rootUser: state.rootUser,
+    follows: state.follows.follows
 }), {
-    searchUsers
-})(SearchUsersPage);
+    searchUsers,
+    getFollows
+})(UserResultsPage);

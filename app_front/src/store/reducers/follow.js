@@ -1,11 +1,11 @@
-const initialState = [];
+const initialState = {};
 
 const FollowReducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'FOLLOW:LOADED':
-            return [
-                ...action.followers
-            ];
+        case 'FOLLOWS:FOLLOWS_LOADED':
+            return {
+                follows: action.follows
+            };
 
         default:
             return state;

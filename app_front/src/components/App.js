@@ -6,8 +6,9 @@ import Navbar from './Navbar';
 import SideNav from './SideNav';
 import HomePage from './HomePage';
 import UserPage from './UserPage';
-import SearchUsersPage from './SearchUsersPage';
+import UserResultsPage from './UserResultsPage';
 import GraphPage from './GraphPage';
+import DiscoverPage from "./DiscoverPage";
 
 class App extends Component {
   render() {
@@ -18,7 +19,9 @@ class App extends Component {
                   <SideNav />
                   <Switch>
                       <Route exact path="/graph" component={GraphPage} />
-                      <Route exact path="/search/:query" component={SearchUsersPage} />
+                      <Route exact path="/discover" component={DiscoverPage} />
+                      <Route exact path="/search/:query" component={UserResultsPage} />
+                      <Route exact path="/:username/:follow" component={UserResultsPage} />
                       <Route exact path="/:username" component={UserPage} />
                       <Route exact path="/" component={HomePage} />
                   </Switch>

@@ -5,17 +5,13 @@ const usersLoaded = users => ({
     users: users
 });
 
-const userLoaded = users => ({
+const userLoaded = user => ({
     type: 'USER:USER_LOADED',
-    user: users[0]
+    user: user
 });
 
-const getUser = (query) => (dispatch, getState) => {
-    let url = new URL('http://sp19-cs411-52.cs.illinois.edu:5000/users');
-    JSON.stringify(query);
-    Object.keys(query).forEach(key => url.searchParams.append(key, query[key]));
-    console.log(url);
-    fetch(url.href, {
+const getUser = (username) => (dispatch, getState) => {
+    fetch(`http://sp19-cs411-52.cs.illinois.edu:5000/users/${username}`, {
         method: 'GET',
         credentials: 'include',
     })

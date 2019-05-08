@@ -19,7 +19,7 @@ class CreateNote extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: props.loading || false,
+            loading: true,
             user: props.rootUser,
             msg: props.message || '',
             songOpen: false,
@@ -46,12 +46,6 @@ class CreateNote extends React.Component {
     }
 
     handleSubmit() {
-        //Validate that there are no empty fields
-        if(!this.validate()) {
-            //POPUP ERROR
-        }
-
-        else {
             const { UID, msg, contentType } = this.state;
             const ID = this.state.contentType === "song"? this.state.song.spotify_id : this.state.artist.spotify_id;
             this.props.createNote({
@@ -59,16 +53,14 @@ class CreateNote extends React.Component {
                 type: contentType,
                 contentId: ID
             });
-
-        }
     }
 
     handleSongClose = song => {
-        this.setState({ song, songOpen: false, contentChosen: true, contentType: 'song' });
+        this.setState({ song: song, songOpen: false, contentChosen: true, contentType: 'song', loading: false });
     };
 
     handleArtistClose = artist => {
-        this.setState({ artist, artistOpen: false, contentChosen: true, contentType: 'artist' });
+        this.setState({ artist, artistOpen: false, contentChosen: true, contentType: 'artist' , loading: false});
     };
 
     addArtist() {
@@ -138,8 +130,9 @@ class CreateNote extends React.Component {
     };
 
     getMessage = () => {
+        if(this.state.loading) { return null; }
         let self = this;
-        let content = self.contentType === 'song'? self.state.song : self.state.artist;
+        const content = self.state.contentType === 'song'? self.state.song : self.state.artist;
         return(
             <CardContent>
                 <img src={content.image_url}/>

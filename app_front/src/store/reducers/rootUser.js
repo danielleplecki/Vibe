@@ -33,7 +33,8 @@ const rootUserReducer = (state = initialState, action) => {
         case 'ROOT_USER:USER_LOADED':
             return {
                 ...state,
-                num_follows: action.user.num_follows,
+                num_followers: action.user.num_followers,
+                num_following: action.user.num_following,
                 num_notes: action.user.num_notes
             };
 

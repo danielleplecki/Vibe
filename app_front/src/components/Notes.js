@@ -16,11 +16,13 @@ class Notes extends React.Component {
         super(props);
         this.state = {
             loading: false,
+            rootUser: this.props.rootUser || {},
             edit: false,
             editUID: this.props.editUID || '',
             editID: this.props.editID || '',
             editMsg: this.props.editMsg || '',
-            notes: this.props.notes
+            notes: this.props.notes,
+            canEdit: false
         };
 
         this.handleDelete = this.handleDelete.bind(this);
@@ -36,7 +38,11 @@ class Notes extends React.Component {
             this.props.loadTimelineNotes();
         }
         else {
-            const username = this.props.username;
+            let username = this.props.username;
+            if(username === "me"){
+                username = this.state.rootUser.username;
+                this.setState({ canEdit: true });
+            }
             this.props.loadProfileNotes({username});
         }
     }
@@ -69,6 +75,20 @@ class Notes extends React.Component {
         this.setState({ [e.target.id]: e.target.value });
     }
 
+    editButtons = (item) => {
+        let self = this;
+        return(
+            <div>
+                <IconButton color="secondary" onClick={() => {self.handleEditOpen(item)}}>
+                    <EditIcon/>
+                </IconButton>
+                <IconButton onClick={() => {self.handleDelete(item)}}>
+                    <DeleteIcon />
+                </IconButton>
+            </div>
+        );
+    };
+
     populateFeed = () => {
         let self = this;
         return(
@@ -86,12 +106,7 @@ class Notes extends React.Component {
                                     <Typography variant="body1">
                                         {item.message}
                                     </Typography>
-                                    <IconButton color="secondary" onClick={() => {self.handleEditOpen(item)}}>
-                                        <EditIcon/>
-                                    </IconButton>
-                                    <IconButton onClick={() => {self.handleDelete(item)}}>
-                                        <DeleteIcon />
-                                    </IconButton>
+                                    {self.state.canEdit? self.editButtons(item) : null}
                                 </CardContent>
                             </Card>
                     );
@@ -137,7 +152,8 @@ class Notes extends React.Component {
 }
 
 export default connect(state => ({
-    notes: state.notes
+    notes: state.notes,
+    rootUser: state.rootUser
 }), {
     loadTimelineNotes,
     loadProfileNotes,

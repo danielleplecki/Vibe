@@ -52,7 +52,7 @@ class SideNav extends Component {
                 <List>
                     <Avatar src={this.state.rootUser.image} className="side-avatar" />
                     <ListItemText primary={this.state.rootUser.name} />
-                    <ListItemText secondary="30 followers" />
+                    <ListItemText secondary={this.state.rootUser.num_followers + " followers"} />
                     <ListItemText secondary="53 notes" />
                 </List>
                 <Divider />
@@ -65,7 +65,7 @@ class SideNav extends Component {
                         <ListItemIcon> <GraphIcon /> </ListItemIcon>
                         <ListItemText primary="Graph" />
                     </ListItem>
-                    <ListItem button key="followers" component={RouterLink} to="/followers">
+                    <ListItem button key="followers" component={RouterLink} to="/me/followers">
                         <ListItemIcon> <FollowersIcon /> </ListItemIcon>
                         <ListItemText primary="Followers" />
                     </ListItem>

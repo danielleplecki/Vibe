@@ -17,7 +17,7 @@ const createReducer = (history) => combineReducers(
         notes: notesReducer,
         songs: songsReducer,
         artists: artistsReducer,
-        followers: followReducer
+        follows: followReducer
     }
 );
 

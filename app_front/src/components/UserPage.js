@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { history } from '../store';
 import { loadProfileNotes } from '../actions/notes';
 import '../styles/components/Notes.css';
 import '../styles/components/UserPage.css';
@@ -10,6 +11,7 @@ import CardContent from "@material-ui/core/CardContent/CardContent";
 import Typography from "@material-ui/core/Typography/Typography";
 import { connect } from 'react-redux';
 import { getUser } from '../actions/users';
+import Link from "@material-ui/core/Link/Link";
 
 class UserPage extends Component {
     constructor(props) {
@@ -35,8 +37,8 @@ class UserPage extends Component {
         }
         else {
             const name = this.props.match.params.username;
-            const username = name
-            this.props.getUser({name});
+            const username = name;
+            this.props.getUser(username);
             this.props.loadProfileNotes({username});
         }
     }
@@ -55,8 +57,11 @@ class UserPage extends Component {
         }
     }
 
+
+
     render() {
-        const user = this.props.match.params.username === "me"? this.state.rootUser : this.state.searchedUser;
+        const username = this.props.match.params.username;
+        const user =  username === "me"? this.state.rootUser : this.state.searchedUser;
         if(user == null) { return null; }
         return(
             <Card className="page">
@@ -71,6 +76,16 @@ class UserPage extends Component {
                         <Typography variant="subtitle1" color="textSecondary" align="left">
                             Vibing since {user.time_joined}
                         </Typography>
+                        <Link component="button"
+                              variant="body2"
+                              onClick={() => {
+                                  history.push(`/${username}/followers`);
+                              }}>{user.num_followers} followers</Link>
+                        <Link component="button"
+                              variant="body2"
+                              onClick={() => {
+                                  history.push(`/${username}/following`);
+                              }}>{user.num_following} following</Link>
                     </CardContent>
                 </div>
                 <Typography component="h4" variant="h4" align="left">

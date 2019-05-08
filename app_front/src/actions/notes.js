@@ -22,8 +22,9 @@ const createNote = (note) => (dispatch, getState) => {
         method: 'POST',
         credentials: 'include',
         body: JSON.stringify({
-            UID: note.UID,
-            message: note.msg
+            message: note.message,
+            contentId: note.contentId,
+            type: note.type
         }),
         headers: {
             "Content-Type": "application/json"
@@ -50,8 +51,12 @@ const loadTimelineNotes = () => (dispatch, getState) => {
         });
 };
 
-const loadProfileNotes = () => (dispatch, getState) => {
-    fetch("http://sp19-cs411-52.cs.illinois.edu:5000/notes", {
+const loadProfileNotes = (query) => (dispatch, getState) => {
+    let url = new URL('http://sp19-cs411-52.cs.illinois.edu:5000/notes');
+    JSON.stringify(query);
+    Object.keys(query).forEach(key => url.searchParams.append(key, query[key]));
+    console.log(url);
+    fetch(url.href, {
         method: 'GET',
         credentials: 'include',
     })
