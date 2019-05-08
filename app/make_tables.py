@@ -170,6 +170,16 @@ def create_notification_trigger():
     """
     cursor.execute(sql)
 
+def create_note_content_view():
+    sql = """
+    CREATE VIEW noteContent AS
+    SELECT ID, UID, time, message, type, coalesce(s.name, a.name) as name,
+    coalesce(s.image_url, a.image_url) as image, coalesce(s.spotify_id, a.spotify_id) as spotify_id
+    from notes LEFT OUTER JOIN artists a on a.spotify_id = notes.content_id
+    LEFT OUTER JOIN songs s on s.spotify_id = notes.content_id
+    """
+    cursor.execute(sql)
+
 if __name__ == '__main__':
     make_users_table()
     make_songs_tables()
@@ -182,4 +192,11 @@ if __name__ == '__main__':
     make_artist_follows_table()
     make_note_favorites_table()
     make_notifications_table()
-    create_notification_trigger()
+    try:
+        create_notification_trigger()
+    except:
+        print("Trigger already exists")
+    try:
+        create_note_content_view()
+    except:
+        print("View already exists")
