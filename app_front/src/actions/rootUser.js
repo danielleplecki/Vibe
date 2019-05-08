@@ -21,6 +21,11 @@ const graphLoaded = graph => ({
     graph: graph
 });
 
+const notificationsLoaded = notifications => ({
+    type: 'ROOT_USER:NOTIFICATIONS_LOADED',
+    notifications: notifications
+});
+
 const recommendedLoaded = recommended => ({
     type: 'ROOT_USER:RECOMMENDED_LOADED',
     recommended: recommended
@@ -62,6 +67,18 @@ const getGraph = () => (dispatch, getState) => {
     })
         .then(response => response.json())
         .then(( graph ) => dispatch(graphLoaded(graph)))
+        .catch(err => {
+            console.error(err);
+        });
+};
+
+const getNotifications = () => (dispatch, getState) => {
+    fetch("http://sp19-cs411-52.cs.illinois.edu:5000/notifications", {
+        method: 'GET',
+        credentials: 'include',
+    })
+        .then(response => response.json())
+        .then(( notifications ) => dispatch(notificationsLoaded(notifications)))
         .catch(err => {
             console.error(err);
         });
@@ -114,5 +131,6 @@ export {
     getRootUser,
     getGraph,
     getRecommended,
-    addFavorite
+    addFavorite,
+    getNotifications
 };

@@ -9,7 +9,9 @@ const initialState = {
     token: null,
     graph: null,
     recommended: null,
-    favorites: null
+    favorites: null,
+    notifications: null,
+    num_notifications: 0
 };
 
 const rootUserReducer = (state = initialState, action) => {
@@ -50,6 +52,13 @@ const rootUserReducer = (state = initialState, action) => {
             return {
                 ...state,
                 recommended: action.recommended
+            };
+
+        case 'ROOT_USER:NOTIFICATIONS_LOADED':
+            return {
+                ...state,
+                notifications: action.notifications,
+                num_notifications: state.num_notifications + 1
             };
 
         case 'ROOT_USER:FAVORITES_LOADED':

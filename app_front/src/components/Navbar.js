@@ -16,6 +16,8 @@ import Button from "@material-ui/core/Button/Button";
 import ListItem from "@material-ui/core/ListItem/ListItem";
 import { history } from '../store';
 import TextField from "@material-ui/core/TextField/TextField";
+import connect from "react-redux/es/connect/connect";
+import { getNotifications } from "../actions/rootUser";
 
 class Navbar extends Component {
     constructor(props) {
@@ -26,11 +28,23 @@ class Navbar extends Component {
             query: props.query || '',
             songs: [],
             showResults: false,
-            selectedIndex: -1
+            selectedIndex: -1,
+            notifications: props.notifications || [],
+            num_notifications: props.num_notifications
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
+    }
+
+    componentDidMount() {
+        this.props.getNotifications();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.num_notifications !== prevProps.num_notifications) {
+            this.setState({num_notifications: this.props.num_notifications, notifications: this.props.notifications});
+        }
     }
 
     handleKeyDown = (e) => {
@@ -78,7 +92,7 @@ class Navbar extends Component {
                             />
                         </div>
                         <IconButton color="inherit">
-                            <Badge badgeContent={17} color="secondary">
+                            <Badge badgeContent={this.state.num_notifications} color="secondary">
                                 <NotificationsIcon />
                             </Badge>
                         </IconButton>
@@ -92,4 +106,9 @@ class Navbar extends Component {
     }
 }
 
-export default Navbar;
+export default connect(state => ({
+    notifications: state.rootUser.notifications,
+    num_notifications: state.rootUser.num_notifications
+}), {
+    getNotifications
+})(Navbar);
