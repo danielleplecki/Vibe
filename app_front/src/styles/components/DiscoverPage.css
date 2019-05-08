@@ -1,0 +1,18 @@
+.profile-recommended {
+    display: grid;
+    grid-template-columns: repeat(2, 200px 200px);
+    flex-direction: row;
+    justify-content: center;
+    padding: 10px 16px;
+}
+
+.recommended-item {
+    margin: 0 8px;
+    align-content: center;
+}
+
+.recommended-img {
+    margin: auto;
+    width: 80%;
+    height: auto;
+}
