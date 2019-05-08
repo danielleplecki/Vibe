@@ -102,9 +102,9 @@ def post_user():
         return json_output("Successful Sign-up", 201)
     return json_error("Username already exists", 403)
 
-@app.route("/follows", methods= ['GET', 'POST', 'DELETE'])
+@app.route("/follows", methods= ['POST', 'DELETE'])
 @cross_origin(supports_credentials=True)
-def follow():
+def follow_or_unfollow():
     if not user_is_authenticated():
         return get_unauthenticated_response()
     if request.method == 'POST':
@@ -125,11 +125,14 @@ def follow():
         if result:
             return json_output("User unfollowed successfully", 200)
         return json_error("Cannot delete non-existing follow", 400)
-    else:
-        following = follows_endpoint.get_people_user_follows(session['username'])
-        followers = follows_endpoint.get_followers_for_user(session['username'])
-        results = {"following" : following, "followers" : followers}
-        return json_output(results, 200)
+
+@app.route("/follows/<username>", methods=['GET'])
+@cross_origin(supports_credentials=True)
+def get_follows(username):
+    following = follows_endpoint.get_people_user_follows(username)
+    followers = follows_endpoint.get_followers_for_user(username)
+    results = {"following" : following, "followers" : followers}
+    return json_output(results, 200)
 
 @app.route("/notes", methods=['POST'])
 @cross_origin(supports_credentials=True)
