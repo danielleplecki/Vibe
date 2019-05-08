@@ -17,7 +17,7 @@ import ListItem from "@material-ui/core/ListItem/ListItem";
 import { history } from '../store';
 import TextField from "@material-ui/core/TextField/TextField";
 import connect from "react-redux/es/connect/connect";
-import { getNotifications } from "../actions/rootUser";
+import { getNotifications, clearNotifications } from "../actions/rootUser";
 import Menu from "@material-ui/core/Menu/Menu";
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import Card from "@material-ui/core/Card/Card";
@@ -65,6 +65,7 @@ class Navbar extends Component {
     }
 
     handleNotifications = event => {
+        this.props.clearNotifications();
         this.setState({ notificationsOpen: event.currentTarget });
     };
 
@@ -150,5 +151,6 @@ export default connect(state => ({
     notifications: state.rootUser.notifications,
     num_notifications: state.rootUser.num_notifications
 }), {
-    getNotifications
+    getNotifications,
+    clearNotifications
 })(Navbar);

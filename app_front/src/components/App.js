@@ -9,6 +9,7 @@ import UserPage from './UserPage';
 import UserResultsPage from './UserResultsPage';
 import GraphPage from './GraphPage';
 import DiscoverPage from "./DiscoverPage";
+import FavoritesPage from './FavoritesPage';
 
 class App extends Component {
   render() {
@@ -20,6 +21,7 @@ class App extends Component {
                   <Switch>
                       <Route exact path="/graph" component={GraphPage} />
                       <Route exact path="/discover" component={DiscoverPage} />
+                      <Route exact path="/favorites" component={FavoritesPage} />
                       <Route exact path="/search/:query" component={UserResultsPage} />
                       <Route exact path="/:username/:follow" component={UserResultsPage} />
                       <Route exact path="/:username" component={UserPage} />

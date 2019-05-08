@@ -61,10 +61,16 @@ const rootUserReducer = (state = initialState, action) => {
                 num_notifications: state.num_notifications + 1
             };
 
+        case 'ROOT_USER:NOTIFICATIONS_CLEARED':
+            return {
+                ...state,
+                num_notifications: 0
+            };
+
         case 'ROOT_USER:FAVORITES_LOADED':
             return {
                 ...state,
-                favorites: action.favorites
+                favorites: action.favs
             };
 
         case 'ROOT_USER:FAVORITE_ADDED':

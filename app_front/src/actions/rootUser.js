@@ -26,9 +26,18 @@ const notificationsLoaded = notifications => ({
     notifications: notifications
 });
 
+const notificationsCleared = notifications => ({
+    type: 'ROOT_USER:NOTIFICATIONS_CLEARED'
+});
+
 const recommendedLoaded = recommended => ({
     type: 'ROOT_USER:RECOMMENDED_LOADED',
     recommended: recommended
+});
+
+const favoritesLoaded = favs => ({
+    type: 'ROOT_USER:FAVORITES_LOADED',
+    favs: favs
 });
 
 const favoriteAdded = fav => ({
@@ -84,6 +93,22 @@ const getNotifications = () => (dispatch, getState) => {
         });
 };
 
+const clearNotifications = () => (dispatch, getState) => {
+    dispatch(notificationsCleared({}));
+};
+
+const getFavorites = () => (dispatch, getState) => {
+    fetch("http://sp19-cs411-52.cs.illinois.edu:5000/favorites", {
+        method: 'GET',
+        credentials: 'include',
+    })
+        .then(response => response.json())
+        .then(( favs ) => dispatch(favoritesLoaded(favs)))
+        .catch(err => {
+            console.error(err);
+        });
+};
+
 const addFavorite = (note) => (dispatch, getState) => {
     fetch(`http://sp19-cs411-52.cs.illinois.edu:5000/notes/${note.ID}/favorites`, {
         method: "POST",
@@ -132,5 +157,7 @@ export {
     getGraph,
     getRecommended,
     addFavorite,
-    getNotifications
+    getFavorites,
+    getNotifications,
+    clearNotifications
 };
