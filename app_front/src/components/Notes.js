@@ -1,12 +1,15 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import { loadTimelineNotes, loadProfileNotes, deleteNote, editNote } from '../actions/notes';
+import { addFavorite } from '../actions/rootUser';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import Modal from '@material-ui/core/Modal';
 import TextField from "@material-ui/core/TextField/TextField";
 import Button from "@material-ui/core/Button/Button";
@@ -30,6 +33,7 @@ class Notes extends React.Component {
         this.handleEditClose = this.handleEditClose.bind(this);
         this.handleEditSubmit = this.handleEditSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleFavorite = this.handleFavorite.bind(this);
     }
 
     componentDidMount() {
@@ -75,6 +79,12 @@ class Notes extends React.Component {
         this.setState({ [e.target.id]: e.target.value });
     }
 
+    handleFavorite(item) {
+        item.favorited = true;
+        this.props.addFavorite(item);
+        this.setState({ newFav: true });
+    }
+
     editButtons = (item) => {
         let self = this;
         return(
@@ -91,9 +101,11 @@ class Notes extends React.Component {
 
     populateFeed = () => {
         let self = this;
+
         return(
             <div>
                 <div>{self.state.notes.map(function(item, key) {
+                    item.favorited = true;
                     return (
                             <Card className="note">
                                 <CardContent>
@@ -107,6 +119,10 @@ class Notes extends React.Component {
                                         {item.message}
                                     </Typography>
                                     {self.state.canEdit? self.editButtons(item) : null}
+                                    <IconButton aria-label="Favorite" color="primary"
+                                                onClick={() => {self.handleFavorite(item)}}
+                                                component={item.favorited? FavoriteIcon : FavoriteBorder}>
+                                    </IconButton>
                                 </CardContent>
                             </Card>
                     );
@@ -158,5 +174,6 @@ export default connect(state => ({
     loadTimelineNotes,
     loadProfileNotes,
     deleteNote,
-    editNote
+    editNote,
+    addFavorite
 })(Notes);

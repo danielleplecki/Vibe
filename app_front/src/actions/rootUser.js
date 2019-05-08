@@ -26,6 +26,11 @@ const recommendedLoaded = recommended => ({
     recommended: recommended
 });
 
+const favoriteAdded = fav => ({
+    type: 'ROOT_USER:FAVORITE_ADDED',
+    fav: fav
+});
+
 const getRootUser = () => (dispatch, getState) => {
     fetch("http://sp19-cs411-52.cs.illinois.edu:5000/me", {
         method: 'GET',
@@ -57,6 +62,19 @@ const getGraph = () => (dispatch, getState) => {
     })
         .then(response => response.json())
         .then(( graph ) => dispatch(graphLoaded(graph)))
+        .catch(err => {
+            console.error(err);
+        });
+};
+
+const addFavorite = (note) => (dispatch, getState) => {
+    fetch(`http://sp19-cs411-52.cs.illinois.edu:5000/notes/${note.ID}/favorites`, {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+            "Content-Type": "application/json; charset=utf-8",
+        }
+    }).then(async response => response.json())
         .catch(err => {
             console.error(err);
         });
@@ -95,5 +113,6 @@ export {
     authorizeUser,
     getRootUser,
     getGraph,
-    getRecommended
+    getRecommended,
+    addFavorite
 };

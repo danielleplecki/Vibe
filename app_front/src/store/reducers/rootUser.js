@@ -8,7 +8,8 @@ const initialState = {
     authorized: null,
     token: null,
     graph: null,
-    recommended: null
+    recommended: null,
+    favorites: null
 };
 
 const rootUserReducer = (state = initialState, action) => {
@@ -49,6 +50,21 @@ const rootUserReducer = (state = initialState, action) => {
             return {
                 ...state,
                 recommended: action.recommended
+            };
+
+        case 'ROOT_USER:FAVORITES_LOADED':
+            return {
+                ...state,
+                favorites: action.favorites
+            };
+
+        case 'ROOT_USER:FAVORITE_ADDED':
+            return {
+                ...state,
+                favorites: [
+                    ...state.favorites,
+                    action.fav
+                ]
             };
 
         default:

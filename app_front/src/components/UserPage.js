@@ -13,6 +13,7 @@ import Typography from "@material-ui/core/Typography/Typography";
 import { connect } from 'react-redux';
 import { getUser } from '../actions/users';
 import Link from "@material-ui/core/Link/Link";
+import Divider from "@material-ui/core/Divider/Divider";
 
 class UserPage extends Component {
     constructor(props) {
@@ -74,10 +75,10 @@ class UserPage extends Component {
                 <Card className="recent-item">
                     <CardContent>
                         <Avatar src={item.image_url} className="recent-img" />
-                        <Typography component="subtitle2" variant="subtitle2" align="center" >
+                        <Typography component="subtitle2" variant="subtitle2" align="left" >
                             {item.name}
                         </Typography>
-                        <Typography component="caption-text" variant="caption-text" align="center" >
+                        <Typography component="caption-text" variant="caption-text" align="left" >
                             {item.artist}
                         </Typography>
                     </CardContent>
@@ -120,7 +121,7 @@ class UserPage extends Component {
                     </CardContent>
                 </div>
                 <div>
-                <Typography component="h4" variant="h4" align="left">
+                <Typography component="h4" variant="h4" align="center" className="divider">
                     Recent Vibes
                 </Typography>
                   {this.state.recents ?
@@ -128,6 +129,9 @@ class UserPage extends Component {
                     null
                   }
                 </div>
+                <Typography component="h4" variant="h4" align="center" className="divider">
+                    Notes
+                </Typography>
                 <Notes feed="profile" username={this.props.match.params.username} />
             </Card>
         );
