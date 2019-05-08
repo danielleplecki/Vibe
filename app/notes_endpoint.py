@@ -12,6 +12,7 @@ def favorite_note(note_id, liker):
     vals = (note_id, liker)
     result = base_db.insert(stmt, vals)
     favorite_song_from_note(note_id, liker)
+    favorite_artist_from_note(note_id, liker)
     return result
 
 def favorite_song_from_note(note_id, liker):
@@ -20,6 +21,14 @@ def favorite_song_from_note(note_id, liker):
     vals = (liker, note_id)
     result = base_db.insert(stmt, vals)
     return result
+
+def favorite_artist_from_note(note_id, liker):
+    stmt = """INSERT INTO artistFollows (artist_spotify_id, follower) VALUES
+                (%s, (SELECT spotify_id from artists,notes WHERE content_id = spotify_id AND notes.ID = %s))"""
+    vals = (liker, note_id)
+    result = base_db.insert(stmt, vals)
+    return result
+
 
 def update_note(id, message):
     stmt = """UPDATE notes SET message = %s WHERE ID = %s"""
