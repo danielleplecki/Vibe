@@ -21,6 +21,11 @@ const graphLoaded = graph => ({
     graph: graph
 });
 
+const recommendedLoaded = recommended => ({
+    type: 'ROOT_USER:RECOMMENDED_LOADED',
+    recommended: recommended
+});
+
 const getRootUser = () => (dispatch, getState) => {
     fetch("http://sp19-cs411-52.cs.illinois.edu:5000/me", {
         method: 'GET',
@@ -28,6 +33,18 @@ const getRootUser = () => (dispatch, getState) => {
     })
         .then(response => response.json())
         .then(( user ) => dispatch(userLoaded(user)))
+        .catch(err => {
+            console.error(err);
+        });
+};
+
+const getRecommended = () => (dispatch, getState) => {
+    fetch("http://sp19-cs411-52.cs.illinois.edu:5000/recommended", {
+        method: 'GET',
+        credentials: 'include'
+    })
+        .then(response => response.json())
+        .then(( recommended ) => dispatch(recommendedLoaded(recommended)))
         .catch(err => {
             console.error(err);
         });
@@ -77,5 +94,6 @@ export {
     getTokenAndAuthorize,
     authorizeUser,
     getRootUser,
-    getGraph
+    getGraph,
+    getRecommended
 };

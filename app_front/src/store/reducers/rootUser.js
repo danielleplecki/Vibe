@@ -7,7 +7,8 @@ const initialState = {
     num_follows: null,
     authorized: null,
     token: null,
-    graph: null
+    graph: null,
+    recommended: null
 };
 
 const rootUserReducer = (state = initialState, action) => {
@@ -42,6 +43,12 @@ const rootUserReducer = (state = initialState, action) => {
             return {
                 ...state,
                 graph: action.graph
+            };
+
+        case 'ROOT_USER:RECOMMENDED_LOADED':
+            return {
+                ...state,
+                recommended: action.recommended
             };
 
         default:
