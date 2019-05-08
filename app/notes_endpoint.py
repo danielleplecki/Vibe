@@ -23,7 +23,7 @@ def favorite_song_from_note(note_id, liker):
     return result
 
 def favorite_artist_from_note(note_id, liker):
-    stmt = """INSERT INTO artistFollows (artist_spotify_id, follower) VALUES
+    stmt = """INSERT INTO artistFollows (follower, artist_spotify_id) VALUES
                 (%s, (SELECT spotify_id from artists,notes WHERE content_id = spotify_id AND notes.ID = %s))"""
     vals = (liker, note_id)
     result = base_db.insert(stmt, vals)
