@@ -147,10 +147,6 @@ class Notes extends React.Component {
                     return (
                             <Card className="page">
                                 <CardContent>
-                                    <div className='notediv'>
-                                        <Avatar src={item.image_url} className='note-img'/>
-                                    </div>
-                                    <div className='infodiv'>
                                     <Typography variant="subtitle2" align="left">
                                         {item.UID}
                                     </Typography>
@@ -164,19 +160,11 @@ class Notes extends React.Component {
                                     <Typography variant="body1">
                                         {item.message}
                                     </Typography>
-                                    </div>
-                                    <div className='messagediv'>
-                                      <Typography variant="body1">
-                                          {item.message}
-                                      </Typography>
-                                    </div>
-                                    <div className='favoritediv'>
                                     {self.state.canEdit? self.editButtons(item) :
                                       <IconButton aria-label="Favorite" color="primary"
                                                   onClick={() => {self.handleFavorite(item)}}
                                                   component={item.favorited? FavoriteIcon : FavoriteBorder}>
                                       </IconButton>}
-                                    </div>
                                 </CardContent>
                             </Card>
                     );

@@ -18,6 +18,12 @@ import { history } from '../store';
 import TextField from "@material-ui/core/TextField/TextField";
 import connect from "react-redux/es/connect/connect";
 import { getNotifications } from "../actions/rootUser";
+import Menu from "@material-ui/core/Menu/Menu";
+import MenuItem from "@material-ui/core/MenuItem/MenuItem";
+import Card from "@material-ui/core/Card/Card";
+import CardContent from "@material-ui/core/CardContent/CardContent";
+import Avatar from "@material-ui/core/Avatar/Avatar";
+import FavoriteIcon from "@material-ui/core/SvgIcon/SvgIcon";
 
 class Navbar extends Component {
     constructor(props) {
@@ -30,7 +36,8 @@ class Navbar extends Component {
             showResults: false,
             selectedIndex: -1,
             notifications: props.notifications || [],
-            num_notifications: props.num_notifications
+            num_notifications: props.num_notifications,
+            notificationsOpen: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -57,7 +64,16 @@ class Navbar extends Component {
         this.setState({ [e.target.id]: e.target.value });
     }
 
+    handleNotifications = event => {
+        this.setState({ notificationsOpen: event.currentTarget });
+    };
+
+    handleClose = () => {
+        this.setState({ notificationsOpen: false });
+    };
+
     render() {
+        let self = this;
         return (
             <div className="navbar">
                 <AppBar position="static">
@@ -91,11 +107,35 @@ class Navbar extends Component {
                                 onChange={this.handleChange}
                             />
                         </div>
-                        <IconButton color="inherit">
+                        <IconButton aria-owns={this.state.notificationsOpen ? 'menu-appbar' : undefined}
+                                    aria-haspopup="true"
+                                    onClick={this.handleNotifications}
+                                    color="inherit">
                             <Badge badgeContent={this.state.num_notifications} color="secondary">
                                 <NotificationsIcon />
                             </Badge>
                         </IconButton>
+                        <Menu
+                            id="menu-appbar"
+                            anchorEl={this.state.notificationsOpen}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            open={this.state.notificationsOpen}
+                            onClose={this.handleClose}
+                        >
+                            {self.state.notifications.map(function(item, key) {
+                                item.favorited = true;
+                                return (
+                                    <MenuItem onClick={self.handleClose}>{item.message}</MenuItem>
+                                );
+                            })}
+                        </Menu>
                         <IconButton color="inherit" component={RouterLink} to="/me">
                             <AccountCircle />
                         </IconButton>
