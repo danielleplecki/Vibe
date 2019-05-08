@@ -53,7 +53,7 @@ class SideNav extends Component {
                     <Avatar src={this.state.rootUser.image} className="side-avatar" />
                     <ListItemText primary={this.state.rootUser.name} />
                     <ListItemText secondary={this.state.rootUser.num_followers + " followers"} />
-                    <ListItemText secondary="53 notes" />
+                    <ListItemText secondary={this.state.rootUser.num_notes + " notes"} />
                 </List>
                 <Divider />
                 <List subheader={<ListSubheader>YOUR VIBES</ListSubheader>}>
