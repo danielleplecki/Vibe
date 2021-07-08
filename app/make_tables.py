@@ -10,7 +10,9 @@ def make_songs_tables():
     spotify_id varchar(255) PRIMARY KEY,
     name varchar(255),
     artist varchar(255),
-    album_name varchar(255)
+    album_name varchar(255),
+    image_url varchar(255),
+    INDEX name (name)
     )
     """
 
@@ -47,16 +49,20 @@ def make_notes_table():
     UID varchar(255),
     time DATETIME,
     message varchar(255),
-    PRIMARY KEY (ID)
+    type ENUM('song', 'artist'),
+    content_id varchar(255),
+    PRIMARY KEY (ID),
+    FOREIGN KEY (UID) references spotifyUsers(username)
     )"""
-
     cursor.execute(create_notes_table_sql)
 
 def make_artists_table():
     create_artists_table_sql = """
     CREATE TABLE if not exists artists(
     spotify_id varchar(255) PRIMARY KEY,
-    name varchar(255)
+    name varchar(255),
+    image_url varchar(255),
+    INDEX name (name)
     )
     """
     cursor.execute(create_artists_table_sql)
@@ -67,7 +73,7 @@ def make_song_favorites_table():
         username varchar(255),
         song_spotify_id varchar(255),
         PRIMARY KEY (username, song_spotify_id),
-        FOREIGN KEY (username) references users(username),
+        FOREIGN KEY (username) references spotifyUsers(username),
         FOREIGN KEY (song_spotify_id) references songs(spotify_id)
     )
     """
@@ -83,15 +89,94 @@ def make_users_table():
     """
     cursor.execute(create_user_sql)
 
+def make_features_table():
+    sql = """
+    CREATE TABLE if not exists features(
+        song_spotify_id varchar(255),
+        artist_spotify_id varchar(255),
+        PRIMARY KEY (song_spotify_id, artist_spotify_id),
+        FOREIGN KEY (song_spotify_id) references songs(spotify_id),
+        FOREIGN KEY (artist_spotify_id) references artists(spotify_id)
+    )
+    """
+    cursor.execute(sql)
+
 def make_follows_table():
     sql = """
     CREATE TABLE if not exists follows(
         followee varchar(255),
         follower varchar(255),
         PRIMARY KEY (followee, follower),
-        FOREIGN KEY (followee) references users(username),
-        FOREIGN KEY (follower) references users(username)
+        FOREIGN KEY (followee) references spotifyUsers(username),
+        FOREIGN KEY (follower) references spotifyUsers(username)
     )
+    """
+    cursor.execute(sql)
+
+def make_spotify_users_table():
+    sql = """
+    CREATE TABLE if not exists spotifyUsers(
+        username varchar(255) PRIMARY KEY,
+        name varchar(255),
+        image varchar(255),
+        time_joined datetime
+    )
+    """
+    cursor.execute(sql)
+
+def make_artist_follows_table():
+    sql = """
+    CREATE TABLE if not exists artistFollows(
+        artist_spotify_id varchar(255),
+        follower varchar(255),
+        PRIMARY KEY (artist_spotify_id, follower),
+        FOREIGN KEY (artist_spotify_id) references artists(spotify_id),
+        FOREIGN KEY (follower) references spotifyUsers(username)
+    )"""
+    cursor.execute(sql)
+
+def make_note_favorites_table():
+    sql = """
+    CREATE TABLE if not exists noteFavorites(
+        note_id int NOT NULL,
+        liker varchar(255),
+        PRIMARY KEY (note_id, liker),
+        FOREIGN KEY (note_id) references notes(ID),
+        FOREIGN KEY (liker) references spotifyUsers(username)
+    )
+    """
+    cursor.execute(sql)
+
+def make_notifications_table():
+    sql = """
+    CREATE TABLE if not exists notifications(
+        ID int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        username varchar(255),
+        message varchar(255),
+        FOREIGN KEY (username) references spotifyUsers(username)
+    )
+    """
+    cursor.execute(sql)
+
+def create_notification_trigger():
+    sql = """
+    CREATE TRIGGER notification_trigger
+        AFTER INSERT ON noteFavorites
+        FOR EACH ROW
+    BEGIN
+        INSERT INTO notifications (username, message)
+        SELECT UID, CONCAT((SELECT name from spotifyUsers where username=NEW.liker), " liked your note") from notes where ID = NEW.note_id;
+    END
+    """
+    cursor.execute(sql)
+
+def create_note_content_view():
+    sql = """
+    CREATE VIEW noteContent AS
+    SELECT ID, UID, time, message, type, coalesce(s.name, a.name) as name,
+    coalesce(s.image_url, a.image_url) as image, coalesce(s.spotify_id, a.spotify_id) as spotify_id
+    from notes LEFT OUTER JOIN artists a on a.spotify_id = notes.content_id
+    LEFT OUTER JOIN songs s on s.spotify_id = notes.content_id
     """
     cursor.execute(sql)
 
@@ -102,3 +187,16 @@ if __name__ == '__main__':
     make_artists_table()
     make_song_favorites_table()
     make_follows_table()
+    make_features_table()
+    make_spotify_users_table()
+    make_artist_follows_table()
+    make_note_favorites_table()
+    make_notifications_table()
+    try:
+        create_notification_trigger()
+    except:
+        print("Trigger already exists")
+    try:
+        create_note_content_view()
+    except:
+        print("View already exists")

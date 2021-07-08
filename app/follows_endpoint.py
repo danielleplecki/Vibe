@@ -13,11 +13,11 @@ def unfollow_user(followee, follower):
     return result
 
 def get_people_user_follows(user):
-    sql = "SELECT followee AS username, name from follows, users where follower = %s AND users.username = followee"
+    sql = "SELECT followee AS username, name, image from follows, spotifyUsers where follower = %s AND spotifyUsers.username = followee"
     vals = (user,)
     return base_db.query(sql, vals)
 
 def get_followers_for_user(user):
-    sql = "SELECT follower AS username, name from follows, users where followee = %s AND users.username = follower"
+    sql = "SELECT follower AS username, name, image from follows, spotifyUsers where followee = %s AND spotifyUsers.username = follower"
     vals = (user,)
     return base_db.query(sql, vals)
